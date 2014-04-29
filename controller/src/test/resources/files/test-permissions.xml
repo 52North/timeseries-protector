@@ -1,0 +1,131 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- 
+    If using URLs as resource identifiers the resource definition
+    MUST be URL encoded, e.g.
+    <Resource value="featureOfInterests/http%3A%2F%2F52north.org%2Ftest%2FfeatureOfInterest%2F1" />
+    if the feature resource identifier is "http://52north.org/test/featureOfInterest/1".
+    
+    Supported resource types are:
+    - offerings
+    - procedures
+    - observedProperties
+    - featuresOfInterest
+ -->
+<SimplePermissions xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+        xmlns="http://www.52north.org/security/simple-permission/1.0"
+        xsi:schemaLocation="http://www.52north.org/security/simple-permission/1.0 
+        http://52north.org/schema/security/policy/simple-permission/1.0/simple-permission.xsd">
+    <PermissionSet name="sos">
+        <ResourceDomain value="${config.wss.url.base}/${config.wss.url.context}/service/sos_kvp/*"/>
+        <ActionDomain value="${config.wss.url.base}/${config.wss.url.context}/service/sos_kvp/*"/>
+        <SubjectDomain value="urn:n52:security:subject:role"/>
+        <Permission name="full_access">
+            <Resource value="offerings/*"/>
+            <Resource value="procedures/*"/>
+            <Resource value="observedProperties/*"/>
+            <Resource value="featuresOfInterest/*"/>
+            <Resource value="allowedOperations/*"/>
+            <Action value="operations/*"/>
+            <Subject value="t-sos"/>
+        </Permission>
+        <Permission name="insert_observation">
+            <Resource value="offerings/*"/>
+            <Resource value="procedures/*"/>
+            <Resource value="observedProperties/*"/>
+            <Resource value="featuresOfInterest/*"/>
+            <Resource value="allowedOperations/InsertObservation"/>
+            <Action value="operations/InsertObservation"/>
+            <Subject value="data-provider"/>
+        </Permission>
+        <Permission name="sensor-management">
+            <Resource value="offerings/*"/>
+            <Resource value="procedures/*"/>
+            <Resource value="observedProperties/*"/>
+            <Resource value="featuresOfInterest/*"/>
+            <Resource value="allowedOperations/InsertSensor"/>
+            <Resource value="allowedOperations/DeleteSensor"/>
+            <Resource value="allowedOperations/UpdateSensorDescription"/>
+            <Action value="operations/InsertSensor"/>
+            <Action value="operations/DeleteSensor"/>
+            <Action value="operations/UpdateSensorDescription"/>
+            <Subject value="sensorManager"/>
+        </Permission>
+        <Permission name="read_only_access">
+            <Resource value="offerings/*"/>
+<!--             <Resource value="procedures/*"/> -->
+            <Resource value="procedures/http%3A%2F%2Fwww.52north.org%2Ftest%2Fprocedure%2F1"/>
+            <Resource value="procedures/http%3A%2F%2Fwww.52north.org%2Ftest%2Fprocedure%2F2"/>
+            <Resource value="procedures/http%3A%2F%2Fwww.52north.org%2Ftest%2Fprocedure%2F3"/>
+            <Resource value="procedures/http%3A%2F%2Fwww.52north.org%2Ftest%2Fprocedure%2F4"/>
+            <Resource value="procedures/http%3A%2F%2Fwww.52north.org%2Ftest%2Fprocedure%2F5"/>
+            <Resource value="procedures/http%3A%2F%2Fwww.52north.org%2Ftest%2Fprocedure%2F6"/>
+            <Resource value="procedures/http%3A%2F%2Fwww.52north.org%2Ftest%2Fprocedure%2F7"/>
+            <Resource value="procedures/http%3A%2F%2Fwww.52north.org%2Ftest%2Fprocedure%2F8"/>
+<!--             <Resource value="procedures/http%3A%2F%2Fwww.52north.org%2Ftest%2Fprocedure%2Fdeveloper"/> -->
+            <Resource value="observedProperties/*"/>
+            <Resource value="featuresOfInterest/*"/>
+            <Resource value="allowedOperations/GetCapabilities"/>
+            <Resource value="allowedOperations/GetResult"/>
+            <Resource value="allowedOperations/GetObservation"/>
+            <Resource value="allowedOperations/GetFeatureOfInterest"/>
+            <Resource value="allowedOperations/GetFeatureOfInterestTime"/>
+            <Resource value="allowedOperations/DescribeSensor"/>
+            <Resource value="allowedOperations/DescribeFeatureType"/>
+            <Action value="operations/GetCapabilities"/>
+            <Action value="operations/GetResult"/>
+            <Action value="operations/GetObservation"/>
+            <Action value="operations/GetFeatureOfInterest"/>
+            <Action value="operations/GetFeatureOfInterestTime"/>
+            <Action value="operations/DescribeSensor"/>
+            <Action value="operations/DescribeFeatureType"/>
+            <Subject value="guest" />
+        </Permission>
+<!--
+        <Permission name="bob_ATMOSPHERIC_PRESSURE_and_TEMPERATURE">
+            <Resource value="/offerings/ATMOSPHERIC_TEMPERATURE"/>
+            <Resource value="/offerings/ATMOSPHERIC_PRESSURE"/>
+            <Resource value="/procedures/urn:ogc:object:feature:OSIRIS-HWS:3d3b239f-7696-4864-9d07-15447eae2b93"/>
+            <Resource value="urn:ogc:object:feature:OSIRIS-HWS:efeb807b-bd24-4128-a920-f6729bcdd111"/>
+            <Resource value="/observedProperties/urn:ogc:def:property:OGC::Temperature"/>
+            <Resource value="/observedProperties/urn:ogc:def:property:OGC::BarometricPressure"/>
+            <Resource value="/featuresOfInterest/urn:ogc:object:feature:OSIRIS-HWS:3d3b239f-7696-4864-9d07-15447eae2b93"/>
+            <Resource value="/featuresOfInterest/urn:ogc:object:feature:OSIRIS-HWS:efeb807b-bd24-4128-a920-f6729bcdd111"/>
+            <Resource value="/allowedOperations/*"/>
+            <Action value="/operations/GetCapabilities"/>
+            <Action value="/operations/DescribeSensor"/>
+            <Action value="/operations/GetFeatureOfInterest"/>
+            <Action value="/operations/GetObservation"/>
+            <Subject value="bob"/>
+        </Permission>
+        <Permission name="guest_same_as_bob_but_limited_period">
+            <Resource value="/offerings/ATMOSPHERIC_TEMPERATURE"/>
+            <Resource value="/offerings/ATMOSPHERIC_PRESSURE"/>
+            <Resource value="/procedures/urn:ogc:object:feature:OSIRIS-HWS:3d3b239f-7696-4864-9d07-15447eae2b93"/>
+            <Resource value="urn:ogc:object:feature:OSIRIS-HWS:efeb807b-bd24-4128-a920-f6729bcdd111"/>
+            <Resource value="/observedProperties/urn:ogc:def:property:OGC::Temperature"/>
+            <Resource value="/observedProperties/urn:ogc:def:property:OGC::BarometricPressure"/>
+            <Resource value="/featuresOfInterest/urn:ogc:object:feature:OSIRIS-HWS:3d3b239f-7696-4864-9d07-15447eae2b93"/>
+            <Resource value="/featuresOfInterest/urn:ogc:object:feature:OSIRIS-HWS:efeb807b-bd24-4128-a920-f6729bcdd111"/>
+            <Resource value="/allowedOperations/*"/>
+            <Action value="/operations/GetCapabilities"/>
+            <Action value="/operations/DescribeSensor"/>
+            <Action value="/operations/GetFeatureOfInterest"/>
+            <Action value="/operations/GetObservation"/>
+            <Subject value="guest"/>
+-->
+<!--
+            <Obligation name="obligation:sos:extent:boundingbox">
+                <Attribute name="srs">urn:ogc:def:crs:EPSG:31467</Attribute>
+                <Attribute name="lowerCorner">5707809.0 3329136.0</Attribute>
+                <Attribute name="upperCorner">5786799.0 3540176.0</Attribute>
+            </Obligation>
+ -->
+<!--
+            <Obligation name="obligation:sos:time">
+                <Attribute name="beginTime">2010-11-01T00:00:00+01:00</Attribute>
+                <Attribute name="endTime">2010-11-30T00:00:00+01:00</Attribute>
+            </Obligation>
+        </Permission>
+-->
+    </PermissionSet>
+</SimplePermissions>

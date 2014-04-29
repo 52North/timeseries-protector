@@ -1,0 +1,13 @@
+target
+.classpath
+.project
+.externalToolBuilders
+.settings
+META-INF
+output.txt
+restful-timeseries-webapp/src/main/tmp/
+sensorwebclient-webapp/nb-configuration.xml
+webapp/src/main/tmp/
+nb-configuration.xml
+nbactions.xml
+

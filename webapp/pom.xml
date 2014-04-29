@@ -1,0 +1,222 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <parent>
+        <groupId>org.n52.sensorweb.series</groupId>
+        <artifactId>timeseries-protector</artifactId>
+        <version>0.0.1-SNAPSHOT</version>
+    </parent>
+    <artifactId>timeseries-protector-webapp</artifactId>
+    <packaging>war</packaging>
+    <name>52°North TP - Webapp</name>
+    <url>http://52north.org/communities/sensorweb/</url>
+
+    <properties>
+        <webappDirectory>${project.build.directory}/${project.artifactId}</webappDirectory>
+    </properties>
+
+    <dependencies>
+        <dependency>
+            <groupId>${project.groupId}</groupId>
+            <artifactId>controller</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.n52.sensorweb</groupId>
+            <artifactId>timeseries-web</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.n52.sensorweb</groupId>
+            <artifactId>restful-timeseries-webapp</artifactId>
+            <type>war</type>
+        </dependency>
+        <dependency>
+            <groupId>org.n52.sensorweb</groupId>
+            <artifactId>sensorwebclient-api</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.n52.sensorweb</groupId>
+            <artifactId>sensorwebclient-sos-server</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.n52.sensorweb</groupId>
+            <artifactId>sensorwebclient-sos-shared</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.n52.sensorweb</groupId>
+            <artifactId>sensorwebclient-hydro</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.n52.sensorweb</groupId>
+            <artifactId>sensorwebclient-ags</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.n52.sensorweb</groupId>
+            <artifactId>sensorwebclient-sos-rest</artifactId>
+        </dependency>
+
+
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-context</artifactId>
+            <scope>runtime</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-webmvc</artifactId>
+            <scope>runtime</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-oxm</artifactId>
+            <scope>runtime</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.security</groupId>
+            <artifactId>spring-security-core</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.security</groupId>
+            <artifactId>spring-security-config</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.security</groupId>
+            <artifactId>spring-security-taglibs</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.security</groupId>
+            <artifactId>spring-security-web</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>ch.qos.logback</groupId>
+            <artifactId>logback-classic</artifactId>
+            <version>${logback.version}</version>
+            <scope>runtime</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>com.thetransactioncompany</groupId>
+            <artifactId>cors-filter</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>javax.servlet</groupId>
+				<artifactId>javax.servlet-api</artifactId>
+            <type>jar</type>
+        </dependency>
+        <dependency>
+            <groupId>javax.servlet.jsp</groupId>
+            <artifactId>jsp-api</artifactId>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>jstl</groupId>
+            <artifactId>jstl</artifactId>
+            <scope>provided</scope>
+        </dependency>
+    </dependencies>
+
+    <build>
+        <outputDirectory>${webappDirectory}/WEB-INF/classes</outputDirectory>
+        <finalName>${project.artifactId}</finalName>
+        <resources>
+            <resource>
+                <!-- copy and filter -->
+                <directory>src/main/resources</directory>
+                <includes>
+                    <include>logback.xml</include>
+                </includes>
+                <filtering>true</filtering>
+            </resource>
+            <resource>
+                <!-- copy all other resources without filtering -->
+                <directory>src/main/resources</directory>
+                <excludes>
+                    <exclude>logback.xml</exclude>
+                </excludes>
+            </resource>
+        </resources>
+
+        <plugins>
+            <plugin>
+                <groupId>com.mycila</groupId>
+                <artifactId>license-maven-plugin</artifactId>
+                <configuration>
+                    <aggregate>true</aggregate>
+                    <header>../misc/52N_license-header.txt</header>
+                </configuration>
+            </plugin>
+
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-war-plugin</artifactId>
+                <version>2.3</version>
+                <configuration>
+                    <webappDirectory>${webappDirectory}</webappDirectory>
+                    <webResources>
+                        <resource>
+                            <directory>src/main/webapp</directory>
+                            <filtering>true</filtering>
+                            <excludes>
+                                <!-- exclude files from filtering -->
+                                <exclude>img/*</exclude>
+                                <exclude>cache/*</exclude>
+                            </excludes>
+                        </resource>
+                    </webResources>
+                    <warName>${project.artifactId}-${project.version}</warName>
+
+                    <overlays>
+                        <overlay>
+                            <groupId>org.n52.sensorweb</groupId>
+                            <artifactId>restful-timeseries-webapp</artifactId>
+                            <excludes>
+                                <exclude>cache/**</exclude>
+                                <exclude>api-doc/**</exclude>
+                                <exclude>version-info.txt</exclude>
+                                <exclude>ds/sos-instances.data.xml</exclude>
+                                <exclude>WEB-INF/classes/generalizer.properties</exclude>
+                                <exclude>WEB-INF/classes/timeseries-api_v1_*.xml</exclude>
+                                <exclude>WEB-INF/classes/dispatcher-control.xml</exclude>
+                                <exclude>WEB-INF/classes/spring-*-config.xml</exclude>
+                                <exclude>WEB-INF/classes/logback-test.xml</exclude>
+                                <exclude>WEB-INF/classes/*.json</exclude>
+                                <exclude>META-INF/**</exclude>
+                            </excludes>
+                        </overlay>
+                    </overlays>
+                </configuration>
+            </plugin>
+
+            <plugin>
+                <groupId>org.mortbay.jetty</groupId>
+                <artifactId>maven-jetty-plugin</artifactId>
+                <version>6.1.14</version>
+                <configuration>
+                    <scanIntervalSeconds>5</scanIntervalSeconds>
+                </configuration>
+            </plugin>
+
+        </plugins>
+    </build>
+
+    <profiles>
+        <profile>
+            <id>env-dev</id>
+            <properties>
+                <env>dev</env>
+                <!-- externalize build parameters for productive environment -->
+                <local.configfile>${user.home}/timeseries-protector-build-${env}.properties</local.configfile>
+            </properties>
+            <build>
+                <filters>
+                    <filter>${local.configfile}</filter>
+                </filters>
+            </build>
+        </profile>
+
+    </profiles>
+</project>
+

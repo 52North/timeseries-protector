@@ -1,0 +1,5 @@
+General Infos:
+==============
+project = ${artifactId}
+version = ${version}
+builddate = ${builddate}
