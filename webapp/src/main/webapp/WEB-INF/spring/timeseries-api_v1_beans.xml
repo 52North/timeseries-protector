@@ -20,12 +20,14 @@
 	<bean id="phenomenonParameterService" class="org.n52.series.api.proxy.v1.srv.PhenomenonOutputAdapter" />
 	<bean id="metadataService" class="org.n52.series.api.proxy.v1.srv.MetadataAdapter" />
 
-	<bean id="timeSeriesDataService" class="org.n52.server.service.TimeSeriesDataServiceImpl" />
-	<bean id="getDataService" class="org.n52.series.api.proxy.v1.srv.GetDataService">
-		<property name="timeSeriesDataService" ref="timeSeriesDataService" />
-	</bean>
-	<bean id="timeseriesService" class="org.n52.series.api.proxy.v1.srv.TimeseriesOutputAdapter">
-		<property name="dataService" ref="getDataService" />
-	</bean>
+    <bean id="timeseriesService" class="org.n52.series.api.proxy.v1.srv.TimeseriesOutputAdapter">
+        <property name="dataService">
+            <bean class="org.n52.series.api.proxy.v1.srv.GetDataService">
+                <property name="timeSeriesDataService">
+                    <bean class="org.n52.server.service.TimeSeriesDataServiceImpl" />
+                </property>
+            </bean>
+        </property>
+    </bean>
 
 </beans>

@@ -14,13 +14,30 @@
 
 	<mvc:annotation-driven />
 
+    <import resource="timeseries-api_v1_beans.xml"/>
+
+    <bean id="timeseriesService" class="org.n52.sensorweb.series.policy.editor.ctrl.TimeseriesService">
+        <property name="phenomenonaService" ref="phenomenonParameterService" />
+        <property name="procedureService" ref="procedureParameterService" />
+        <property name="categoryService" ref="categoryParameterService" />
+        <property name="offeringService" ref="offeringParameterService" />
+        <property name="timeseriesDataService" ref="timeseriesService" />
+        <property name="servicesService" ref="serviceParameterService" />
+        <property name="featureService" ref="featureParameterService" />
+        <property name="stationService" ref="stationParameterService" />
+        <property name="contingMetadataService" ref="metadataService" />
+        <property name="timeseriesService" ref="timeseriesService" />
+        <property name="searchService" ref="searchService" />
+    </bean>
+
     <!-- #######################
-           binding controllers
+           editor controller
          ####################### -->
 
     <bean class="org.n52.sensorweb.series.policy.editor.ctrl.SimplePermissionEditorController">
         <property name="simplePermissionService" ref="simplePermissionService" />
         <property name="enforcementPointService" ref="enforcementPointService" />
+        <property name="parameterServiceProvider" ref="timeseriesService" />
         <property name="userService" ref="userService" />
     </bean>
 
