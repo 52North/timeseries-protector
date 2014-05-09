@@ -27,12 +27,10 @@
  */
 package org.n52.sensorweb.series.policy.editor.ctrl;
 
-import java.util.HashMap;
-import java.util.Map;
-import org.n52.io.web.BadRequestException;
-import org.n52.io.web.BaseController;
-import org.n52.io.web.InternalServerException;
-import org.n52.io.web.ResourceNotFoundException;
+import org.n52.web.BadRequestException;
+import org.n52.web.BaseController;
+import org.n52.web.InternalServerException;
+import org.n52.web.ResourceNotFoundException;
 import org.n52.security.service.pdp.simplepermission.PermissionSet;
 import org.n52.sensorweb.series.policy.api.PermissionManagementException;
 import org.n52.sensorweb.series.policy.editor.srv.EnforcementPointService;
