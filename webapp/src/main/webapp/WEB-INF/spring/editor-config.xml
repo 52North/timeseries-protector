@@ -16,7 +16,7 @@
 
     <import resource="timeseries-api_v1_beans.xml"/>
 
-    <bean id="timeseriesService" class="org.n52.sensorweb.series.policy.editor.ctrl.TimeseriesService">
+    <bean id="timeseriesServiceProvider" class="org.n52.sensorweb.series.policy.editor.ctrl.TimeseriesService">
         <property name="phenomenonaService" ref="phenomenonParameterService" />
         <property name="procedureService" ref="procedureParameterService" />
         <property name="categoryService" ref="categoryParameterService" />
@@ -37,7 +37,7 @@
     <bean class="org.n52.sensorweb.series.policy.editor.ctrl.SimplePermissionEditorController">
         <property name="simplePermissionService" ref="simplePermissionService" />
         <property name="enforcementPointService" ref="enforcementPointService" />
-        <property name="parameterServiceProvider" ref="timeseriesService" />
+        <property name="parameterServiceProvider" ref="timeseriesServiceProvider" />
         <property name="userService" ref="userService" />
     </bean>
 
