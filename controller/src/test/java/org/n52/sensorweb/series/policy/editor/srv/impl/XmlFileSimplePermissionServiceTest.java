@@ -100,7 +100,7 @@ public class XmlFileSimplePermissionServiceTest {
 
         List<PermissionSet> testSets = testdata.getPermissionSets();
         PermissionSet permissionSet = testSets.get(0);
-        service.createPermissionSet(permissionSet);
+        service.savePermissionSet(permissionSet);
 
         assertThat(service.getPermissionSets().size(), is(1));
         PermissionSet set = service.getPermissionSets().get(0);

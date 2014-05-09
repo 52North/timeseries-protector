@@ -31,14 +31,18 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.net.URL;
+import java.util.Iterator;
 import java.util.List;
 import javax.servlet.ServletContext;
+import org.n52.io.web.BadRequestException;
+import org.n52.io.web.ResourceNotFoundException;
 import org.n52.security.service.pdp.simplepermission.Permission;
 import org.n52.security.service.pdp.simplepermission.PermissionSet;
 import org.n52.security.service.pdp.simplepermission.SimplePermissionFileProvider;
 import org.n52.sensorweb.series.policy.api.ConfigurationError;
 import org.n52.sensorweb.series.policy.api.PermissionManagementException;
 import org.n52.sensorweb.series.policy.editor.srv.SimplePermissionService;
+import org.n52.sensorweb.series.policy.editor.srv.SimplePermissionValidationService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.web.context.ServletContextAware;
@@ -51,16 +55,22 @@ public class XmlFileSimplePermissionService implements SimplePermissionService, 
 
     private static final Logger LOGGER = LoggerFactory.getLogger(XmlFileSimplePermissionService.class);
 
-    private XmlFileSimplePermissionWriter writer;
+    private SimplePermissionValidationService simplePermissionValidationService;
 
-	private SimplePermissionFileProvider provider;
+    private String permissionFile = "/WEB-INF/classes/permissions.xml";
 
-    private String permissionFile = "/permissions.xml";
+    private final XmlFileSimplePermissionWriter writer;
+
+	private final SimplePermissionFileProvider provider;
+
+    public XmlFileSimplePermissionService() {
+        simplePermissionValidationService = SimplePermissionValidationService.Factory.createNoValidation();
+        writer = new XmlFileSimplePermissionWriter();
+        provider = new SimplePermissionFileProvider();
+    }
 
     public void init() throws ConfigurationError {
         try {
-            writer = new XmlFileSimplePermissionWriter();
-            provider = new SimplePermissionFileProvider();
             provider.setPath(getCheckedConfiguredFile());
             reloadPermissionFile();
         } catch (IOException e) {
@@ -84,27 +94,94 @@ public class XmlFileSimplePermissionService implements SimplePermissionService, 
         provider.init();
     }
 
+    @Override
     public List<PermissionSet> getPermissionSets() {
         return provider.getPermissionSets();
     }
 
-    public void createPermissionSet(PermissionSet permissionSet) throws PermissionManagementException {
+    @Override
+    public PermissionSet getPermissionSet(String name) {
+        for (PermissionSet permissionSet : getPermissionSets()) {
+            if (permissionSet.getName().equals(name))
+                return permissionSet;
+        }
+        return null;
+    }
+
+    @Override
+    public PermissionSet savePermissionSet(PermissionSet permissionSet) throws PermissionManagementException {
+        simplePermissionValidationService.checkData(permissionSet);
+        if (containsPermissionSet(permissionSet.getName()))
+            deletePermissionSet(permissionSet.getName());
+
         getPermissionSets().add(permissionSet);
+        savePermissionFile();
+        return getPermissionSet(permissionSet.getName());
+    }
+
+    @Override
+    public void deletePermissionSet(String name) throws PermissionManagementException {
+        Iterator<PermissionSet> it = getPermissionSets().iterator();
+        for (boolean found = false; !found && it.hasNext();) {
+            PermissionSet permissionSet = it.next();
+            if (permissionSet.getName().equals(name)) {
+                found = true;
+                it.remove();
+            }
+        }
+    }
+
+    @Override
+    public void addPermission(String permissionSetName, Permission permission) throws PermissionManagementException {
+        PermissionSet permissionSet = getPermissionSet(permissionSetName);
+        if (permissionSet == null)
+            throw new ResourceNotFoundException("PermissionSet with name '" + permissionSetName + "' not found.");
+
+        simplePermissionValidationService.checkData(permission);
+        if ( !containsPermission(permissionSet, permission))
+            throw new BadRequestException("PermissionSet '" + permissionSetName + "' already contains permission with name '" + permission.getName() + "'. Try to edit it.");
+
+        permissionSet.getSubPermissions().add(permission);
         savePermissionFile();
     }
 
-    public void addPermission(Permission permission) throws PermissionManagementException {
+    private boolean containsPermissionSet(String name) {
+        List<PermissionSet> permissionSets = getPermissionSets();
+        for (PermissionSet permissionSet : permissionSets) {
+            if (permissionSet.getName().equals(name))
+                return true;
+        }
+        return false;
+    }
+
+    private boolean containsPermission(PermissionSet permissionSet, Permission permission) {
+        if (permission == null)
+            throw new NullPointerException("Permission is null.");
+
+        List<Permission> subPermissions = permissionSet.getSubPermissions();
+        for (Permission subPermission : subPermissions) {
+            if (subPermission.getName().equals(permission.getName()))
+                return true;
+        }
+        return false;
+    }
+
+    @Override
+    public void editPermission(String permissionSetName, Permission permission) throws PermissionManagementException {
 
     }
 
-    public void editPermission(Permission permission) throws PermissionManagementException {
+    @Override
+    public void deletePermission(String permissionSetName, Permission permission) throws PermissionManagementException {
 
     }
 
-    public void deletePermission(Permission permission) throws PermissionManagementException {
-
-    }
-
+    /**
+     * Sets a path to the file providing available permissions.
+     *
+     * @param permissionFile the path to a permission file.
+     * @see #init() to load the content.
+     */
     public void setPermissionFile(String permissionFile) {
         this.permissionFile = permissionFile;
     }
@@ -124,8 +201,20 @@ public class XmlFileSimplePermissionService implements SimplePermissionService, 
         }
     }
 
+    @Override
     public void setServletContext(ServletContext sc) {
-        permissionFile = sc.getRealPath("/permissions.xml");
+        permissionFile = sc.getRealPath(permissionFile);
     }
+
+    @Override
+    public SimplePermissionValidationService getSimplePermissionValidationService() {
+        return simplePermissionValidationService;
+    }
+
+    @Override
+    public void setSimplePermissionValidationService(SimplePermissionValidationService simplePermissionValidationService) {
+        this.simplePermissionValidationService = simplePermissionValidationService;
+    }
+
 
  }

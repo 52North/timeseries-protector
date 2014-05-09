@@ -25,7 +25,6 @@
  * WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
  * PARTICULAR PURPOSE. See the GNU General Public License for more details.
  */
-
 package org.n52.sensorweb.series.policy.editor.srv;
 
 import java.util.List;
@@ -39,14 +38,40 @@ import org.n52.sensorweb.series.policy.api.PermissionManagementException;
  */
 public interface SimplePermissionService {
 
-	public List<PermissionSet> getPermissionSets();
+    public List<PermissionSet> getPermissionSets();
 
-    public void createPermissionSet(PermissionSet permissionSet) throws PermissionManagementException;
+    /**
+     * Gets the permission set by name.
+     *
+     * @param name the set's name.
+     * @return the permission set or <code>null</code> if not found.
+     */
+    public PermissionSet getPermissionSet(String name);
 
-    public void addPermission(Permission permission) throws PermissionManagementException;
+    /**
+     *
+     * @param permissionSet the permission set to create.
+     * @return the created permission set.
+     * @throws PermissionManagementException if creation failed for internal reasons.
+     */
+    public PermissionSet savePermissionSet(PermissionSet permissionSet) throws PermissionManagementException;
 
-    public void editPermission(Permission permission) throws PermissionManagementException;
+    public void deletePermissionSet(String name) throws PermissionManagementException;
+    /**
+     * Adds a permission to a given permission set.
+     *
+     * @param permissionSetName the persmissionSet's name to add the permission to.
+     * @param permission the permission to add.
+     * @throws PermissionManagementException if permission management task failed.
+     * @throws NullPointerException if permission is <code>null</code>.
+     */
+    public void addPermission(String permissionSetName, Permission permission) throws PermissionManagementException;
 
-    public void deletePermission(Permission permission) throws PermissionManagementException;
+    public void editPermission(String permissionSetName, Permission permission) throws PermissionManagementException;
 
+    public void deletePermission(String permissionSetName, Permission permission) throws PermissionManagementException;
+
+    public SimplePermissionValidationService getSimplePermissionValidationService();
+
+    public void setSimplePermissionValidationService(SimplePermissionValidationService simplePermissionValidationService);
 }
