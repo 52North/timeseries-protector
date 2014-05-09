@@ -11,12 +11,28 @@
     http://www.springframework.org/schema/context/spring-context-3.1.xsd">
 
     <mvc:annotation-driven />
+    <mvc:resources mapping="/static/**" location="/static/" />
+    <!--<mvc:view-controller path="/" view-name="editor/listPermissions" />-->
 
-    <import resource="api-view-config.xml" />
+    <!--<import resource="api-view-config.xml" />-->
 
-    <bean id="viewResolver" class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+
+    <bean id="viewResolver" class="org.springframework.web.servlet.view.UrlBasedViewResolver">
+        <property name="viewClass" value="org.springframework.web.servlet.view.tiles3.TilesView"/>
+    </bean>
+
+    <bean id="tilesConfigurer" class="org.springframework.web.servlet.view.tiles3.TilesConfigurer">
+        <property name="definitions">
+            <list>
+                <value>/WEB-INF/defs/general.xml</value>
+            </list>
+        </property>
+    </bean>
+
+
+<!--    <bean id="viewResolver" class="org.springframework.web.servlet.view.InternalResourceViewResolver">
         <property name="prefix" value="/WEB-INF/views/"></property>
         <property name="suffix" value=".jsp"></property>
-    </bean>
+    </bean>-->
 
 </beans>

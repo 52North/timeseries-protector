@@ -52,7 +52,7 @@
 	</servlet>
 	<servlet-mapping>
 		<servlet-name>editor</servlet-name>
-		<url-pattern>/policies/*</url-pattern>
+		<url-pattern>/editor/*</url-pattern>
 	</servlet-mapping>
 
 	<!-- define Timeseries API Web dispatcher -->
@@ -62,7 +62,7 @@
 		<load-on-startup>1</load-on-startup>
 		<init-param>
 			<param-name>contextConfigLocation</param-name>
-			<param-value>/WEB-INF/spring/api-config, /WEB-INF/spring/api-view-config.xml</param-value>
+			<param-value>/WEB-INF/spring/api-config.xml, /WEB-INF/spring/api-view-config.xml</param-value>
 		</init-param>
 	</servlet>
 	<servlet-mapping>
