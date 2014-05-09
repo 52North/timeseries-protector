@@ -6,14 +6,14 @@
         <artifactId>timeseries-protector</artifactId>
         <version>0.0.1-SNAPSHOT</version>
     </parent>
-    <artifactId>controller</artifactId>
+    <artifactId>protector-controller</artifactId>
     <name>52°North TP - Ctrl</name>
     <packaging>jar</packaging>
 
     <dependencies>
         <dependency>
             <groupId>org.n52.sensorweb.series</groupId>
-            <artifactId>common</artifactId>
+            <artifactId>protector-common</artifactId>
         </dependency>
 
         <dependency>
@@ -40,7 +40,7 @@
 
         <dependency>
             <groupId>javax.servlet</groupId>
-            <artifactId>javax.servlet-api</artifactId>
+            <artifactId>servlet-api</artifactId>
         </dependency>
     </dependencies>
 </project>

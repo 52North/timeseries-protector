@@ -7,7 +7,7 @@
         <artifactId>timeseries-protector</artifactId>
         <version>0.0.1-SNAPSHOT</version>
     </parent>
-    <artifactId>timeseries-protector-webapp</artifactId>
+    <artifactId>protector-webapp</artifactId>
     <packaging>war</packaging>
     <name>52°North TP - Webapp</name>
     <url>http://52north.org/communities/sensorweb/</url>
@@ -19,7 +19,7 @@
     <dependencies>
         <dependency>
             <groupId>${project.groupId}</groupId>
-            <artifactId>controller</artifactId>
+            <artifactId>protector-controller</artifactId>
         </dependency>
 
         <dependency>
@@ -103,7 +103,7 @@
         </dependency>
         <dependency>
             <groupId>javax.servlet</groupId>
-				<artifactId>javax.servlet-api</artifactId>
+            <artifactId>servlet-api</artifactId>
             <type>jar</type>
         </dependency>
         <dependency>
@@ -114,7 +114,14 @@
         <dependency>
             <groupId>jstl</groupId>
             <artifactId>jstl</artifactId>
-            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.tiles</groupId>
+            <artifactId>tiles-core</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.tiles</groupId>
+            <artifactId>tiles-jsp</artifactId>
         </dependency>
     </dependencies>
 
@@ -181,7 +188,7 @@
                                 <exclude>WEB-INF/classes/timeseries-api_v1_*.xml</exclude>
                                 <exclude>WEB-INF/classes/dispatcher-control.xml</exclude>
                                 <exclude>WEB-INF/classes/spring-*-config.xml</exclude>
-                                <exclude>WEB-INF/classes/logback-test.xml</exclude>
+                                <exclude>WEB-INF/classes/logback*.xml</exclude>
                                 <exclude>WEB-INF/classes/*.json</exclude>
                                 <exclude>META-INF/**</exclude>
                             </excludes>

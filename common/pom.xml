@@ -6,7 +6,7 @@
         <artifactId>timeseries-protector</artifactId>
         <version>0.0.1-SNAPSHOT</version>
     </parent>
-    <artifactId>common</artifactId>
+    <artifactId>protector-common</artifactId>
     <name>52°North TP - Common</name>
     <packaging>jar</packaging>
     <dependencies>
