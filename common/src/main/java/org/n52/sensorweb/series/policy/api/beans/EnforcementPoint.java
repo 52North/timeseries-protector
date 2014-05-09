@@ -31,7 +31,7 @@
  * and open the template in the editor.
  */
 
-package org.n52.sensorweb.series.policy.api;
+package org.n52.sensorweb.series.policy.api.beans;
 
 /**
  *
@@ -39,9 +39,9 @@ package org.n52.sensorweb.series.policy.api;
  */
 public class EnforcementPoint {
 
-    private String type;
+    private String type = "SOS EP";
 
-    private String url;
+    private String url = "http://my.default.url";
 
     public String getType() {
         return type;
@@ -59,6 +59,6 @@ public class EnforcementPoint {
         this.url = url;
     }
 
-    
+
 
 }
