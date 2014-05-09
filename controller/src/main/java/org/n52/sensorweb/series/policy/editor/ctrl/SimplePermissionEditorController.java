@@ -27,6 +27,7 @@
  */
 package org.n52.sensorweb.series.policy.editor.ctrl;
 
+import org.n52.io.IoParameters;
 import org.n52.web.BadRequestException;
 import org.n52.web.BaseController;
 import org.n52.web.InternalServerException;
@@ -53,6 +54,8 @@ public class SimplePermissionEditorController extends BaseController {
     private SimplePermissionService simplePermissionService;
 
     private EnforcementPointService enforcementPointService;
+
+    private TimeseriesService parameterServiceProvider;
 
     private UserService userService;
 
@@ -96,6 +99,13 @@ public class SimplePermissionEditorController extends BaseController {
         return mav.addObject(result);
     }
 
+    @RequestMapping(value = "/timeseries", method = RequestMethod.GET, produces = "application/json")
+    public ModelAndView listTimeseries() {
+        ModelAndView mav = new ModelAndView();
+        IoParameters query = IoParameters.createDefaults();
+        return mav.addObject(parameterServiceProvider.getTimeseriesService().getCondensedParameters(query));
+    }
+
     public SimplePermissionService getSimplePermissionService() {
         return simplePermissionService;
     }
@@ -120,6 +130,13 @@ public class SimplePermissionEditorController extends BaseController {
         this.userService = userService;
     }
 
+    public TimeseriesService getParameterServiceProvider() {
+        return parameterServiceProvider;
+    }
+
+    public void setParameterServiceProvider(TimeseriesService parameterServiceProvider) {
+        this.parameterServiceProvider = parameterServiceProvider;
+    }
 
 
 }
