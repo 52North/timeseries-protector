@@ -27,16 +27,22 @@
  */
 package org.n52.sensorweb.series.policy.editor.ctrl;
 
-import java.util.Collection;
 import java.util.HashMap;
+import java.util.Map;
+import org.n52.io.web.BadRequestException;
+import org.n52.io.web.BaseController;
+import org.n52.io.web.InternalServerException;
+import org.n52.io.web.ResourceNotFoundException;
+import org.n52.security.service.pdp.simplepermission.PermissionSet;
+import org.n52.sensorweb.series.policy.api.PermissionManagementException;
+import org.n52.sensorweb.series.policy.editor.srv.EnforcementPointService;
 import org.n52.sensorweb.series.policy.editor.srv.SimplePermissionService;
-import org.n52.server.mgmt.ConfigurationContext;
-import org.n52.shared.serializable.pojos.sos.SOSMetadata;
+import org.n52.sensorweb.series.policy.editor.srv.UserService;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
 /**
@@ -44,38 +50,52 @@ import org.springframework.web.servlet.ModelAndView;
  * @author Henning Bredel <h.bredel@52north.org>
  */
 @Controller
-public class SimplePermissionController {
+public class SimplePermissionEditorController extends BaseController {
 
     private SimplePermissionService simplePermissionService;
 
+    private EnforcementPointService enforcementPointService;
+
+    private UserService userService;
+
     @RequestMapping(value = "/", method = RequestMethod.GET)
-    public ModelAndView startEditor() {
+    public ModelAndView listPermissions() {
+        ModelAndView mav = new ModelAndView("listPermissions");
+        return mav.addObject("permissionSets", simplePermissionService.getPermissionSets());
+    }
 
-        HashMap<String, Object> services = new HashMap<String, Object>();
-        for (SOSMetadata metadata : ConfigurationContext.getSOSMetadatas()) {
-            services.put(metadata.getTitle(), metadata);
+    @RequestMapping(value = "/new", method = RequestMethod.GET)
+    public ModelAndView createPermissions() {
+        ModelAndView mav = new ModelAndView("createPermission");
+        mav.addObject("users", userService.getConfiguredUsers());
+        mav.addObject("enforcementPoints", enforcementPointService.getEnforcementPoints());
+        return mav;
+    }
+
+    //@RequestMapping(value = "/{permissionSetName}", method = RequestMethod.GET)
+    public ModelAndView editPermission(@PathVariable("permissionSetName") String permissionSetName) {
+        ModelAndView mav = new ModelAndView("editor/editPermission");
+        PermissionSet permissionSet = simplePermissionService.getPermissionSet(permissionSetName);
+        if (permissionSet == null) {
+            throw new ResourceNotFoundException("No permissionSet with name '" + permissionSetName + "'.");
         }
-
-        HashMap<String, Object> users = new HashMap<String, Object>();
-        users.put("user", "user");
-
-        HashMap<String, Object> content = new HashMap<String, Object>();
-        content.put("services", services);
-        content.put("users", users);
-
-        return new ModelAndView("editor/newPolicy", content);
+        return mav.addObject(permissionSet);
     }
 
-    @RequestMapping(value = "/create", method = RequestMethod.PUT)
-    public ModelAndView create(@RequestParam String serviceId, @RequestParam String user) {
-
-        return null;
-    }
-
-    @RequestMapping(value = "/edit", method = RequestMethod.GET)
-    public ModelAndView editPolicy() {
-
-        return new ModelAndView("editor/editPolicy");
+    @RequestMapping(value = "/save", method = RequestMethod.POST)
+    public ModelAndView createPermission(@RequestBody(required = true) PermissionSet permissionSet) {
+        PermissionSet result = simplePermissionService.getPermissionSet(permissionSet.getName());
+        if (result != null) {
+            // TODO already exists ... let GUI ask to edit/override
+            throw new BadRequestException("Overriding resources not supported yet.");
+        }
+        try {
+            result = simplePermissionService.savePermissionSet(permissionSet);
+        } catch (PermissionManagementException e) {
+            throw new InternalServerException("Could not create resource.", e);
+        }
+        ModelAndView mav = new ModelAndView();
+        return mav.addObject(result);
     }
 
     public SimplePermissionService getSimplePermissionService() {
@@ -85,5 +105,23 @@ public class SimplePermissionController {
     public void setSimplePermissionService(SimplePermissionService simplePermissionService) {
         this.simplePermissionService = simplePermissionService;
     }
+
+    public EnforcementPointService getEnforcementPointService() {
+        return enforcementPointService;
+    }
+
+    public void setEnforcementPointService(EnforcementPointService enforcementPointService) {
+        this.enforcementPointService = enforcementPointService;
+    }
+
+    public UserService getUserService() {
+        return userService;
+    }
+
+    public void setUserService(UserService userService) {
+        this.userService = userService;
+    }
+
+
 
 }
