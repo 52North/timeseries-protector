@@ -34,7 +34,7 @@
 package org.n52.sensorweb.series.policy.editor.srv;
 
 import java.util.List;
-import org.n52.sensorweb.series.policy.api.EnforcementPoint;
+import org.n52.sensorweb.series.policy.api.beans.EnforcementPoint;
 
 /**
  *
