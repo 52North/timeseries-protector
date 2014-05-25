@@ -391,8 +391,6 @@
                     <compilerArgument>-Xlint:all</compilerArgument>
                     <showWarnings>true</showWarnings>
                     <showDeprecation>true</showDeprecation>
-                    <executable>C:\Program Files\Java\jdk1.7.0_55\bin\javac.exe</executable>
-                    <fork>true</fork>
                 </configuration>
             </plugin>
 

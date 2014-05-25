@@ -1,10 +1,10 @@
-<%@ page language="java" contentType="text/html; charset=ISO-8859-1"
-    pageEncoding="ISO-8859-1"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 
     <h2> Getting to know the timeseries API</h2>
     
-    <form enctype="application/x-www-form-urlencoded" id="viewData" class="form-horizontal">
+    <form id="viewData" class="form-horizontal">
     	
      <div class="control-group">
         <label class="control-label" form="timeseries">Service Parameters</label>
