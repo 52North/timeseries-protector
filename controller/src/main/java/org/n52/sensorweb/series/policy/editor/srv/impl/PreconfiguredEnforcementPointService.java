@@ -29,7 +29,9 @@
 package org.n52.sensorweb.series.policy.editor.srv.impl;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import org.n52.sensorweb.series.policy.api.beans.EnforcementPoint;
 import org.n52.sensorweb.series.policy.editor.srv.EnforcementPointService;
 
@@ -39,6 +41,8 @@ import org.n52.sensorweb.series.policy.editor.srv.EnforcementPointService;
  */
 public class PreconfiguredEnforcementPointService implements EnforcementPointService {
 
+    Map<String, String> epServices = new HashMap<String, String>();
+
     @Override
     public List<EnforcementPoint> getEnforcementPoints() {
         List<EnforcementPoint> eps = new ArrayList<>();
@@ -47,6 +51,14 @@ public class PreconfiguredEnforcementPointService implements EnforcementPointSer
 //        eps.add(new EnforcementPoint());
 
         return eps;
+    }
+
+    public Map<String, String> getEpServices() {
+        return epServices;
+    }
+
+    public void setEpServices(Map<String, String> epServices) {
+        this.epServices = epServices;
     }
 
 }
