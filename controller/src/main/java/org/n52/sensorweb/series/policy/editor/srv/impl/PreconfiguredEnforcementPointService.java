@@ -48,7 +48,7 @@ public class PreconfiguredEnforcementPointService implements EnforcementPointSer
         List<EnforcementPoint> eps = new ArrayList<>();
 
         // TODO add enforcement points
-//        eps.add(new EnforcementPoint());
+        eps.add(new EnforcementPoint());
 
         return eps;
     }

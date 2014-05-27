@@ -83,8 +83,9 @@ public class SimplePermissionEditorController extends BaseController {
         return mav.addObject(permissionSet);
     }
 
-    @RequestMapping(value = "/save", method = RequestMethod.POST)
+    @RequestMapping(value = "/save", method = RequestMethod.POST,headers = {"application/x-www-form-urlencoded"})
     public ModelAndView createPermission(@RequestBody(required = true) PermissionSet permissionSet) {
+        ModelAndView mav = new ModelAndView("resultView");
         PermissionSet result = simplePermissionService.getPermissionSet(permissionSet.getName());
         if (result != null) {
             // TODO already exists ... let GUI ask to edit/override
@@ -95,15 +96,15 @@ public class SimplePermissionEditorController extends BaseController {
         } catch (PermissionManagementException e) {
             throw new InternalServerException("Could not create resource.", e);
         }
-        ModelAndView mav = new ModelAndView();
+       
         return mav.addObject(result);
     }
 
     @RequestMapping(value = "/timeseries", method = RequestMethod.GET, produces = "application/json")
     public ModelAndView listTimeseries() {
-        ModelAndView mav = new ModelAndView();
+        ModelAndView mav = new ModelAndView("timeseries");
         IoParameters query = IoParameters.createDefaults();
-        return mav.addObject(parameterServiceProvider.getTimeseriesService().getCondensedParameters(query));
+        return mav.addObject("parameterProvider",parameterServiceProvider.getTimeseriesService().getCondensedParameters(query));
     }
 
     public SimplePermissionService getSimplePermissionService() {
