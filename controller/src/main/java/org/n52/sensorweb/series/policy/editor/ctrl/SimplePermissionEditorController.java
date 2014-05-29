@@ -83,9 +83,9 @@ public class SimplePermissionEditorController extends BaseController {
         return mav.addObject(permissionSet);
     }
 
-    @RequestMapping(value = "/save", method = RequestMethod.POST,headers = {"application/x-www-form-urlencoded"})
+    @RequestMapping(value = "/save", method = RequestMethod.POST)
     public ModelAndView createPermission(@RequestBody(required = true) PermissionSet permissionSet) {
-        ModelAndView mav = new ModelAndView("resultView");
+        System.out.println("I got here :)");
         PermissionSet result = simplePermissionService.getPermissionSet(permissionSet.getName());
         if (result != null) {
             // TODO already exists ... let GUI ask to edit/override
@@ -96,7 +96,7 @@ public class SimplePermissionEditorController extends BaseController {
         } catch (PermissionManagementException e) {
             throw new InternalServerException("Could not create resource.", e);
         }
-       
+        ModelAndView mav = new ModelAndView("resultView");
         return mav.addObject(result);
     }
 
