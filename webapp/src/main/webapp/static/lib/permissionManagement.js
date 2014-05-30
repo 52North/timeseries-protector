@@ -1,7 +1,7 @@
 function fetchData ()
 {
 	$.ajax({
-  	  url: window.location.href+"/new",
+  	  url: window.location.href+"new",
   	  type: "GET",
 	  success:function(response)
 	  {
@@ -16,6 +16,7 @@ function fetchData ()
       //alert( "complete" );
     });
 }
+
 $(document).ready(function() {
 // Attach a click handler to the save button for saving the permission set
  $( "#save" ).click(function( event ) {

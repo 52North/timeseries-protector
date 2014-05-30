@@ -60,13 +60,16 @@ public class SimplePermissionEditorController extends BaseController {
     private UserService userService;
 
     @RequestMapping(value = "/", method = RequestMethod.GET)
-    public ModelAndView listPermissions() {
+    public ModelAndView listPermissions() 
+    {
         ModelAndView mav = new ModelAndView("listPermissions");
-        return mav.addObject("permissionSets", simplePermissionService.getPermissionSets());
+        mav.addObject("permissionSets", simplePermissionService.getPermissionSets());
+        return mav;
     }
 
     @RequestMapping(value = "/new", method = RequestMethod.GET)
-    public ModelAndView createPermissions() {
+    public ModelAndView createPermissions() 
+    {
         ModelAndView mav = new ModelAndView("createPermission");
         mav.addObject("users", userService.getConfiguredUsers());
         mav.addObject("enforcementPoints", enforcementPointService.getEnforcementPoints());
@@ -85,7 +88,7 @@ public class SimplePermissionEditorController extends BaseController {
 
     @RequestMapping(value = "/save", method = RequestMethod.POST)
     public ModelAndView createPermission(@RequestBody(required = true) PermissionSet permissionSet) {
-        System.out.println("I got here :)");
+        
         PermissionSet result = simplePermissionService.getPermissionSet(permissionSet.getName());
         if (result != null) {
             // TODO already exists ... let GUI ask to edit/override

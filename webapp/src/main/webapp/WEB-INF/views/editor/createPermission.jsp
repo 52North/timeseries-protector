@@ -31,13 +31,14 @@
 			Domain</label>
 		<div class="controls">
 			<select name="subject-domain" id="subject-domain">
-				<option selected="true" value="manager">urn:n52:security:subject:role</option>
+				<c:forEach items="${users}" var="configUsers">
+					<c:forEach items="${configUsers}" var="user">
+						<option selected="true" value="<c:out value="${user}"></c:out>"><c:out
+								value="${user}"></c:out></option>
+					</c:forEach>
+				</c:forEach>
 			</select> <span class="help-block">Select the subject's domain.</span>
 		</div>
 	</div>
 
 </form>
-<script type="text/javascript">
-
-</script>
-
