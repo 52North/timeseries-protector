@@ -3,12 +3,14 @@
 
 <div class="container-fluid">
 	<c:if test="${permissionSets.size()>0}">
-		<div class="container-fluid">
+		<div id="warningContainer" class="container-fluid">
 			<center>
 				<h4>
-					<span style="cursor: pointer;" id="deleteWarning"
+					<span id="deleteWarning"
 						class="label label-warning"></span>
 				</h4>
+				
+				<button style="display:none;" id="undoWarning" type="button" class="btn btn-warning">Undo</button>
 			</center>
 		</div>
 
@@ -38,10 +40,10 @@
 				</tr>
 			</thead>
 			<c:forEach items="${permissionSets}" var="permission">
-				<tr>
+				<tr id="row-${permission.getName()}">
 					<td>
 						<div class="checkbox">
-							<label> <input type="checkbox">
+							<label> <input id="${permission.getName()}" type="checkbox">
 							</label>
 						</div>
 					</td>
@@ -89,7 +91,5 @@
 		</center>
 	</c:if>
 </div>
-<script type="text/javascript"
-	src="<c:url value="/static/lib/permissionManagement.min.js" />">
-	
+<script type="text/javascript" src="<c:url value="/static/lib/permissionManagement.min.js" />">
 </script>
