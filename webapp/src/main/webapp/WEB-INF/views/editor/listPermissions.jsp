@@ -1,30 +1,95 @@
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ taglib uri="http://tiles.apache.org/tags-tiles" prefix="tiles"%>
 
-<h2>Policies</h2>
+<div class="container-fluid">
+	<c:if test="${permissionSets.size()>0}">
+		<div id="warningContainer" class="container-fluid">
+			<center>
+				<h4>
+					<span id="deleteWarning"
+						class="label label-warning"></span>
+				</h4>
+				
+				<button style="display:none;" id="undoWarning" type="button" class="btn btn-warning">Undo</button>
+			</center>
+		</div>
 
-<div><a class="btn btn-info pull-left" href="<c:url value='/editor/new' />" >New PermissionSet</a></div>
+		<br />
+		<button onclick="fetchData();" data-toggle="modal"
+			data-target="#addNew" class="btn btn-default" title="Add Permission">
+			<span class="glyphicon glyphicon-plus"></span>
+		</button>
+		&nbsp;
+		<button id="deletePermission" class="btn btn-default"
+			title="Delete Permission">
+			<span class="glyphicon glyphicon-trash"></span>
+		</button>
 
-<table class="table table-striped">
-    <thead>
-        <tr>
-            <th>Name</th>
-            <th>Service</th>
-            <th>Edit</th>
-        </tr>
-    </thead>
+		<!-- This table will be created programmatically by jsps, just creating now for the sake of templating -->
 
-    <tbody>
+		<table id="permissionSetTable" style="margin-top: 15px;"
+			class="table table-striped table-hover table-responsive">
+			<thead>
+				<tr>
+					<th><input id="selectAll" type="checkbox" /> Select All</th>
+					<th>Name</th>
+					<th>Subject Domain</th>
+					<th>Resource Domain</th>
+					<th>Action Domain</th>
+					<th>Modify</th>
+				</tr>
+			</thead>
+			<c:forEach items="${permissionSets}" var="permission">
+				<tr id="row-${permission.getName()}">
+					<td>
+						<div class="checkbox">
+							<label> <input id="${permission.getName()}" type="checkbox">
+							</label>
+						</div>
+					</td>
+					<td><c:out value="${permission.getName()}"></c:out></td>
+					<td><c:out value="${permission.getSubjectDomains().get(0)}" /></td>
+					<td><c:out value="${permission.getResourceDomains().get(0)}" /></td>
+					<td><c:out value="${permission.getActionDomains().get(0)}" /></td>
+					<td><a class="btn btn-default btn-xs" href="#">MODIFY</a></td>
+				</tr>
+			</c:forEach>
+		</table>
+	</c:if>
+	<!-- Modal -->
+	<div class="modal fade" id="addNew" tabindex="-1" role="dialog"
+		aria-labelledby="myModalLabel" aria-hidden="true">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal"
+						aria-hidden="true">&times;</button>
+					<h4 class="modal-title" id="myModalLabel">Add New Permission
+						Set</h4>
+				</div>
+				<div id="modalContent" class="modal-body"></div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+					<button id="save" type="button" class="btn btn-primary">Save</button>
+				</div>
+			</div>
+		</div>
+	</div>
 
-        <c:if test="${not empty permissionSets}">
-            <c:forEach var="permissionSet" items="${permissionSets}">
-                <tr>
-                    <td>${permissionSet.name}</td>
-                    <td>${permissionSet.name}</td>
-                    <td>${permissionSet.name}</td>
-                </tr>
-            </c:forEach>
-        </c:if>
+	<c:if test="${permissionSets.size()==0}">
 
-    </tbody>
-</table>
-
+		<center>
+			<h3>
+				<span class="label label-info"> No permission set found,
+					please add new permission set </span> &nbsp;
+				<button onclick="fetchData();" data-toggle="modal"
+					data-target="#addNew" class="btn btn-default"
+					title="Add Permission">
+					<span class="glyphicon glyphicon-plus"></span>
+				</button>
+			</h3>
+		</center>
+	</c:if>
+</div>
+<script type="text/javascript" src="<c:url value="/static/lib/permissionManagement.min.js" />">
+</script>

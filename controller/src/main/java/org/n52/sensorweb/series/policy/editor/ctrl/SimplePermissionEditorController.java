@@ -60,31 +60,57 @@ public class SimplePermissionEditorController extends BaseController {
     private UserService userService;
 
     @RequestMapping(value = "/", method = RequestMethod.GET)
-    public ModelAndView listPermissions() {
+    public ModelAndView listPermissions() 
+    {
         ModelAndView mav = new ModelAndView("listPermissions");
-        return mav.addObject("permissionSets", simplePermissionService.getPermissionSets());
+        mav.addObject("permissionSets", simplePermissionService.getPermissionSets());
+        return mav;
     }
 
     @RequestMapping(value = "/new", method = RequestMethod.GET)
-    public ModelAndView createPermissions() {
+    public ModelAndView createPermissions() 
+    {
         ModelAndView mav = new ModelAndView("createPermission");
         mav.addObject("users", userService.getConfiguredUsers());
         mav.addObject("enforcementPoints", enforcementPointService.getEnforcementPoints());
         return mav;
     }
 
+    @RequestMapping(value="/delete/{permissionSetName}", method=RequestMethod.POST)
+    public ModelAndView deletePermission(@PathVariable String permissionSetName)
+    {
+        ModelAndView mav= new ModelAndView("listPermissions");
+        //splitting the string to get features which are to be deleted one by one
+        String []sets=permissionSetName.split(",");
+        try 
+        {
+           for(int i=0;i<sets.length;i++)
+           {
+               simplePermissionService.deletePermissionSet(sets[i]); 
+           }
+        }
+        catch(PermissionManagementException e)
+        {
+            throw new InternalServerException("Could not delete permission set.",e);
+        }
+        mav.addObject("permissionSets", simplePermissionService.getPermissionSets());
+        return mav;
+    }
+
     //@RequestMapping(value = "/{permissionSetName}", method = RequestMethod.GET)
-    public ModelAndView editPermission(@PathVariable("permissionSetName") String permissionSetName) {
+    /* public ModelAndView editPermission(@PathVariable("permissionSetName") String permissionSetName) {
         ModelAndView mav = new ModelAndView("editor/editPermission");
         PermissionSet permissionSet = simplePermissionService.getPermissionSet(permissionSetName);
-        if (permissionSet == null) {
+        if (permissionSet == null) 
+        {
             throw new ResourceNotFoundException("No permissionSet with name '" + permissionSetName + "'.");
         }
         return mav.addObject(permissionSet);
-    }
+    }*/
 
     @RequestMapping(value = "/save", method = RequestMethod.POST)
     public ModelAndView createPermission(@RequestBody(required = true) PermissionSet permissionSet) {
+
         PermissionSet result = simplePermissionService.getPermissionSet(permissionSet.getName());
         if (result != null) {
             // TODO already exists ... let GUI ask to edit/override
@@ -95,17 +121,19 @@ public class SimplePermissionEditorController extends BaseController {
         } catch (PermissionManagementException e) {
             throw new InternalServerException("Could not create resource.", e);
         }
-        ModelAndView mav = new ModelAndView();
+        ModelAndView mav = new ModelAndView("resultView");
         return mav.addObject(result);
     }
 
     @RequestMapping(value = "/timeseries", method = RequestMethod.GET, produces = "application/json")
     public ModelAndView listTimeseries() {
-        ModelAndView mav = new ModelAndView();
+        ModelAndView mav = new ModelAndView("timeseries");
         IoParameters query = IoParameters.createDefaults();
-        return mav.addObject(parameterServiceProvider.getTimeseriesService().getCondensedParameters(query));
+        return mav.addObject("parameterProvider",parameterServiceProvider.getTimeseriesService().getCondensedParameters(query));
     }
 
+
+    //Getters and setters
     public SimplePermissionService getSimplePermissionService() {
         return simplePermissionService;
     }
