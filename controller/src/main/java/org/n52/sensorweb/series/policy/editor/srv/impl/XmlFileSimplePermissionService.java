@@ -33,7 +33,9 @@ import java.io.IOException;
 import java.net.URL;
 import java.util.Iterator;
 import java.util.List;
+
 import javax.servlet.ServletContext;
+
 import org.n52.web.BadRequestException;
 import org.n52.web.ResourceNotFoundException;
 import org.n52.security.service.pdp.simplepermission.Permission;
@@ -214,6 +216,18 @@ public class XmlFileSimplePermissionService implements SimplePermissionService, 
     @Override
     public void setSimplePermissionValidationService(SimplePermissionValidationService simplePermissionValidationService) {
         this.simplePermissionValidationService = simplePermissionValidationService;
+    }
+
+    @Override
+    public Permission getPermission(String permissionSetName, String permissionName) {
+        for(Permission permission: getPermissionSet(permissionSetName).getSubPermissions())
+        {
+            if(permission.getName().equals(permissionName))
+            {
+                return permission;
+            }
+        }
+        return null;
     }
 
 
