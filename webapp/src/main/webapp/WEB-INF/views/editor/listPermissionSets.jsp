@@ -1,6 +1,5 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib uri="http://tiles.apache.org/tags-tiles" prefix="tiles"%>
-
 <div class="container-fluid">
 	<c:if test="${permissionSets.size()>0}">
 		<div id="warningContainer" class="container-fluid">
@@ -20,15 +19,16 @@
 			<span class="glyphicon glyphicon-plus"></span>
 		</button>
 		&nbsp;
-		<button id="deletePermission" class="btn btn-default"
+		<button id="deletePermissionSet" class="btn btn-default"
 			title="Delete Permission Set">
 			<span class="glyphicon glyphicon-trash"></span>
 		</button>
-
+		
+<br/> <br/>
+		
 		<!-- This table will be created programmatically by jsps, just creating now for the sake of templating -->
 		<div class="table-responsive">
-			<table id="permissionSetTable" style="margin-top: 15px;"
-				class="table table-striped table-hover">
+			<table id="permissionSetTable" class="table-bordered table-hover order-column">
 				<thead>
 					<tr>
 						<th><input id="selectAllPermissionSet" type="checkbox" /> Select All</th>
@@ -87,10 +87,10 @@
 			<button id="save" type="button" class="btn btn-primary">Save</button>
 		</div>
 	</div>
-
+</div>
 	<c:if test="${permissionSets.size()==0}">
-
-		<center>
+	  <div style="margin-top:7%;" class="center-block">
+	     <center>
 			<h3>
 				<span class="label label-info"> No permission set found,
 					please add new permission set </span> &nbsp;
@@ -100,9 +100,9 @@
 					<span class="glyphicon glyphicon-plus"></span>
 				</button>
 			</h3>
-		</center>
+		  </center>
+		</div>
 	</c:if>
-</div>
 <script type="text/javascript"
 	src="<c:url value="/static/lib/js/permissionSetManagement.js" />">
 	

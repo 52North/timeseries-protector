@@ -11,9 +11,6 @@
 	<label class="control-label">* Action :</label> <input
 		style="margin-top: 5px" id="actionDomain" class="form-control"
 		type="text" name="actionDomain" />
-		<c:forEach items='${permission.getActions()}' var='actionDomains'>
-					<c:out value='${actionDomains.getValue()}'></c:out>
-		</c:forEach>
 	<p class="help-block">Comma separated values are allowed</p>
 </div>
 
@@ -21,9 +18,6 @@
 	<label class="control-label">* Subject :</label> <input
 		style="margin-top: 5px" id="resourceDomain" class="form-control"
 		type="text" name="resourceDomain" />
-	<c:forEach items="${permission.getSubjects()}" var="subject">
-		<c:out value="${subject.getValue()}"></c:out>
-	</c:forEach>
 	<p class="help-block">Comma separated values are allowed</p>
 </div>
 
@@ -31,9 +25,6 @@
 	<label class="control-label"> Obligation(s) :</label> <input
 		style="margin-top: 5px" id="obligation" class="form-control"
 		type="text" name="obligation" />
-	<c:forEach items="${permission.getObligations()}" var="obligations">
-		<c:out value="${obligations.getName()}"></c:out>
-	</c:forEach>
 	<p class="help-block">Key value pairs with comma separated values
 		are allowed</p>
 </div>

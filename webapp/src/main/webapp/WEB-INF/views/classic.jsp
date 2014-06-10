@@ -15,8 +15,9 @@
 
 <!-- Bootstrap core files  -->
 <link rel="stylesheet"
-	href="<c:url value="/static/lib/css/bootstrap.min.css" />" type="text/css" />
-<link rel="stylesheet" href="<c:url value="/static/lib/css/docs.min.css" />"
+	href="<c:url value="/static/lib/css/docs.min.css" />" type="text/css" />
+<link rel="stylesheet"
+	href="<c:url value="/static/lib/css/bootstrap.min.css" />"
 	type="text/css" />
 <script type="text/javascript"
 	src="<c:url value="/static/lib/js/bootstrap.min.js" />"></script>
@@ -34,6 +35,19 @@
 <link rel="stylesheet"
 	href="<c:url value="/static/lib/css/bootstrap-modal.css" />"
 	type="text/css" />
+
+<!-- Files for Data Tables used for sorting and searching -->
+<script type="text/javascript"
+	src="//cdn.datatables.net/1.10.0/js/jquery.dataTables.js"></script>
+<script type="text/javascript"
+	src="//cdn.datatables.net/plug-ins/be7019ee387/integration/bootstrap/3/dataTables.bootstrap.js"></script>	
+<link rel="stylesheet"
+	href="<c:url value="/static/lib/css/jquery.dataTable.css" />"
+	type="text/css" />
+<link rel="stylesheet"
+	href="<c:url value="/static/lib/css/dataTables.bootstrap.css" />"
+	type="text/css" />
+
 
 <title><tiles:getAsString name="title" /></title>
 </head>
