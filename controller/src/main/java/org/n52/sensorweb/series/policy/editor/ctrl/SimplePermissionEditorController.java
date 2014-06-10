@@ -93,7 +93,7 @@ public class SimplePermissionEditorController extends BaseController {
     @RequestMapping(value="/delete/{permissionSetName}", method=RequestMethod.POST)
     public ModelAndView deletePermissionSet(@PathVariable String permissionSetName)
     {
-        ModelAndView mav= new ModelAndView("listPermissions");
+        ModelAndView mav= new ModelAndView("listPermissionSets");
         //splitting the string to get features which are to be deleted one by one
         String []sets=permissionSetName.split(",");
         try 
