@@ -1,86 +1,84 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ taglib uri="http://tiles.apache.org/tags-tiles" prefix="tiles"%>
 
-<div class="form-group">
-	<label class="control-label">* Permission Name :</label> <input
-		style="margin-top: 5px" id="permissionName" class="form-control"
-		type="text" value="${permission.getName()}" name="permissionName"
-		placeholder="Permission Name" />
-</div>
-
-<div class="form-group">
-	<label class="control-label">* Action :</label> <input
-		style="margin-top: 5px" id="actionDomain" class="form-control"
-		type="text" name="actionDomain" />
-	<p class="help-block">Comma separated values are allowed</p>
-</div>
-
-<div class="form-group">
-	<label class="control-label">* Subject :</label> <input
-		style="margin-top: 5px" id="resourceDomain" class="form-control"
-		type="text" name="resourceDomain" />
-	<p class="help-block">Comma separated values are allowed</p>
-</div>
-
-<div class="form-group">
-	<label class="control-label"> Obligation(s) :</label> <input
-		style="margin-top: 5px" id="obligation" class="form-control"
-		type="text" name="obligation" />
-	<p class="help-block">Key value pairs with comma separated values
-		are allowed</p>
-</div>
-
-<div class="row">
-	<div class="col-sm-6">
-		<div class="checkbox">
-			<label> <input id="offerings" type="checkbox" value="">
-				Offerings
-			</label>
-		</div>
+<div class="modal container fade" id="basicScreen" tabindex="-1"
+	role="dialog" aria-labelledby="myModalLabel" aria-hidden="true"
+	style="display: none;">
+	<div class="modal-header bg-primary">
+		<button type="button" class="close" data-dismiss="modal"
+			aria-hidden="true">&times;</button>
+		<h4 class="modal-title" id="PermissionModalLabel">Add Permission</h4>
 	</div>
-	<div class="col-sm-6">
-		<input id="offeringsInput" style="display: none" class="form-control"
-			type="text" />
+	<div id="basicModalContentPermission" class="modal-body">
+		<tiles:insertDefinition name="basicScreen"></tiles:insertDefinition>
+	</div>
+	<div class="modal-footer">
+		<button id="basicScreen-resourceScreen" type="button"
+			class="btn btn-primary">Next ></button>
+		<button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
 	</div>
 </div>
 
-<div class="row">
-	<div class="col-sm-6">
-		<div class="checkbox">
-			<label> <input id="procedures" type="checkbox" value="">
-				Procedures
-			</label>
-		</div>
+<div class="modal container" id="resourceScreen" tabindex="-1"
+	role="dialog" aria-labelledby="myModalLabel" aria-hidden="true"
+	style="display: none;">
+	<div class="modal-header bg-primary">
+		<button type="button" class="close" data-dismiss="modal"
+			aria-hidden="true">&times;</button>
+		<h4 class="modal-title" id="PermissionModalLabel">Add Resources</h4>
 	</div>
-	<div class="col-sm-6">
-		<input id="proceduresInput" style="display: none" class="form-control"
-			type="text" />
+	<div id="resourceModalContentPermission" class="modal-body">
+		<tiles:insertDefinition name="resourceScreen"></tiles:insertDefinition>
 	</div>
-</div>
-
-<div class="row">
-	<div class="col-sm-6">
-		<div class="checkbox">
-			<label> <input id="observedProperties" type="checkbox"
-				value=""> Observed Properties
-			</label>
-		</div>
-	</div>
-	<div class="col-sm-6">
-		<input id="observedPropertiesInput" style="display: none"
-			class="form-control" type="text" />
+	<div class="modal-footer">
+		<button id="resourceScreen-basicScreen" type="button"
+			class="btn btn-info">&lt; Back</button>
+		<button id="resourceScreen-actionScreen" type="button"
+			class="btn btn-primary">Next &gt;</button>
+		<button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
 	</div>
 </div>
 
-<div class="row">
-	<div class="col-sm-6">
-		<div class="checkbox">
-			<label> <input id="featuresOfInterest" type="checkbox"
-				value=""> Features Of Interest
-			</label>
-		</div>
+<div class="modal container" id="actionScreen" tabindex="-1"
+	role="dialog" aria-labelledby="myModalLabel" aria-hidden="true"
+	style="display: none;">
+	<div class="modal-header bg-primary">
+		<button type="button" class="close" data-dismiss="modal"
+			aria-hidden="true">&times;</button>
+		<h4 class="modal-title" id="PermissionModalLabel">Add Actions</h4>
 	</div>
-	<div class="col-sm-6">
-		<input id="featuresOfInterestInput" style="display: none"
-			class="form-control" type="text" />
+	<div id="actionModalContentPermission" class="modal-body">
+		<tiles:insertDefinition name="actionScreen"></tiles:insertDefinition>
+	</div>
+	<div class="modal-footer">
+		<button id="actionScreen-resourceScreen" type="button"
+			class="btn btn-info">&lt; Back</button>
+		<button id="actionScreen-obligationScreen" type="button"
+			class="btn btn-primary">Next &gt;</button>
+		<button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
 	</div>
 </div>
+
+<div class="modal container" id="obligationScreen" tabindex="-1"
+	role="dialog" aria-labelledby="myModalLabel" aria-hidden="true"
+	style="display: none;">
+	<div class="modal-header bg-primary">
+		<button type="button" class="close" data-dismiss="modal"
+			aria-hidden="true">&times;</button>
+		<h4 class="modal-title" id="PermissionModalLabel">Add Obligations</h4>
+	</div>
+	<div id="obligationModalContentPermission" class="modal-body">
+		<tiles:insertDefinition name="obligationScreen"></tiles:insertDefinition>
+	</div>
+	<div class="modal-footer">
+		<button id="obligationScreen-actionScreen" type="button"
+			class="btn btn-info">&lt; Back</button>
+		<button id="savePermission" type="button" class="btn btn-success">Add
+		</button>
+		<button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+	</div>
+</div>
+<script type="text/javascript"
+	src="<c:url value="/static/lib/js/wizardManagement.js" />">
+	
+</script>

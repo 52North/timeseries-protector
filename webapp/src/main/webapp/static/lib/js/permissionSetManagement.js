@@ -3,7 +3,7 @@
  * Software GmbH
  *
  * This program is free software; you can redistribute it and/or modify it under
- * the terms of the GNU General Public License version 2 as publishedby the Free
+ * the terms of the GNU General Public License version 2 as published by the Free
  * Software Foundation.
  *
  * If the program is linked with libraries which are licensed under one of the
@@ -27,30 +27,28 @@
  */
 var setDeleteTimeoutId;
 
-function fetchData() 
-{
-	$.ajax({
-		url : window.location.href + "new",
-		type : "POST",
-		success : function(response) 
-		{
-			$("#modalContentPermissionSet").html(response);
-		}
-	}).done(function() {
-		// alert("done");
-	}).fail(function() {
-		alert("Some error occured");
-	}).always(function() {
-		// alert( "complete" );
-	});
-}
 //attaching event handlers on load of the document
 $(document)
 .ready(
 		function() {
+
+			$("#btnAddPermissionSet").click(function(event)
+					{
+				$.ajax({
+					url:window.location.href+"new",
+					type:"POST",
+					success: function(response)
+					{
+						$("#permissionSetModalLabel").html("Add Permission Set");
+						$("#modalContentPermissionSet").html(response);	
+					}
+				});
+					}		
+			);
+
 			/* Attach a click handler to the save button for saving the
-			*  permission set
-			*/ 
+			 *  permission set
+			 */ 
 			$("#save").click(
 					function(event) {
 
@@ -93,7 +91,7 @@ $(document)
 				"order": [ 1, 'asc' ],
 				"columnDefs": [
 				               { "orderable": false, "targets": 0 }
-				             ]
+				               ]
 			});
 
 			/*
@@ -117,13 +115,13 @@ $(document)
 							"checked");
 						}
 					});
-			
+
 
 			/*
 			 * deleting the permission set and implementing the local
 			 * storage
 			 */
-			$("#deletePermissionSet")
+			$("#btnDeletePermissionSet")
 			.click(
 					function(event) {
 						/*
@@ -147,7 +145,7 @@ $(document)
 									 * adding the hiding support
 									 * for multiple rows
 									 */
-									$("#row-" + setsToStore[i])
+									$("[id='row-" + setsToStore[i]+"']")
 									.hide("500");
 								}
 								sessionStorage.permissionSets = setsToStore;
@@ -171,7 +169,7 @@ $(document)
 				var ids = sessionStorage.permissionSets.split(",");
 
 				for (var i = 0; i < ids.length; i++) {
-					$("#row-" + ids[i]).show("500");
+					$("[id='row-" + ids[i]+"']").show("500");
 				}
 
 				sessionStorage.clear();
@@ -207,14 +205,15 @@ $(document)
 			 * This method is for opening the permission set in
 			 * the add permission dialog 
 			 * */
-			$("#permissionSetTable button").click(function(event){
-				var permissionName=this.id.split("#")[1];
+			$("#permissionSetTable button").click(function(event)
+					{
+				var permissionSetName=this.id.split("#")[1];
 				$.ajax({
 					type:"POST",
-					url:window.location.href+"edit/"+permissionName,
+					url:window.location.href+"edit/"+permissionSetName,
 					success: function(response)
 					{
-						$("#PermissionSetModalLabel").html("Modify Permission Set");
+						$("#permissionSetModalLabel").html("Modify "+permissionSetName);
 						$("#modalContentPermissionSet").html(response);	
 						$("#addNewPermissionSet").modal({
 							backdrop:true,
@@ -223,7 +222,7 @@ $(document)
 						});
 					}
 				});
-			});
+					});
 
 		});
 //this part here deals with the deletion of the permission set from the arrayList
