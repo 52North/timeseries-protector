@@ -3,7 +3,7 @@
  * Software GmbH
  *
  * This program is free software; you can redistribute it and/or modify it under
- * the terms of the GNU General Public License version 2 as publishedby the Free
+ * the terms of the GNU General Public License version 2 as published by the Free
  * Software Foundation.
  *
  * If the program is linked with libraries which are licensed under one of the
@@ -26,19 +26,18 @@
  * PARTICULAR PURPOSE. See the GNU General Public License for more details.
  */
 $(document).ready(function(){
-	
+
 	/*
 	 * functionality for select all checkbox
 	 * in permission management screen
 	 * */
 	$("#selectAllPermission").click( 
 			function(event) {
-				console.log("clicked");
 				$("#permissionTable input[type='checkbox']")
 				.attr("checked", this.checked);
 			});
 
-	$("#permissionTable input[type='checkbox']")
+	$("#permissionTable tr td input[type='checkbox']")
 	.click(
 			function(event) {
 				if ($("#permissionTable tr td input[type='checkbox']").length == $("#permissionTable tr td input:checked").length) {
@@ -55,39 +54,60 @@ $(document).ready(function(){
 	 * resource is selected
 	 */
 	$("#modalContentPermission .checkbox input[type='checkbox']").click(
-				function() 
+			function() 
+			{
+				if (this.checked) 
 				{
-					if (this.checked) 
-					{
-						$("#" + this.id + "Input").show();
-					} else 
-					{
-						$("#" + this.id + "Input").hide();
-					}
+					$("#" + this.id + "Input").show();
+				} else 
+				{
+					$("#" + this.id + "Input").hide();
+				}
 
-				});
-	/*
-	 * Method for displaying the selected permission
-	 * for modifying
-	 * */
-	$("#permissionTable button").click(
-	function(event)
-	{
+			});
+
+	$("#btnAddPermission").click(function(event)
+			{
 		$.ajax({
-			type:"GET",
-			url:window.location.href+"edit/"+$("#permissionSetName").val()+"/"+this.id.split("#")[1],
+			url:window.location.href+"newPermission",
+			type:"POST",
 			success: function(response)
 			{
-				$("#PermissionModalLabel").html("Modify Permission");
-				$("#modalContentPermission").html(response);	
-				$("#addNewPermission").modal({
+				$("#createPermisisonContainer").html(response);
+				$("#basicScreen").modal({
 					backdrop:true,
 					keyboard:true,
 					show:true
 				});
 			}
 		});
-	}
+			}		
 	);
+
+	/*
+	 * Method for displaying the selected permission
+	 * for modifying
+	 * */
+	$("#permissionTable button").click(
+			function(event)
+			{
+				var permissionName=this.id.split("#")[1];
+				$.ajax({
+					type:"GET",
+					url:window.location.href+"edit/"+$("#permissionSetName").val()+"/"+permissionName,
+					success: function(response)
+					{
+						$("#createPermisisonContainer").html(response);	
+						$(".modal-title").html("Modify "+permissionName);
+						$("#basicScreen").modal({
+							backdrop:true,
+							keyboard:true,
+							show:true
+						});
+					}
+				});
+			}
+	);
+	
 });
 

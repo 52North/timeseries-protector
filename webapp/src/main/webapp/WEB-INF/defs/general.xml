@@ -9,8 +9,23 @@
 
     <definition name="createPermissionSet" template="/WEB-INF/views/editor/createPermissionSet.jsp">
     </definition>
-	
+    
 	<definition name="createPermission" template="/WEB-INF/views/editor/createPermission.jsp">
+    </definition>
+    
+    <definition name="basicScreen" template="/WEB-INF/views/editor/basicCreatePermission.jsp">
+    </definition>
+    
+    <definition name="resourceScreen" template="/WEB-INF/views/editor/resourcesCreatePermission.jsp">
+    </definition>
+    
+    <definition name="actionScreen" template="/WEB-INF/views/editor/actionCreatePermission.jsp">
+    </definition>
+    
+    <definition name="obligationScreen" template="/WEB-INF/views/editor/obligationsCreatePermission.jsp">
+    </definition>
+    
+    <definition name="permissionTable" template="/WEB-INF/views/editor/permissionTable.jsp">
     </definition>
     
 	<definition name="timeseries" extends="common">

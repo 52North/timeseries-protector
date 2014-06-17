@@ -74,17 +74,30 @@ public class SimplePermissionEditorController extends BaseController {
     }
 
     /**
-     * @return
+     * @return The new Create Permission set view
      */
     @RequestMapping(value = "/new", method = RequestMethod.POST)
     public ModelAndView createPermissions() 
     {
         ModelAndView mav = new ModelAndView("createPermissionSet");
-        mav.addObject("users", userService.getConfiguredUsers());
-        mav.addObject("enforcementPoints", enforcementPointService.getEnforcementPoints());
+        /*
+         *  The below objects will no longer be used
+         *  mav.addObject("users", userService.getConfiguredUsers());
+            mav.addObject("enforcementPoints", enforcementPointService.getEnforcementPoints());
+        */
         return mav;
     }
-
+    
+    /**
+     * @return
+     */
+    @RequestMapping(value = "/newPermission", method = RequestMethod.POST)
+    public ModelAndView createPermission() 
+    {
+        ModelAndView mav = new ModelAndView("createPermission");
+        mav.addObject("users", userService.getConfiguredUsers());
+        return mav;
+    }
     
     /**
      * @param permissionSetName to be deleted
@@ -147,7 +160,13 @@ public class SimplePermissionEditorController extends BaseController {
        {
            throw new ResourceNotFoundException("No permission '" + permissionName + "' under permission set '"+permissionSetName+"'");
        }
-       return mav.addObject(permission);
+       /*
+        * Added because Subject field will need user roles defined
+        * in user database
+        */
+       mav.addObject("users", userService.getConfiguredUsers());
+       mav.addObject(permission);
+       return mav;
     }
 
     /**

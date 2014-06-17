@@ -42,107 +42,24 @@
 
 	<br /> <br />
 
-	<button type="button" data-toggle="modal" href="#addNewPermission"
-		class="btn btn-default" title="Add Permission">
+	<button id="btnAddPermission" type="button" class="btn btn-default"
+		title="Add Permission">
 		<span class="glyphicon glyphicon-plus"></span>
 	</button>
 	&nbsp;
-	<button type="button" id="deletePermission" class="btn btn-default"
+	<button type="button" id="btnDeletePermission" class="btn btn-default"
 		title="Delete Permission">
 		<span class="glyphicon glyphicon-trash"></span>
 	</button>
 
 	<div class="table-responsive">
-		<table id="permissionTable" style="margin-top: 15px;"
-			class="table table-striped table-hover">
-			<thead>
-				<tr>
-					<th><input id="selectAllPermission" type="checkbox" /> Select All</th>
-					<th>Name</th>
-					<th>Subject (s)</th>
-					<th>Resource(s)</th>
-					<th>Action (s)</th>
-					<th>Obligation (s)</th>
-					<th>Modify</th>
-				</tr>
-			</thead>
-			<c:forEach items="${permissionSet.getSubPermissions()}"
-				var="permissions">
-				<tr id="row-${permissions.getName()}">
-					<td>
-						<div class="checkbox">
-							<label> <input id="${permissions.getName()}"
-								type="checkbox">
-							</label>
-						</div>
-					</td>
-					<td><c:out value="${permissions.getName()}"></c:out></td>
-					<td><c:choose>
-							<c:when test="${permissions.getSubjects().size()>0}">
-								<c:forEach items="${permissions.getSubjects()}" var="subjects">
-									<c:out value="${subjects.getValue()}"></c:out>,
-							</c:forEach>
-							</c:when>
-							<c:otherwise>
-								<c:out value="Not Found"></c:out>
-							</c:otherwise>
-						</c:choose></td>
-					<td><c:choose>
-							<c:when test="${permissions.getResources().size()>0}">
-								<c:forEach items="${permissions.getResources()}" var="resources">
-									<c:out value="${resources.getValue()}"></c:out>,
-						</c:forEach>
-							</c:when>
-							<c:otherwise>
-								<c:out value="Not Found"></c:out>
-							</c:otherwise>
-						</c:choose></td>
-					<td><c:choose>
-							<c:when test="${permissions.getActions().size()>0}">
-								<c:forEach items="${permissions.getActions()}" var="actions">
-									<c:out value="${actions.getValue()}"></c:out>,
-						</c:forEach>
-							</c:when>
-							<c:otherwise>
-								<c:out value="Not Found"></c:out>
-							</c:otherwise>
-						</c:choose></td>
-					<td><c:choose>
-							<c:when test="${permissions.getObligations().size()>0}">
-								<c:forEach items="${permissions.getObligations()}"
-									var="obligations">
-									<c:out value="${obligations.getValue()}"></c:out>,
-						</c:forEach>
-							</c:when>
-							<c:otherwise>
-								<c:out value="Not Found"></c:out>
-							</c:otherwise>
-						</c:choose></td>
-					<td>
-						<button id="btn#${permissions.getName()}" class="btn btn-default btn-xs"
-							type="button">MODIFY</button>
-					</td>
-				</tr>
-			</c:forEach>
-		</table>
+		<tiles:insertDefinition name="permissionTable"></tiles:insertDefinition>
 	</div>
-	<div class="modal fade" id="addNewPermission" tabindex="-1"
-		role="dialog" aria-labelledby="myModalLabel" aria-hidden="true"
-		style="display: none;">
-		<div class="modal-header">
-			<button type="button" class="close" data-dismiss="modal"
-				aria-hidden="true">&times;</button>
-			<h4 class="modal-title" id="PermissionModalLabel">Add New
-				Permission</h4>
-		</div>
-		<div id="modalContentPermission" class="modal-body">
-			<tiles:insertDefinition name="createPermission"></tiles:insertDefinition>
-		</div>
-		<div class="modal-footer">
-			<button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
-			<button id="save" type="button" class="btn btn-primary">Save</button>
-		</div>
+
+	<div id="createPermisisonContainer">
+	<!-- Content loaded by Ajax -->
 	</div>
+
 </form>
 <script type="text/javascript"
 	src="<c:url value="/static/lib/js/permissionManagement.js" />">
