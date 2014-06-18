@@ -25,7 +25,7 @@
 	src="<c:url value="/static/lib/js/docs.min.js" />"></script>
 
 <!-- Workaround for multiple modals for Bootstrap  -->
-<link rel="stylesheet"
+<%-- <link rel="stylesheet"
 	href="<c:url value="/static/lib/css/bootstrap-modal-bs3patch.css" />"
 	type="text/css" />
 <script type="text/javascript"
@@ -34,7 +34,7 @@
 	src="<c:url value="/static/lib/js/bootstrap-modal.js" />"></script>
 <link rel="stylesheet"
 	href="<c:url value="/static/lib/css/bootstrap-modal.css" />"
-	type="text/css" />
+	type="text/css" /> --%>
 
 <!-- Files for Data Tables used for sorting and searching -->
 <script type="text/javascript"
@@ -49,11 +49,11 @@
 	type="text/css" />
 
 
-<title><tiles:getAsString name="title" /></title>
+<title>${pageTitle}</title>
 </head>
 <body>
 	<h1>
-		<center>Timeseries Permission Manager</center>
+		<center>${heading}</center>
 	</h1>
 
 	<tiles:insertAttribute name="body" />

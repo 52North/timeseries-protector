@@ -3,7 +3,7 @@
  * Software GmbH
  *
  * This program is free software; you can redistribute it and/or modify it under
- * the terms of the GNU General Public License version 2 as published by the Free
+ * the terms of the GNU General Public License version 2 as publishedby the Free
  * Software Foundation.
  *
  * If the program is linked with libraries which are licensed under one of the
@@ -31,20 +31,6 @@ var setDeleteTimeoutId;
 $(document)
 .ready(
 		function() {
-
-			$("#btnAddPermissionSet").click(function(event)
-					{
-				$.ajax({
-					url:window.location.href+"new",
-					type:"POST",
-					success: function(response)
-					{
-						$("#permissionSetModalLabel").html("Add Permission Set");
-						$("#modalContentPermissionSet").html(response);	
-					}
-				});
-					}		
-			);
 
 			/* Attach a click handler to the save button for saving the
 			 *  permission set
@@ -84,7 +70,7 @@ $(document)
 					});
 			/*
 			 * Functionality for sorting and searching
-			 * on tables
+			 * on permission set table
 			 * */
 			$("#permissionSetTable").dataTable({
 				"paging":   false,
@@ -200,29 +186,6 @@ $(document)
 					deleteSets();
 				}
 			});
-
-			/*
-			 * This method is for opening the permission set in
-			 * the add permission dialog 
-			 * */
-			$("#permissionSetTable button").click(function(event)
-					{
-				var permissionSetName=this.id.split("#")[1];
-				$.ajax({
-					type:"POST",
-					url:window.location.href+"edit/"+permissionSetName,
-					success: function(response)
-					{
-						$("#permissionSetModalLabel").html("Modify "+permissionSetName);
-						$("#modalContentPermissionSet").html(response);	
-						$("#addNewPermissionSet").modal({
-							backdrop:true,
-							keyboard:true,
-							show:true
-						});
-					}
-				});
-					});
 
 		});
 //this part here deals with the deletion of the permission set from the arrayList

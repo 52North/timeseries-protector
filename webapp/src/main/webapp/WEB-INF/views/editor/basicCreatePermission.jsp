@@ -2,7 +2,7 @@
 
 <div class="form-group">
 	<label class="control-label">* Permission Name :</label> <input
-		style="margin-top: 5px" id="permissionName" class="form-control"
+		style="margin-top: 5px" autofocus id="permissionName" class="form-control"
 		type="text" value="${permission.getName()}" name="permissionName"
 		placeholder="Permission Name" />
 </div>

@@ -2,7 +2,7 @@
 <%@ taglib uri="http://tiles.apache.org/tags-tiles" prefix="tiles"%>
 
 <table id="permissionTable" style="margin-top: 15px;"
-	class="table table-striped table-hover">
+	class="table-bordered table-hover order-column">
 	<thead>
 		<tr>
 			<th><input id="selectAllPermission" type="checkbox" /> Select
@@ -67,10 +67,9 @@
 						<c:out value="Not Found"></c:out>
 					</c:otherwise>
 				</c:choose></td>
-			<td>
-				<button id="btn#${permissions.getName()}"
-					class="btn btn-default btn-xs" type="button">MODIFY</button>
-			</td>
+			<td><a id="btn#${permissions.getName()}"
+				href="/protector-webapp/editor/edit/${permissionSet.getName()}/${permissions.getName()}"
+				class="btn btn-default btn-xs" role="button">MODIFY</a></td>
 		</tr>
 	</c:forEach>
 </table>

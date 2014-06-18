@@ -7,10 +7,12 @@
         <put-attribute name="footer" value="/WEB-INF/views/footer.jsp" />
     </definition>
 
-    <definition name="createPermissionSet" template="/WEB-INF/views/editor/createPermissionSet.jsp">
+    <definition name="createPermissionSet" extends="common">
+        <put-attribute name="body" value="/WEB-INF/views/editor/createPermissionSet.jsp" />
     </definition>
     
-	<definition name="createPermission" template="/WEB-INF/views/editor/createPermission.jsp">
+	<definition name="createPermission" extends="common">
+        <put-attribute name="body" value="/WEB-INF/views/editor/createPermission.jsp" />
     </definition>
     
     <definition name="basicScreen" template="/WEB-INF/views/editor/basicCreatePermission.jsp">
@@ -29,17 +31,14 @@
     </definition>
     
 	<definition name="timeseries" extends="common">
-        <put-attribute name="title" value="Timeseries Introduction" />
         <put-attribute name="body" value="/WEB-INF/views/timeseries.jsp" />
     </definition>
 	
 	<definition name="resultView" extends="common">
-        <put-attribute name="title" value="Success" />
         <put-attribute name="body" value="/WEB-INF/views/result.jsp" />
     </definition>
 	
     <definition name="listPermissionSets" extends="common">
-        <put-attribute name="title" value="List Permission Sets" />
         <put-attribute name="body" value="/WEB-INF/views/editor/listPermissionSets.jsp" />
     </definition>
 </tiles-definitions>

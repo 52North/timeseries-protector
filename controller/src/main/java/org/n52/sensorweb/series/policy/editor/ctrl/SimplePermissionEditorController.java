@@ -44,6 +44,9 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.servlet.view.tiles3.TilesConfigurer;
+import org.springframework.web.servlet.view.tiles3.TilesView;
+import org.springframework.web.servlet.view.tiles3.TilesViewResolver;
 
 /**
  *
@@ -70,16 +73,21 @@ public class SimplePermissionEditorController extends BaseController {
     {
         ModelAndView mav = new ModelAndView("listPermissionSets");
         mav.addObject("permissionSets", simplePermissionService.getPermissionSets());
+        mav.addObject("pageTitle","List Permission Sets");
+        mav.addObject("heading","Timeseries Permission Manager");
         return mav;
     }
 
     /**
      * @return The new Create Permission set view
      */
-    @RequestMapping(value = "/new", method = RequestMethod.POST)
+    @RequestMapping(value = "/new", method = RequestMethod.GET)
     public ModelAndView createPermissions() 
     {
         ModelAndView mav = new ModelAndView("createPermissionSet");
+        mav.addObject("pageTitle","Create Permission Set");
+        mav.addObject("heading","Create Permission Set");
+        
         /*
          *  The below objects will no longer be used
          *  mav.addObject("users", userService.getConfiguredUsers());
@@ -91,11 +99,13 @@ public class SimplePermissionEditorController extends BaseController {
     /**
      * @return
      */
-    @RequestMapping(value = "/newPermission", method = RequestMethod.POST)
+    @RequestMapping(value = "/newPermission", method = RequestMethod.GET)
     public ModelAndView createPermission() 
     {
         ModelAndView mav = new ModelAndView("createPermission");
         mav.addObject("users", userService.getConfiguredUsers());
+        mav.addObject("pageTitle","Create Permission");
+        mav.addObject("heading","Create Permission");
         return mav;
     }
     
@@ -128,7 +138,7 @@ public class SimplePermissionEditorController extends BaseController {
      * @param permissionSetName the permission set to be edited
      * @return permissionSet
      */
-    @RequestMapping(value = "/edit/{permissionSetName}", method = RequestMethod.POST)
+    @RequestMapping(value = "/edit/{permissionSetName}", method = RequestMethod.GET)
      public ModelAndView editPermissionSet(@PathVariable String permissionSetName) 
     {
         ModelAndView mav = new ModelAndView("createPermissionSet");
@@ -137,7 +147,10 @@ public class SimplePermissionEditorController extends BaseController {
         {
             throw new ResourceNotFoundException("No permissionSet with name '" + permissionSetName + "'.");
         }
-        return mav.addObject(permissionSet);
+        mav.addObject(permissionSet);
+        mav.addObject("pageTitle","Modify Permission Set");
+        mav.addObject("heading","Modify "+permissionSetName);
+        return mav;
     }
     
     
@@ -166,6 +179,8 @@ public class SimplePermissionEditorController extends BaseController {
         */
        mav.addObject("users", userService.getConfiguredUsers());
        mav.addObject(permission);
+       mav.addObject("pageTitle","Modify Permission");
+       mav.addObject("heading","Modify "+permissionName);
        return mav;
     }
 
@@ -197,7 +212,10 @@ public class SimplePermissionEditorController extends BaseController {
     public ModelAndView listTimeseries() {
         ModelAndView mav = new ModelAndView("timeseries");
         IoParameters query = IoParameters.createDefaults();
-        return mav.addObject("parameterProvider",parameterServiceProvider.getTimeseriesService().getCondensedParameters(query));
+        mav.addObject("offerings",parameterServiceProvider.getOfferingsService().getCondensedParameters(query));
+        mav.addObject("procedures", parameterServiceProvider.getProceduresService().getCondensedParameters(query));
+        mav.addObject("featuresOfInterest", parameterServiceProvider.getFeaturesService().getCondensedParameters(query));
+        return mav;
     }
 
 
