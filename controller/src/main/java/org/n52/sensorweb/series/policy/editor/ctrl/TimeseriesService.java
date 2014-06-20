@@ -78,7 +78,8 @@ public class TimeseriesService {
     private ServiceParameterService servicesService;
 
     private SearchService searchService;
-
+    
+    
     public ParameterService<PhenomenonOutput> getPhenomenonaService() {
         return phenomenonaService;
     }

@@ -177,7 +177,8 @@ $(document)
 			});
 			/*
 			 * If there were and the user confirmed the loading
-			 * all the items will be deleted in the session storage
+			 * all the items will be deleted from the session storage
+			 * and from the permission xml file
 			 * */
 			$(window).on('load', function() {
 				if (sessionStorage.length != 0) 

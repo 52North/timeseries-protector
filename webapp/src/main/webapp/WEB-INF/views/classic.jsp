@@ -40,7 +40,7 @@
 <script type="text/javascript"
 	src="//cdn.datatables.net/1.10.0/js/jquery.dataTables.js"></script>
 <script type="text/javascript"
-	src="//cdn.datatables.net/plug-ins/be7019ee387/integration/bootstrap/3/dataTables.bootstrap.js"></script>	
+	src="//cdn.datatables.net/plug-ins/be7019ee387/integration/bootstrap/3/dataTables.bootstrap.js"></script>
 <link rel="stylesheet"
 	href="<c:url value="/static/lib/css/jquery.dataTable.css" />"
 	type="text/css" />
@@ -55,7 +55,18 @@
 	<h1>
 		<center>${heading}</center>
 	</h1>
-
+	<ol class="breadcrumb">
+		<c:forEach varStatus="loop" items="${breadCrumb}" var="entry">
+			<c:choose>
+					<c:when test="${loop.index==breadCrumb.size()-1}">
+						<li class="active">${entry.key}</li>
+					</c:when>
+					<c:otherwise>
+					    <li><a href="${entry.value}"> ${entry.key} </a></li>
+					</c:otherwise>
+				</c:choose>
+		</c:forEach>
+	</ol>
 	<tiles:insertAttribute name="body" />
 
 	<br />
