@@ -1,4 +1,4 @@
-/**
+/*
  * Copyright (C) 2012-2014 52°North Initiative for Geospatial Open Source
  * Software GmbH
  *
@@ -25,28 +25,42 @@
  * WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
  * PARTICULAR PURPOSE. See the GNU General Public License for more details.
  */
+$(document)
+		.ready(
+				function() {
 
-package org.n52.sensorweb.series.policy.editor.srv.impl;
+					/*
+					 * functionality for select all checkbox in permission
+					 * management screen
+					 */
+					$("#selectAllPermission").click(
+							function(event) {
+								$("#permissionTable input[type='checkbox']")
+										.attr("checked", this.checked);
+							});
 
-import java.util.ArrayList;
-import java.util.List;
-import org.n52.sensorweb.series.policy.api.beans.EnforcementPoint;
-import org.n52.sensorweb.series.policy.editor.srv.EnforcementPointService;
-
-/**
- *
- * @author Henning Bredel <h.bredel@52north.org>
- */
-public class PreconfiguredEnforcementPointService implements EnforcementPointService {
-
-    @Override
-    public List<EnforcementPoint> getEnforcementPoints() {
-        List<EnforcementPoint> eps = new ArrayList<>();
-
-        // TODO add enforcement points
-        eps.add(new EnforcementPoint());
-
-        return eps;
-    }
-
-}
+					$("#permissionTable tr td input[type='checkbox']")
+							.click(
+									function(event) {
+										if ($("#permissionTable tr td input[type='checkbox']").length == $("#permissionTable tr td input:checked").length) {
+											$("#selectAllPermission").attr(
+													"checked", "checked");
+										} else {
+											$("#selectAllPermission")
+													.removeAttr("checked");
+										}
+									});
+					/*
+					 * Functionality for sorting and searching
+					 * on permission table
+					 * */
+					$("#permissionTable").dataTable({
+						"paging":   false,
+						"order": [ 1, 'asc' ],
+						"columnDefs": [
+						               { "orderable": false, "targets": 0 }
+						               ]
+					});
+					
+					
+				});

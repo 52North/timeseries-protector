@@ -67,6 +67,14 @@ public interface SimplePermissionService {
      */
     public void addPermission(String permissionSetName, Permission permission) throws PermissionManagementException;
 
+    /**
+     * @param permissionSetName whose permission is to be fetched
+     * @param permissionName the permission to be fetched
+     * @return permission
+     * @throws PermissionManagementException
+     */
+    public Permission getPermission(String permissionSetName,String permissionName);
+    
     public void editPermission(String permissionSetName, Permission permission) throws PermissionManagementException;
 
     public void deletePermission(String permissionSetName, Permission permission) throws PermissionManagementException;

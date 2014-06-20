@@ -1,39 +1,42 @@
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ taglib uri="http://tiles.apache.org/tags-tiles" prefix="tiles"%>
 
-<h2>Create PermissionSet</h2>
-
-<form id="create" action="<c:url value='/editor/save' />" method="POST" class="form-horizontal">
-
-    <div class="control-group">
-        <label class="control-label" form="permissionset-name">Name</label>
-        <div class="controls">
-            <input type="text" name="permissionset-name" />
-            <span class="help-block">Type the permission set's name.</span>
-        </div>
-    </div>
-
-    <div class="control-group">
-        <label class="control-label" form="epService">Enforcement Point</label>
-        <div class="controls">
-            <select name="epService" id="epService">
-                <c:forEach items="${enforcementPoints}" var="epService">
-                    <option selected="false" value="" style="display: none;"></option>
-                </c:forEach>
-            </select>
-            <span class="help-block">Select the endpoint to protect.</span>
-        </div>
-    </div>
-
-    <div class="control-group">
-        <label class="control-label" form="subject-domain">Subject Domain</label>
-        <div class="controls">
-            <select name="subject-domain" id="subject-domain">
-                <option selected="true" style="display: none;">urn:n52:security:subject:role</option>
-            </select>
-            <span class="help-block">Select the subject's domain.</span>
-        </div>
-    </div>
-
-    <div><button class="btn btn-info pull-left" type="submit">Save</button></div>
-</form>
-
+<div class="container-fluid">
+	<form role="form" action="#" enctype="application/json" method="POST"
+		id="createPermissionForm">
+	
+	<div id="basicScreen">	
+		<tiles:insertDefinition name="basicScreen"></tiles:insertDefinition>
+		
+		<button id="basicScreen-resourceScreen" type="button"
+			class="btn btn-primary">Next ></button>
+	</div>
+	
+	<div id="resourceScreen" style="display:none;">
+		<tiles:insertDefinition name="resourceScreen"></tiles:insertDefinition>
+		<button id="resourceScreen-basicScreen" type="button"
+			class="btn btn-info">&lt; Back</button>
+		<button id="resourceScreen-actionScreen" type="button"
+			class="btn btn-primary">Next &gt;</button>
+	</div>
+	
+	<div id="actionScreen" style="display:none;">
+		<tiles:insertDefinition name="actionScreen"></tiles:insertDefinition>
+		<button id="actionScreen-resourceScreen" type="button"
+			class="btn btn-info">&lt; Back</button>
+		<button id="actionScreen-obligationScreen" type="button"
+			class="btn btn-primary">Next &gt;</button>
+	</div>
+	
+	<div id="obligationScreen" style="display:none;">
+		<tiles:insertDefinition name="obligationScreen"></tiles:insertDefinition>
+		<button id="obligationScreen-actionScreen" type="button"
+			class="btn btn-info">&lt; Back</button>
+		<button id="savePermission" type="button" class="btn btn-success">Add
+		</button>
+	</div>	
+	</form>
+</div>
+<script type="text/javascript"
+	src="<c:url value="/static/lib/js/wizardManagement.js" />">
+</script>

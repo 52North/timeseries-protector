@@ -32,7 +32,6 @@
  */
 
 package org.n52.sensorweb.series.policy.editor.ctrl;
-
 import org.n52.io.v1.data.CategoryOutput;
 import org.n52.io.v1.data.FeatureOutput;
 import org.n52.io.v1.data.OfferingOutput;
@@ -79,7 +78,8 @@ public class TimeseriesService {
     private ServiceParameterService servicesService;
 
     private SearchService searchService;
-
+    
+    
     public ParameterService<PhenomenonOutput> getPhenomenonaService() {
         return phenomenonaService;
     }

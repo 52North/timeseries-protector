@@ -10,3 +10,4 @@ This project aims to give an example project for customizations around 52°North
 ### Contacts
 
 For questions and comments please contact [Henning Bredel](mailto:h.bredel@52north.org) | [@ridoo](https://github.com/ridoo)
+and [Dushyant Sabharwal](mailto:d.sabharwal@52north.org) | [@dushyant89](https://github.com/dushyant89)
