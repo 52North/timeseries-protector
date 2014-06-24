@@ -13,8 +13,8 @@
 		<div class="controls">
 			<select multiple class="form-control" name="t1Service" id="t1Service">
 				<c:forEach items="${offerings}" var="pp">
-					<option ><c:out
-							value="${pp.getLabel()}" /></option>
+					<option><c:out value="${pp.getDomainId()}" /></option>
+					<option><c:out value="${pp.getLabel()}" /></option>
 				</c:forEach>
 			</select>
 		</div>
@@ -25,34 +25,30 @@
 		<div class="controls">
 			<select multiple class="form-control" name="t2Service" id="t2Service">
 				<c:forEach items="${procedures}" var="pp">
-					<option ><c:out
-							value="${pp.getLabel()}" /></option>
+					<option><c:out value="${pp.getDomainId()}" /></option>
 				</c:forEach>
 			</select>
 		</div>
 	</div>
 	<div class="control-group">
-		<label class="control-label" form="timeseries">Features of Interest
-			Parameters</label>
+		<label class="control-label" form="timeseries">Features of
+			Interest Parameters</label>
 		<div class="controls">
 			<select multiple class="form-control" name="t3Service" id="t3Service">
 				<c:forEach items="${featuresOfInterest}" var="pp">
-					<option ><c:out
-							value="${pp.getLabel()}" /></option>
+					<option><c:out value="${pp.getDomainId()}" /></option>
 				</c:forEach>
 			</select>
 		</div>
 	</div>
-	<%-- <div class="control-group">
-		<label class="control-label" form="timeseries">Observed Properties
-			Parameters</label>
+	<div class="control-group">
+		<label class="control-label" form="timeseries">Phenomenon</label>
 		<div class="controls">
-			<select multiple class="form-control" name="t4Service" id="t4Service">
-				<c:forEach items="${observedProperties}" var="pp">
-					<option selected="selected"><c:out
-							value="${pp.getLabel()}" /></option>
+			<select multiple class="form-control" name="t3Service" id="t3Service">
+				<c:forEach items="${phenomenon}" var="pp">
+					<option><c:out value="${pp.getDomainId()}" /></option>
 				</c:forEach>
 			</select>
 		</div>
-	</div> --%>
+	</div>
 </form>

@@ -44,18 +44,21 @@
 				name="subjectDomain" placeholder="Subject Domain URL" />
 			<p class="help-block">URL for restricting the user role</p>
 		</div>
+
+		<br /> <br /> <a id="btnAddPermission"
+			href="/protector-webapp/editor/newPermission" class="btn btn-default"
+			title="Add Permission"> <span class="glyphicon glyphicon-plus"></span>
+		</a> &nbsp;
+		<button type="button" id="btnDeletePermission" class="btn btn-default"
+			title="Delete Permission">
+			<span class="glyphicon glyphicon-trash"></span>
+		</button>
+		<div class="table-responsive">
+			<tiles:insertDefinition name="permissionTable"></tiles:insertDefinition>
+		</div>
+		<br/> <br/>
+		<button type="submit" class="btn btn-primary">Submit</button>
 	</form>
-	<br /> <br /> <a id="btnAddPermission"
-		href="/protector-webapp/editor/newPermission" class="btn btn-default"
-		title="Add Permission"> <span class="glyphicon glyphicon-plus"></span>
-	</a> &nbsp;
-	<button type="button" id="btnDeletePermission" class="btn btn-default"
-		title="Delete Permission">
-		<span class="glyphicon glyphicon-trash"></span>
-	</button>
-	<div class="table-responsive">
-		<tiles:insertDefinition name="permissionTable"></tiles:insertDefinition>
-	</div>
 </div>
 <script type="text/javascript"
 	src="<c:url value="/static/lib/js/permissionManagement.js" />">

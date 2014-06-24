@@ -99,10 +99,6 @@ public class SimplePermissionEditorController extends BaseController {
         breadCrumb.put("Permission Set","/protector-webapp/editor/new");
         mav.addObject("breadCrumb",breadCrumb);
         
-        /*
-         * The below objects will no longer be used mav.addObject("users", userService.getConfiguredUsers());
-         * mav.addObject("enforcementPoints", enforcementPointService.getEnforcementPoints());
-         */
         return mav;
     }
 
@@ -113,6 +109,7 @@ public class SimplePermissionEditorController extends BaseController {
     public ModelAndView createPermission(HttpServletRequest request)
     {
         ModelAndView mav = new ModelAndView("createPermission");
+        
         mav.addObject("users", userService.getConfiguredUsers());
         mav.addObject("pageTitle", "Create Permission");
         mav.addObject("heading", "Create Permission");
@@ -124,7 +121,6 @@ public class SimplePermissionEditorController extends BaseController {
         /* the ordering of elements maintains a rendering order for bread crumb*/
         
         breadCrumb.put("Manager","/protector-webapp/editor/");
-        System.out.println(referer[5]);
         if(referer[5].equals("edit"))
         {
             breadCrumb.put("Permission Set","/protector-webapp/editor/edit/"+referer[6]);
@@ -134,6 +130,14 @@ public class SimplePermissionEditorController extends BaseController {
         
         breadCrumb.put("Permission","/protector-webapp/editor/new");
         mav.addObject("breadCrumb",breadCrumb);
+        
+        /*Adding the timeseries parameters now*/
+        IoParameters query = IoParameters.createDefaults();
+        mav.addObject("offerings", parameterServiceProvider.getOfferingsService().getCondensedParameters(query));
+        mav.addObject("procedures", parameterServiceProvider.getProceduresService().getCondensedParameters(query));
+        mav.addObject("featuresOfInterest", parameterServiceProvider.getFeaturesService().getCondensedParameters(query));
+        mav.addObject("phenomenon", parameterServiceProvider.getPhenomenaService().getCondensedParameters(query));
+        
         return mav;
     }
 
@@ -234,7 +238,7 @@ public class SimplePermissionEditorController extends BaseController {
      * @return
      */
     @RequestMapping(value = "/save", method = RequestMethod.POST)
-    public ModelAndView createPermission(@RequestBody(required = true) PermissionSet permissionSet) {
+    public ModelAndView createPermission(@RequestBody(required = true) PermissionSetOutput permissionSet) {
 
         PermissionSet result = simplePermissionService.getPermissionSet(permissionSet.getName());
         if (result != null) {
@@ -247,8 +251,10 @@ public class SimplePermissionEditorController extends BaseController {
         catch (PermissionManagementException e) {
             throw new InternalServerException("Could not create resource.", e);
         }
-        ModelAndView mav = new ModelAndView("resultView");
-        return mav.addObject(result);
+        
+        ModelAndView mav = new ModelAndView("listPermissionSets");
+        mav.addObject("permissionSets", simplePermissionService.getPermissionSets());
+        return mav;
     }
 
     /**
@@ -262,6 +268,7 @@ public class SimplePermissionEditorController extends BaseController {
         mav.addObject("offerings", parameterServiceProvider.getOfferingsService().getCondensedParameters(query));
         mav.addObject("procedures", parameterServiceProvider.getProceduresService().getCondensedParameters(query));
         mav.addObject("featuresOfInterest", parameterServiceProvider.getFeaturesService().getCondensedParameters(query));
+        mav.addObject("phenomenon", parameterServiceProvider.getPhenomenaService().getCondensedParameters(query));
         return mav;
     }
 

@@ -26,41 +26,128 @@
  * PARTICULAR PURPOSE. See the GNU General Public License for more details.
  */
 $(document)
-		.ready(
-				function() {
+.ready(
+		function() {
 
-					/*
-					 * functionality for select all checkbox in permission
-					 * management screen
-					 */
-					$("#selectAllPermission").click(
-							function(event) {
-								$("#permissionTable input[type='checkbox']")
-										.attr("checked", this.checked);
-							});
-
-					$("#permissionTable tr td input[type='checkbox']")
-							.click(
-									function(event) {
-										if ($("#permissionTable tr td input[type='checkbox']").length == $("#permissionTable tr td input:checked").length) {
-											$("#selectAllPermission").attr(
-													"checked", "checked");
-										} else {
-											$("#selectAllPermission")
-													.removeAttr("checked");
-										}
-									});
-					/*
-					 * Functionality for sorting and searching
-					 * on permission table
-					 * */
-					$("#permissionTable").dataTable({
-						"paging":   false,
-						"order": [ 1, 'asc' ],
-						"columnDefs": [
-						               { "orderable": false, "targets": 0 }
-						               ]
+			/*
+			 * functionality for select all checkbox in permission
+			 * management screen
+			 */
+			$("#selectAllPermission").click(
+					function(event) {
+						$("#permissionTable input[type='checkbox']")
+						.attr("checked", this.checked);
 					});
-					
-					
-				});
+
+			$("#permissionTable tr td input[type='checkbox']")
+			.click(
+					function(event) {
+						if ($("#permissionTable tr td input[type='checkbox']").length == $("#permissionTable tr td input:checked").length) {
+							$("#selectAllPermission").attr(
+									"checked", "checked");
+						} else {
+							$("#selectAllPermission")
+							.removeAttr("checked");
+						}
+					});
+			/*
+			 * Functionality for sorting and searching on permission
+			 * table
+			 */
+			$("#permissionTable").dataTable({
+				"paging" : false,
+				"order" : [ 1, 'asc' ],
+				"columnDefs" : [ {
+					"orderable" : false,
+					"targets" : 0
+				} ]
+			});
+
+			/*
+			 * Attach a click handler to the save button for saving the
+			 * permission set
+			 */
+			$("#createPermissionSetForm")
+			.submit(
+					function(event) {
+
+						event.preventDefault();
+
+						// form action url
+						url = $(this).attr("action");
+
+						// preparing the json data, change the
+						// names for the new form
+						var name = $("#permissionSetName")
+						.val();
+						var actionDomain = $("#actionDomain")
+						.val();
+						var subjectDomain = $("#subjectDomain")
+						.val();
+						var resourceDomain = $(
+						"#resourceDomain").val();
+
+						var json = {
+
+								"name" : name,
+								"resourceDomains" : [ 
+								                     resourceDomain
+								                     ],
+								                     "actionDomains" : [ 
+								                                        actionDomain
+								                                        ],
+								                                        "subjectDomains" : [ 
+								                                                            subjectDomain
+								                                                            ],
+								                                                            "subPermissions" : [ {
+								                                                            	"name" : "full_access",
+								                                                            	"resources" : [
+								                                                            	               {
+								                                                            	            	   "m_value" : "offerings/*",
+								                                                            	            	   "m_domains" : []
+								                                                            	               },
+								                                                            	               {
+								                                                            	            	   "m_value" : "procedures/*",
+								                                                            	            	   "m_domains" : []
+								                                                            	               },
+								                                                            	               {
+								                                                            	            	   "m_value" : "observedProperties/*",
+								                                                            	            	   "m_domains" : []
+								                                                            	               } ],
+								                                                            	               "actions" : [ {
+								                                                            	            	   "m_value" : "operations/*",
+								                                                            	            	   "m_domains" : []
+								                                                            	               } ],
+								                                                            	               "subjects" : [ {
+								                                                            	            	   "m_value" : "t-sos",
+								                                                            	            	   "m_domains" : []
+								                                                            	               } ],
+								                                                            	               "obligations" : []
+								                                                            } ]
+
+						};
+						$
+						.ajax(
+								{
+									url : url,
+									data : JSON
+									.stringify(json),
+									contentType : "application/json",
+									type : "POST",
+									beforeSend : function(
+											xhr) {
+										xhr
+										.setRequestHeader(
+												"Accept",
+										"application/json");
+										xhr
+										.setRequestHeader(
+												"Content-Type",
+										"application/json");
+									}
+								}).done(function() {
+									// alert("done");
+								});
+					});
+
+		});

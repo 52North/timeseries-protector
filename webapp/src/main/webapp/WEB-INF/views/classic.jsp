@@ -55,6 +55,7 @@
 	<h1>
 		<center>${heading}</center>
 	</h1>
+	<br/>
 	<ol class="breadcrumb">
 		<c:forEach varStatus="loop" items="${breadCrumb}" var="entry">
 			<c:choose>
@@ -70,7 +71,7 @@
 	<tiles:insertAttribute name="body" />
 
 	<br />
-	<br />
+
 
 	<center>
 		<tiles:insertAttribute name="footer" />
