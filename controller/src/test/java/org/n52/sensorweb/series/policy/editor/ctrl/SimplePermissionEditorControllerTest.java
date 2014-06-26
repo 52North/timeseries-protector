@@ -59,7 +59,7 @@ public class SimplePermissionEditorControllerTest {
 
     @Test
     public void testListPermission() {
-        ModelAndView mav = controller.listPermissions();
+        ModelAndView mav = controller.listPermissions(null);
         Assert.assertThat(mav.getViewName(), is("listPermissionSets"));
         Assert.assertTrue(mav.getModel().containsKey("permissionSets"));
 

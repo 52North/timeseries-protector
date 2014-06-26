@@ -166,4 +166,8 @@
 		<param-name>MAIL_SSL_ENABLE</param-name>
 		<param-value>${mail.ssl.enable}</param-value>
 	</context-param>
+
+    <welcome-file-list>
+        <welcome-file>index.html</welcome-file>
+    </welcome-file-list>
 </web-app>

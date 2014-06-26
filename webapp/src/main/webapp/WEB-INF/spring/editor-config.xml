@@ -50,7 +50,12 @@
     </bean>
 
     <bean id="enforcementPointService" class="org.n52.sensorweb.series.policy.editor.srv.impl.PreconfiguredEnforcementPointService" >
-
+        <property name="epServices">
+            <util:map>
+                <entry key="epSOS_1" value="http://wss.url/context_1/" />
+                <entry key="epSOS_2" value="http://wss.url/context_2/" />
+            </util:map>
+        </property>
     </bean>
 
     <bean id="userService" class="org.n52.sensorweb.series.policy.editor.srv.impl.PreconfiguredUserService">
@@ -64,5 +69,5 @@
             </util:list>
         </property>
     </bean>
-	
+
 </beans>
