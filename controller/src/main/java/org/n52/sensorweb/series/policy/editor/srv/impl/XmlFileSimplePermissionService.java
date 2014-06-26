@@ -83,10 +83,10 @@ public class XmlFileSimplePermissionService implements SimplePermissionService, 
     private String getCheckedConfiguredFile() throws IOException {
         URL url = getClass().getResource(getPermissionFile());
         if (url == null) {
+            LOGGER.info("Permissions File: '" + permissionFile + "'");
             File file = new File(getPermissionFile());
             writer.createEmptyPermissionFileIfNotExist(file);
             permissionFile = file.toPath().toString();
-            LOGGER.info("Permissions File: '" + permissionFile + "'");
             return permissionFile;
         }
         return url.getFile();
