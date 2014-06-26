@@ -68,7 +68,7 @@
 					</c:otherwise>
 				</c:choose></td>
 			<td><a id="btn#${permissions.getName()}"
-				href="/protector-webapp/editor/edit/${permissionSet.getName()}/${permissions.getName()}"
+				href="<c:url value="/editor/edit/${permissionSet.getName()}/${permissions.getName()}" />"
 				class="btn btn-default btn-xs" role="button">MODIFY</a></td>
 		</tr>
 	</c:forEach>

@@ -32,42 +32,6 @@ $(document)
 .ready(
 		function() {
 
-			/* Attach a click handler to the save button for saving the
-			 *  permission set
-			 */ 
-			$("#save").click(
-					function(event) {
-
-						// get the create permission form object
-						var frm = $("#create");
-
-						// form action url
-						url = frm.attr("action");
-						// preparing the json data, change the names for the new form
-						var name = $("#permissionset-name").val();
-						var type = $("#epService").val();
-						var userRole = $("#subject-domain").val();
-						var json = {
-								"m_subjectDomains" : userRole,
-								"m_name" : name
-						};
-						$.ajax(
-								{
-									url : url,
-									data : JSON.stringify(json),
-									contentType : "application/json",
-									type : "POST",
-									beforeSend : function(xhr) {
-										xhr.setRequestHeader("Accept",
-										"application/json");
-										xhr.setRequestHeader(
-												"Content-Type",
-										"application/json");
-									}
-								}).done(function() {
-									// alert("done");
-								});
-					});
 			/*
 			 * Functionality for sorting and searching
 			 * on permission set table

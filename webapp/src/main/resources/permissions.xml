@@ -15,10 +15,12 @@
         xmlns="http://www.52north.org/security/simple-permission/1.0"
         xsi:schemaLocation="http://www.52north.org/security/simple-permission/1.0 
         http://52north.org/schema/security/policy/simple-permission/1.0/simple-permission.xsd">
-    <PermissionSet name="sos">
-        <ResourceDomain value="${config.wss.url.base}/${config.wss.url.context}/service/sos_kvp/*"/>
-        <ActionDomain value="${config.wss.url.base}/${config.wss.url.context}/service/sos_kvp/*"/>
-        <SubjectDomain value="urn:n52:security:subject:role"/>
+    <PermissionSet name="52n_SOS_KVP">
+        <ResourceDomain value="http://gsoc.dev.52north.org:8094/wss/service/52nDemoServer_SOS_KVP/httpauth"/>
+        <ActionDomain value="http://gsoc.dev.52north.org:8094/wss/service/52nDemoServer_SOS_KVP/httpauth"/>
+        <SubjectDomain value="urn:conterra:names:sdi-suite:policy:attribute:role"/>
+        <!--
+        
         <Permission name="full_access">
             <Resource value="offerings/*"/>
             <Resource value="procedures/*"/>
@@ -50,6 +52,7 @@
             <Action value="operations/UpdateSensorDescription"/>
             <Subject value="sensorManager"/>
         </Permission>
+        -->
         <Permission name="read_only_access">
             <Resource value="offerings/*"/>
 <!--             <Resource value="procedures/*"/> -->

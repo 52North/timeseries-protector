@@ -41,6 +41,20 @@
 								<!-- do not serialize NULL values -->
 								<value type="com.fasterxml.jackson.annotation.JsonInclude.Include">NON_NULL</value>
 							</property>
+							<property name="mixInAnnotations">
+								<util:map>
+									<entry>
+										<key>
+											<value>
+												org.n52.security.service.pdp.simplepermission.PermissionSet
+											</value>
+										</key>
+										<value>
+											org.n52.sensorweb.series.policy.editor.ctrl.MixIn
+										</value>
+									</entry>
+								</util:map>
+							</property>
 						</bean>
 					</property>
 				</bean>

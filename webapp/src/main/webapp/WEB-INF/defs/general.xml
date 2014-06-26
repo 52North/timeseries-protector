@@ -24,9 +24,6 @@
     <definition name="actionScreen" template="/WEB-INF/views/editor/actionCreatePermission.jsp">
     </definition>
     
-    <definition name="obligationScreen" template="/WEB-INF/views/editor/obligationsCreatePermission.jsp">
-    </definition>
-    
     <definition name="permissionTable" template="/WEB-INF/views/editor/permissionTable.jsp">
     </definition>
     
