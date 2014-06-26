@@ -46,7 +46,7 @@
 		</div>
 
 		<br /> <br /> <a id="btnAddPermission"
-			href="/protector-webapp-0.0.1-SNAPSHOT/editor/newPermission" class="btn btn-default"
+			href="<c:url value="/editor/newPermission" />" class="btn btn-default"
 			title="Add Permission"> <span class="glyphicon glyphicon-plus"></span>
 		</a> &nbsp;
 		<button type="button" id="btnDeletePermission" class="btn btn-default"
