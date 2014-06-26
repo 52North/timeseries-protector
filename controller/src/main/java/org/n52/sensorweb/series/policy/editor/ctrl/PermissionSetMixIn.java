@@ -34,10 +34,10 @@ import org.n52.security.service.pdp.simplepermission.Permission;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-public abstract class MixIn {
+public abstract class PermissionSetMixIn {
 
     @JsonCreator
-    public MixIn(@JsonProperty("name") String m_name,@JsonProperty("resourceDomains") List<String> m_resourceDomains,
+    public PermissionSetMixIn(@JsonProperty("name") String m_name,@JsonProperty("resourceDomains") List<String> m_resourceDomains,
                  @JsonProperty("actionDomains") List<String> m_actionDomains,
                  @JsonProperty("subjectDomains") List<String> m_subjectDomains,
                  @JsonProperty("subPermissions") List<Permission> m_subPermissions) {

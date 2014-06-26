@@ -46,7 +46,7 @@
          ####################### -->
 
     <bean id="simplePermissionService" class="org.n52.sensorweb.series.policy.editor.srv.impl.XmlFileSimplePermissionService" init-method="init">
-        <property name="permissionFile" value="/opt/data/timeseries-protector-shared/permission.xml" />
+        <property name="permissionFile" value="/WEB-INF/classes/permissions.xml" />
     </bean>
 
     <bean id="enforcementPointService" class="org.n52.sensorweb.series.policy.editor.srv.impl.PreconfiguredEnforcementPointService" >
@@ -69,5 +69,5 @@
             </util:list>
         </property>
     </bean>
-	
+
 </beans>
