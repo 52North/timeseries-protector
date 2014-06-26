@@ -45,6 +45,26 @@
 								<util:map>
 									<entry>
 										<key>
+											<value> 
+												org.n52.security.service.pdp.simplepermission.TargetValue
+											</value>
+										</key>
+										<value>
+											org.n52.sensorweb.series.policy.editor.ctrl.MixInTargetValue
+										</value>
+									</entry>
+									<entry>
+										<key>
+											<value> 
+												org.n52.security.service.pdp.simplepermission.Permission
+											</value>
+										</key>
+										<value>
+											org.n52.sensorweb.series.policy.editor.ctrl.MixInPermission
+										</value>
+									</entry>
+									<entry>
+										<key>
 											<value>
 												org.n52.security.service.pdp.simplepermission.PermissionSet
 											</value>
