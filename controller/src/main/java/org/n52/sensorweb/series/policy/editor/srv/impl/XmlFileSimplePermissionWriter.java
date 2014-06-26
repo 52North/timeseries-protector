@@ -77,11 +77,11 @@ public class XmlFileSimplePermissionWriter {
      * @throws IOException if saving the file fails.
      */
     public File createEmptyPermissionFileIfNotExist(File file) throws IOException {
+        LOGGER.info("Create new permission file: '" + file.getAbsolutePath() + "'.");
         if (file.createNewFile()) {
-            LOGGER.info("New permissions file created: '" + file.getAbsolutePath() + "'.");
             save(new ArrayList<PermissionSet>(), file);
         } else {
-            LOGGER.info("Existing permissions file: '" + file.getAbsolutePath() + "'.");
+            LOGGER.info("Permissions file already exists!");
         }
         return file;
     }
