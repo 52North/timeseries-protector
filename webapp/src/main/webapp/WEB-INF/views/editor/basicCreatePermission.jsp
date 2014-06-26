@@ -1,8 +1,10 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
-
+<div class="panel panel-default">
+  <div class="panel-heading">Basic Info</div>
+  <div class="panel-body">
 <div class="form-group">
 	<label class="control-label">* Permission Name :</label> <input
-		style="margin-top: 5px" id="permissionName" class="form-control"
+		style="margin-top: 5px" autofocus id="permissionName" class="form-control"
 		type="text" value="${permission.getName()}" name="permissionName"
 		placeholder="Permission Name" />
 </div>
@@ -22,4 +24,6 @@
 			</c:if>
 		</c:forEach>
 	</select>
+</div>
+</div>
 </div>

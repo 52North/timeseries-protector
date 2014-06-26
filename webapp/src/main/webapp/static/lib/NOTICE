@@ -39,6 +39,7 @@ This project includes:
   Batik utility library under The Apache Software License, Version 2.0
   Batik XML utility library under The Apache Software License, Version 2.0
   Bean Validation API under Apache License, Version 2.0
+  Bootstrap CSS under The MIT License
   Codec under The Apache Software License, Version 2.0
   Commons Codec under The Apache Software License, Version 2.0
   Commons Lang under The Apache Software License, Version 2.0
@@ -47,6 +48,7 @@ This project includes:
   Connector for an ArcGIS SOS extension. under GNU General Public License, v2.0
   core under GNU GENERAL PUBLIC LICENSE Version 2, June 1991
   CORS Filter under The Apache Software License, Version 2.0
+  Data Tables under the MIT License
   EPSG Authority Service using HSQL database under Lesser General Public License (LGPL) or EPSG database distribution license or BSD License for HSQL
   FindBugs-jsr305 under The Apache Software License, Version 2.0
   gimv under The Apache Software License, Version 2.0

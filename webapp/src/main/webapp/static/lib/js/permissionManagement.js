@@ -3,7 +3,7 @@
  * Software GmbH
  *
  * This program is free software; you can redistribute it and/or modify it under
- * the terms of the GNU General Public License version 2 as published by the Free
+ * the terms of the GNU General Public License version 2 as publishedby the Free
  * Software Foundation.
  *
  * If the program is linked with libraries which are licensed under one of the
@@ -25,89 +25,129 @@
  * WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
  * PARTICULAR PURPOSE. See the GNU General Public License for more details.
  */
-$(document).ready(function(){
+$(document)
+.ready(
+		function() {
 
-	/*
-	 * functionality for select all checkbox
-	 * in permission management screen
-	 * */
-	$("#selectAllPermission").click( 
-			function(event) {
-				$("#permissionTable input[type='checkbox']")
-				.attr("checked", this.checked);
+			/*
+			 * functionality for select all checkbox in permission
+			 * management screen
+			 */
+			$("#selectAllPermission").click(
+					function(event) {
+						$("#permissionTable input[type='checkbox']")
+						.attr("checked", this.checked);
+					});
+
+			$("#permissionTable tr td input[type='checkbox']")
+			.click(
+					function(event) {
+						if ($("#permissionTable tr td input[type='checkbox']").length == $("#permissionTable tr td input:checked").length) {
+							$("#selectAllPermission").attr(
+									"checked", "checked");
+						} else {
+							$("#selectAllPermission")
+							.removeAttr("checked");
+						}
+					});
+			/*
+			 * Functionality for sorting and searching on permission
+			 * table
+			 */
+			$("#permissionTable").dataTable({
+				"paging" : false,
+				"order" : [ 1, 'asc' ],
+				"columnDefs" : [ {
+					"orderable" : false,
+					"targets" : 0
+				} ]
 			});
 
-	$("#permissionTable tr td input[type='checkbox']")
-	.click(
-			function(event) {
-				if ($("#permissionTable tr td input[type='checkbox']").length == $("#permissionTable tr td input:checked").length) {
-					$("#selectAllPermission").attr("checked",
-					"checked");
-				} else {
-					$("#selectAllPermission").removeAttr(
-					"checked");
-				}
-			});
+			/*
+			 * Attach a click handler to the save button for saving the
+			 * permission set
+			 */
+			$("#createPermissionSetForm")
+			.submit(
+					function(event) {
 
-	/*
-	 * Method for displaying input box only if the
-	 * resource is selected
-	 */
-	$("#modalContentPermission .checkbox input[type='checkbox']").click(
-			function() 
-			{
-				if (this.checked) 
-				{
-					$("#" + this.id + "Input").show();
-				} else 
-				{
-					$("#" + this.id + "Input").hide();
-				}
+						event.preventDefault();
 
-			});
+						// form action url
+						url = $(this).attr("action");
 
-	$("#btnAddPermission").click(function(event)
-			{
-		$.ajax({
-			url:window.location.href+"newPermission",
-			type:"POST",
-			success: function(response)
-			{
-				$("#createPermisisonContainer").html(response);
-				$("#basicScreen").modal({
-					backdrop:true,
-					keyboard:true,
-					show:true
-				});
-			}
+						// preparing the json data, change the
+						// names for the new form
+						var name = $("#permissionSetName")
+						.val();
+						var actionDomain = $("#actionDomain")
+						.val();
+						var subjectDomain = $("#subjectDomain")
+						.val();
+						var resourceDomain = $(
+						"#resourceDomain").val();
+
+						var json = {
+
+								"name" : name,
+								"resourceDomains" : [ 
+								                     resourceDomain
+								                     ],
+								                     "actionDomains" : [ 
+								                                        actionDomain
+								                                        ],
+								                                        "subjectDomains" : [ 
+								                                                            subjectDomain
+								                                                            ],
+								                                                            "subPermissions" : [ {
+								                                                            	"name" : "full_access",
+								                                                            	"resources" : [
+								                                                            	               {
+								                                                            	            	   "m_value" : "offerings/*",
+								                                                            	            	   "m_domains" : []
+								                                                            	               },
+								                                                            	               {
+								                                                            	            	   "m_value" : "procedures/*",
+								                                                            	            	   "m_domains" : []
+								                                                            	               },
+								                                                            	               {
+								                                                            	            	   "m_value" : "observedProperties/*",
+								                                                            	            	   "m_domains" : []
+								                                                            	               } ],
+								                                                            	               "actions" : [ {
+								                                                            	            	   "m_value" : "operations/*",
+								                                                            	            	   "m_domains" : []
+								                                                            	               } ],
+								                                                            	               "subjects" : [ {
+								                                                            	            	   "m_value" : "t-sos",
+								                                                            	            	   "m_domains" : []
+								                                                            	               } ],
+								                                                            	               "obligations" : []
+								                                                            } ]
+
+						};
+						$
+						.ajax(
+								{
+									url : url,
+									data : JSON
+									.stringify(json),
+									contentType : "application/json",
+									type : "POST",
+									beforeSend : function(
+											xhr) {
+										xhr
+										.setRequestHeader(
+												"Accept",
+										"application/json");
+										xhr
+										.setRequestHeader(
+												"Content-Type",
+										"application/json");
+									}
+								}).done(function() {
+									// alert("done");
+								});
+					});
+
 		});
-			}		
-	);
-
-	/*
-	 * Method for displaying the selected permission
-	 * for modifying
-	 * */
-	$("#permissionTable button").click(
-			function(event)
-			{
-				var permissionName=this.id.split("#")[1];
-				$.ajax({
-					type:"GET",
-					url:window.location.href+"edit/"+$("#permissionSetName").val()+"/"+permissionName,
-					success: function(response)
-					{
-						$("#createPermisisonContainer").html(response);	
-						$(".modal-title").html("Modify "+permissionName);
-						$("#basicScreen").modal({
-							backdrop:true,
-							keyboard:true,
-							show:true
-						});
-					}
-				});
-			}
-	);
-	
-});
-

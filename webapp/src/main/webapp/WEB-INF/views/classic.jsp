@@ -25,7 +25,7 @@
 	src="<c:url value="/static/lib/js/docs.min.js" />"></script>
 
 <!-- Workaround for multiple modals for Bootstrap  -->
-<link rel="stylesheet"
+<%-- <link rel="stylesheet"
 	href="<c:url value="/static/lib/css/bootstrap-modal-bs3patch.css" />"
 	type="text/css" />
 <script type="text/javascript"
@@ -34,13 +34,13 @@
 	src="<c:url value="/static/lib/js/bootstrap-modal.js" />"></script>
 <link rel="stylesheet"
 	href="<c:url value="/static/lib/css/bootstrap-modal.css" />"
-	type="text/css" />
+	type="text/css" /> --%>
 
 <!-- Files for Data Tables used for sorting and searching -->
 <script type="text/javascript"
 	src="//cdn.datatables.net/1.10.0/js/jquery.dataTables.js"></script>
 <script type="text/javascript"
-	src="//cdn.datatables.net/plug-ins/be7019ee387/integration/bootstrap/3/dataTables.bootstrap.js"></script>	
+	src="//cdn.datatables.net/plug-ins/be7019ee387/integration/bootstrap/3/dataTables.bootstrap.js"></script>
 <link rel="stylesheet"
 	href="<c:url value="/static/lib/css/jquery.dataTable.css" />"
 	type="text/css" />
@@ -49,17 +49,29 @@
 	type="text/css" />
 
 
-<title><tiles:getAsString name="title" /></title>
+<title>${pageTitle}</title>
 </head>
 <body>
 	<h1>
-		<center>Timeseries Permission Manager</center>
+		<center>${heading}</center>
 	</h1>
-
+	<br/>
+	<ol class="breadcrumb">
+		<c:forEach varStatus="loop" items="${breadCrumb}" var="entry">
+			<c:choose>
+					<c:when test="${loop.index==breadCrumb.size()-1}">
+						<li class="active">${entry.key}</li>
+					</c:when>
+					<c:otherwise>
+					    <li><a href="${entry.value}"> ${entry.key} </a></li>
+					</c:otherwise>
+				</c:choose>
+		</c:forEach>
+	</ol>
 	<tiles:insertAttribute name="body" />
 
 	<br />
-	<br />
+
 
 	<center>
 		<tiles:insertAttribute name="footer" />

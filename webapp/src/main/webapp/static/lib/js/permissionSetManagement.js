@@ -3,7 +3,7 @@
  * Software GmbH
  *
  * This program is free software; you can redistribute it and/or modify it under
- * the terms of the GNU General Public License version 2 as published by the Free
+ * the terms of the GNU General Public License version 2 as publishedby the Free
  * Software Foundation.
  *
  * If the program is linked with libraries which are licensed under one of the
@@ -32,59 +32,9 @@ $(document)
 .ready(
 		function() {
 
-			$("#btnAddPermissionSet").click(function(event)
-					{
-				$.ajax({
-					url:window.location.href+"new",
-					type:"POST",
-					success: function(response)
-					{
-						$("#permissionSetModalLabel").html("Add Permission Set");
-						$("#modalContentPermissionSet").html(response);	
-					}
-				});
-					}		
-			);
-
-			/* Attach a click handler to the save button for saving the
-			 *  permission set
-			 */ 
-			$("#save").click(
-					function(event) {
-
-						// get the create permission form object
-						var frm = $("#create");
-
-						// form action url
-						url = frm.attr("action");
-						// preparing the json data, change the names for the new form
-						var name = $("#permissionset-name").val();
-						var type = $("#epService").val();
-						var userRole = $("#subject-domain").val();
-						var json = {
-								"m_subjectDomains" : userRole,
-								"m_name" : name
-						};
-						$.ajax(
-								{
-									url : url,
-									data : JSON.stringify(json),
-									contentType : "application/json",
-									type : "POST",
-									beforeSend : function(xhr) {
-										xhr.setRequestHeader("Accept",
-										"application/json");
-										xhr.setRequestHeader(
-												"Content-Type",
-										"application/json");
-									}
-								}).done(function() {
-									// alert("done");
-								});
-					});
 			/*
 			 * Functionality for sorting and searching
-			 * on tables
+			 * on permission set table
 			 * */
 			$("#permissionSetTable").dataTable({
 				"paging":   false,
@@ -191,7 +141,8 @@ $(document)
 			});
 			/*
 			 * If there were and the user confirmed the loading
-			 * all the items will be deleted in the session storage
+			 * all the items will be deleted from the session storage
+			 * and from the permission xml file
 			 * */
 			$(window).on('load', function() {
 				if (sessionStorage.length != 0) 
@@ -200,29 +151,6 @@ $(document)
 					deleteSets();
 				}
 			});
-
-			/*
-			 * This method is for opening the permission set in
-			 * the add permission dialog 
-			 * */
-			$("#permissionSetTable button").click(function(event)
-					{
-				var permissionSetName=this.id.split("#")[1];
-				$.ajax({
-					type:"POST",
-					url:window.location.href+"edit/"+permissionSetName,
-					success: function(response)
-					{
-						$("#permissionSetModalLabel").html("Modify "+permissionSetName);
-						$("#modalContentPermissionSet").html(response);	
-						$("#addNewPermissionSet").modal({
-							backdrop:true,
-							keyboard:true,
-							show:true
-						});
-					}
-				});
-					});
 
 		});
 //this part here deals with the deletion of the permission set from the arrayList

@@ -25,19 +25,24 @@
  * WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
  * PARTICULAR PURPOSE. See the GNU General Public License for more details.
  */
+
 package org.n52.sensorweb.series.policy.editor.ctrl;
 
+import java.util.LinkedHashMap;
+
+import javax.servlet.http.HttpServletRequest;
+
 import org.n52.io.IoParameters;
-import org.n52.web.BadRequestException;
-import org.n52.web.BaseController;
-import org.n52.web.InternalServerException;
-import org.n52.web.ResourceNotFoundException;
 import org.n52.security.service.pdp.simplepermission.Permission;
 import org.n52.security.service.pdp.simplepermission.PermissionSet;
 import org.n52.sensorweb.series.policy.api.PermissionManagementException;
 import org.n52.sensorweb.series.policy.editor.srv.EnforcementPointService;
 import org.n52.sensorweb.series.policy.editor.srv.SimplePermissionService;
 import org.n52.sensorweb.series.policy.editor.srv.UserService;
+import org.n52.web.BadRequestException;
+import org.n52.web.BaseController;
+import org.n52.web.InternalServerException;
+import org.n52.web.ResourceNotFoundException;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -45,8 +50,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 /**
- *
+ * 
  * @author Henning Bredel <h.bredel@52north.org>
  * @author Dushyant Sabharwal <d.sabharwal@52north.org>
  */
@@ -61,116 +67,177 @@ public class SimplePermissionEditorController extends BaseController {
     private TimeseriesService parameterServiceProvider;
 
     private UserService userService;
-
+    
+    
     /**
      * @return permissionSets to be displayed
      */
     @RequestMapping(value = "/", method = RequestMethod.GET)
-    public ModelAndView listPermissions() 
+    public ModelAndView listPermissions()
     {
         ModelAndView mav = new ModelAndView("listPermissionSets");
         mav.addObject("permissionSets", simplePermissionService.getPermissionSets());
+        mav.addObject("pageTitle", "List Permission Sets");
+        mav.addObject("heading", "Timeseries Permission Manager");
+        
+        LinkedHashMap<String,String> breadCrumb=new LinkedHashMap<String,String>();
+        breadCrumb.put("Manager","/protector-webapp/editor/");
+        mav.addObject("breadCrumb",breadCrumb);
         return mav;
     }
 
     /**
      * @return The new Create Permission set view
      */
-    @RequestMapping(value = "/new", method = RequestMethod.POST)
-    public ModelAndView createPermissions() 
+    @RequestMapping(value = "/new", method = RequestMethod.GET)
+    public ModelAndView createPermissions()
     {
         ModelAndView mav = new ModelAndView("createPermissionSet");
-        /*
-         *  The below objects will no longer be used
-         *  mav.addObject("users", userService.getConfiguredUsers());
-            mav.addObject("enforcementPoints", enforcementPointService.getEnforcementPoints());
-        */
+        mav.addObject("pageTitle", "Create Permission Set");
+        mav.addObject("heading", "Create Permission Set");
+        
+        LinkedHashMap<String,String> breadCrumb=new LinkedHashMap<String,String>();
+        /* the ordering of elements maintains a rendering order for bread crumb*/
+        breadCrumb.put("Manager","/protector-webapp/editor/");
+        breadCrumb.put("Permission Set","/protector-webapp/editor/new");
+        mav.addObject("breadCrumb",breadCrumb);
+        
         return mav;
     }
-    
+
     /**
      * @return
      */
-    @RequestMapping(value = "/newPermission", method = RequestMethod.POST)
-    public ModelAndView createPermission() 
+    @RequestMapping(value = "/newPermission", method = RequestMethod.GET)
+    public ModelAndView createPermission(HttpServletRequest request)
     {
         ModelAndView mav = new ModelAndView("createPermission");
+        
         mav.addObject("users", userService.getConfiguredUsers());
+        mav.addObject("pageTitle", "Create Permission");
+        mav.addObject("heading", "Create Permission");
+        
+        String [] referer=request.getHeader("referer").split("/");
+        
+        LinkedHashMap<String,String> breadCrumb=new LinkedHashMap<String,String>();
+        
+        /* the ordering of elements maintains a rendering order for bread crumb*/
+        
+        breadCrumb.put("Manager","/protector-webapp/editor/");
+        if(referer[5].equals("edit"))
+        {
+            breadCrumb.put("Permission Set","/protector-webapp/editor/edit/"+referer[6]);
+        }   
+        else
+            breadCrumb.put("Permission Set","/protector-webapp/editor/new");
+        
+        breadCrumb.put("Permission","/protector-webapp/editor/new");
+        mav.addObject("breadCrumb",breadCrumb);
+        
+        /*Adding the timeseries parameters now*/
+        IoParameters query = IoParameters.createDefaults();
+        mav.addObject("offerings", parameterServiceProvider.getOfferingsService().getCondensedParameters(query));
+        mav.addObject("procedures", parameterServiceProvider.getProceduresService().getCondensedParameters(query));
+        mav.addObject("featuresOfInterest", parameterServiceProvider.getFeaturesService().getCondensedParameters(query));
+        mav.addObject("phenomenon", parameterServiceProvider.getPhenomenaService().getCondensedParameters(query));
+        
         return mav;
     }
-    
+
     /**
-     * @param permissionSetName to be deleted
+     * @param permissionSetName
+     *        to be deleted
      * @return permissionSets the remaining permission sets
      */
-    @RequestMapping(value="/delete/{permissionSetName}", method=RequestMethod.POST)
+    @RequestMapping(value = "/delete/{permissionSetName}", method = RequestMethod.POST)
     public ModelAndView deletePermissionSet(@PathVariable String permissionSetName)
     {
-        ModelAndView mav= new ModelAndView("listPermissionSets");
-        //splitting the string to get features which are to be deleted one by one
-        String []sets=permissionSetName.split(",");
-        try 
+        ModelAndView mav = new ModelAndView("listPermissionSets");
+        // splitting the string to get features which are to be deleted one by one
+        String[] sets = permissionSetName.split(",");
+        try
         {
-           for(int i=0;i<sets.length;i++)
-           {
-               simplePermissionService.deletePermissionSet(sets[i]); 
-           }
+            for (int i = 0; i < sets.length; i++)
+            {
+                simplePermissionService.deletePermissionSet(sets[i]);
+            }
         }
-        catch(PermissionManagementException e)
+        catch (PermissionManagementException e)
         {
-            throw new InternalServerException("Could not delete permission set.",e);
+            throw new InternalServerException("Could not delete permission set.", e);
         }
         mav.addObject("permissionSets", simplePermissionService.getPermissionSets());
         return mav;
     }
 
     /**
-     * @param permissionSetName the permission set to be edited
+     * @param permissionSetName
+     *        the permission set to be edited
      * @return permissionSet
      */
-    @RequestMapping(value = "/edit/{permissionSetName}", method = RequestMethod.POST)
-     public ModelAndView editPermissionSet(@PathVariable String permissionSetName) 
+    @RequestMapping(value = "/edit/{permissionSetName}", method = RequestMethod.GET)
+    public ModelAndView editPermissionSet(@PathVariable String permissionSetName)
     {
         ModelAndView mav = new ModelAndView("createPermissionSet");
         PermissionSet permissionSet = simplePermissionService.getPermissionSet(permissionSetName);
-        if (permissionSet == null) 
+        if (permissionSet == null)
         {
             throw new ResourceNotFoundException("No permissionSet with name '" + permissionSetName + "'.");
         }
-        return mav.addObject(permissionSet);
-    }
-    
-    
-    /**
-     * @param permissionSetName whose permission is to be fetched
-     * @param permissionName the permission to be edited
-     * @return permission
-     */
-    @RequestMapping(value = "/edit/{permissionSetName}/{permissionName}", method = RequestMethod.GET)
-    public ModelAndView editPermission(@PathVariable String permissionSetName, @PathVariable String permissionName) 
-    {
-       ModelAndView mav = new ModelAndView("createPermission");
-       PermissionSet permissionSet = simplePermissionService.getPermissionSet(permissionSetName);
-       Permission permission = simplePermissionService.getPermission(permissionSetName, permissionName);
-       if (permissionSet == null) 
-       {
-           throw new ResourceNotFoundException("No permissionSet '" + permissionSetName + "' with permission '"+permissionName+"'");
-       }
-       if(permission == null)
-       {
-           throw new ResourceNotFoundException("No permission '" + permissionName + "' under permission set '"+permissionSetName+"'");
-       }
-       /*
-        * Added because Subject field will need user roles defined
-        * in user database
-        */
-       mav.addObject("users", userService.getConfiguredUsers());
-       mav.addObject(permission);
-       return mav;
+        mav.addObject(permissionSet);
+        mav.addObject("pageTitle", "Modify Permission Set");
+        mav.addObject("heading", "Modify " + permissionSetName);
+        
+        LinkedHashMap<String,String> breadCrumb=new LinkedHashMap<String,String>();
+        breadCrumb.put("Manager","/protector-webapp/editor/");
+        breadCrumb.put("Permission Set","/protector-webapp/editor/edit/"+permissionSetName);
+        mav.addObject("breadCrumb",breadCrumb);
+        return mav;
     }
 
     /**
-     * @param permissionSet the permission set to be saved
+     * @param permissionSetName
+     *        whose permission is to be fetched
+     * @param permissionName
+     *        the permission to be edited
+     * @return permission
+     */
+    @RequestMapping(value = "/edit/{permissionSetName}/{permissionName}", method = RequestMethod.GET)
+    public ModelAndView editPermission(@PathVariable String permissionSetName, @PathVariable String permissionName)
+    {
+        ModelAndView mav = new ModelAndView("createPermission");
+        PermissionSet permissionSet = simplePermissionService.getPermissionSet(permissionSetName);
+        Permission permission = simplePermissionService.getPermission(permissionSetName, permissionName);
+        if (permissionSet == null)
+        {
+            throw new ResourceNotFoundException("No permissionSet '" + permissionSetName + "' with permission '"
+                    + permissionName + "'");
+        }
+        if (permission == null)
+        {
+            throw new ResourceNotFoundException("No permission '" + permissionName + "' under permission set '"
+                    + permissionSetName + "'");
+        }
+        /*
+         * Added because Subject field will need user roles defined in user database
+         */
+        mav.addObject("users", userService.getConfiguredUsers());
+        mav.addObject(permission);
+        mav.addObject("pageTitle", "Modify Permission");
+        mav.addObject("heading", "Modify " + permissionName);
+        
+        LinkedHashMap<String,String> breadCrumb=new LinkedHashMap<String,String>();
+        breadCrumb.put("Manager","/protector-webapp/editor/");
+        breadCrumb.put("Permission Set","/protector-webapp/editor/edit/"+permissionSetName);
+        breadCrumb.put("Permission","/protector-webapp/editor/edit/"+permissionSetName+"/"+permissionName);
+        mav.addObject("breadCrumb",breadCrumb);
+        
+        return mav;
+    }
+
+    /**
+     * @param permissionSet
+     *        the permission set to be saved
      * @return
      */
     @RequestMapping(value = "/save", method = RequestMethod.POST)
@@ -183,25 +250,32 @@ public class SimplePermissionEditorController extends BaseController {
         }
         try {
             result = simplePermissionService.savePermissionSet(permissionSet);
-        } catch (PermissionManagementException e) {
+        }
+        catch (PermissionManagementException e) {
             throw new InternalServerException("Could not create resource.", e);
         }
-        ModelAndView mav = new ModelAndView("resultView");
-        return mav.addObject(result);
+        
+        ModelAndView mav = new ModelAndView("listPermissionSets");
+        mav.addObject("permissionSets", simplePermissionService.getPermissionSets());
+        return mav;
     }
 
     /**
      * @return
      */
     @RequestMapping(value = "/timeseries", method = RequestMethod.GET, produces = "application/json")
-    public ModelAndView listTimeseries() {
+    public ModelAndView listTimeseries()
+    {
         ModelAndView mav = new ModelAndView("timeseries");
         IoParameters query = IoParameters.createDefaults();
-        return mav.addObject("parameterProvider",parameterServiceProvider.getTimeseriesService().getCondensedParameters(query));
+        mav.addObject("offerings", parameterServiceProvider.getOfferingsService().getCondensedParameters(query));
+        mav.addObject("procedures", parameterServiceProvider.getProceduresService().getCondensedParameters(query));
+        mav.addObject("featuresOfInterest", parameterServiceProvider.getFeaturesService().getCondensedParameters(query));
+        mav.addObject("phenomenon", parameterServiceProvider.getPhenomenaService().getCondensedParameters(query));
+        return mav;
     }
 
-
-    //Getters and setters
+    // Getters and setters
     public SimplePermissionService getSimplePermissionService() {
         return simplePermissionService;
     }
@@ -233,6 +307,5 @@ public class SimplePermissionEditorController extends BaseController {
     public void setParameterServiceProvider(TimeseriesService parameterServiceProvider) {
         this.parameterServiceProvider = parameterServiceProvider;
     }
-
 
 }
