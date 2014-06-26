@@ -13,7 +13,7 @@
 		</div>
 
 		<br />
-		<a title="Add Permission Set" href="/protector-webapp-0.0.1-SNAPSHOT/editor/new" id="btnAddPermissionSet" class="btn btn-default" role="button">
+		<a title="Add Permission Set" href="<c:url value="/editor/new" />" id="btnAddPermissionSet" class="btn btn-default" role="button">
 			<span class="glyphicon glyphicon-plus"></span>
 		</a>
 		&nbsp;
@@ -62,7 +62,7 @@
 							<td><c:out value="${actionDomains}" /></td>
 						</c:forEach>
 						<td>
-							<a id="btn#${permissionSet.getName()}" href="/protector-webapp-0.0.1-SNAPSHOT/editor/edit/${permissionSet.getName()}"
+							<a id="btn#${permissionSet.getName()}" href="<c:url value="/editor/edit/${permissionSet.getName()}" />"
 								class="btn btn-default btn-xs" role="button">MODIFY</a>
 						</td>
 					</tr>
