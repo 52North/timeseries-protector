@@ -121,8 +121,7 @@ $(document)
 								                                                            	               "subjects" : [ {
 								                                                            	            	   "m_value" : "t-sos",
 								                                                            	            	   "m_domains" : []
-								                                                            	               } ],
-								                                                            	               "obligations" : []
+								                                                            	               } ]
 								                                                            } ]
 
 						};

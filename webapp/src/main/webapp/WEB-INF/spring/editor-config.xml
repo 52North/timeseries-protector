@@ -33,7 +33,7 @@
     <!-- #######################
            editor controller
          ####################### -->
-
+	
     <bean class="org.n52.sensorweb.series.policy.editor.ctrl.SimplePermissionEditorController">
         <property name="simplePermissionService" ref="simplePermissionService" />
         <property name="enforcementPointService" ref="enforcementPointService" />

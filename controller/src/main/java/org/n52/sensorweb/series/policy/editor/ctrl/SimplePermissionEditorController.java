@@ -51,6 +51,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+
 /**
  * 
  * @author Henning Bredel <h.bredel@52north.org>
@@ -58,7 +59,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
  */
 
 @Controller
-public class SimplePermissionEditorController extends BaseController {
+public class SimplePermissionEditorController extends BaseController{
 
     private SimplePermissionService simplePermissionService;
 
@@ -67,7 +68,6 @@ public class SimplePermissionEditorController extends BaseController {
     private TimeseriesService parameterServiceProvider;
 
     private UserService userService;
-    
     
     /**
      * @return permissionSets to be displayed
@@ -102,7 +102,6 @@ public class SimplePermissionEditorController extends BaseController {
         breadCrumb.put("Manager",request.getContextPath()+"/editor/");
         breadCrumb.put("Permission Set",request.getContextPath()+"/editor/new");
         mav.addObject("breadCrumb",breadCrumb);
-        
         return mav;
     }
 
@@ -308,5 +307,5 @@ public class SimplePermissionEditorController extends BaseController {
     public void setParameterServiceProvider(TimeseriesService parameterServiceProvider) {
         this.parameterServiceProvider = parameterServiceProvider;
     }
-
+	
 }
