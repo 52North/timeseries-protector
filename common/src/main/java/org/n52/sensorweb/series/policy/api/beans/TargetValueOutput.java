@@ -25,24 +25,55 @@
  * WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
  * PARTICULAR PURPOSE. See the GNU General Public License for more details.
  */
-package org.n52.sensorweb.series.policy.editor.ctrl;
+/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
 
-import java.util.List;
+package org.n52.sensorweb.series.policy.api.beans;
 
-import org.n52.security.service.pdp.simplepermission.Permission;
-
-import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import java.util.ArrayList;
+import java.util.List;
+import org.n52.security.service.pdp.simplepermission.TargetValue;
 
-public abstract class PermissionSetMixIn {
+/**
+ *
+ * @author Henning Bredel <h.bredel@52north.org>
+ */
+@JsonIgnoreProperties(ignoreUnknown = true)
+public final class TargetValueOutput {
 
-    @JsonCreator
-    public PermissionSetMixIn(@JsonProperty("name") String m_name,
-            @JsonProperty("resourceDomains") List<String> m_resourceDomains,
-            @JsonProperty("actionDomains") List<String> m_actionDomains,
-            @JsonProperty("subjectDomains") List<String> m_subjectDomains,
-            @JsonProperty("subPermissions") List<Permission> m_subPermissions) {
+    private String value;
+    private List<String> domains = new ArrayList<>();
+
+    public TargetValueOutput() {
+        // keep default constructor
     }
-;
+
+    public TargetValueOutput(TargetValue targetValue) {
+        setValue(targetValue.getValue());
+        setDomains(targetValue.getDomains());
+    }
+
+    public String getValue() {
+        return value;
+    }
+
+    public void setValue(String value) {
+        this.value = value;
+    }
+
+    public List<String> getDomains() {
+        return domains;
+    }
+
+    public void setDomains(List<String> domains) {
+        this.domains = domains;
+    }
+
+
 
 }

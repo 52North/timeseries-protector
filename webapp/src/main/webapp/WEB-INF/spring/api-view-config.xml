@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <beans xmlns="http://www.springframework.org/schema/beans"
-	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:p="http://www.springframework.org/schema/p"
-	xmlns:util="http://www.springframework.org/schema/util" xmlns:mvc="http://www.springframework.org/schema/mvc"
-	xsi:schemaLocation="
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:p="http://www.springframework.org/schema/p"
+       xmlns:util="http://www.springframework.org/schema/util" xmlns:mvc="http://www.springframework.org/schema/mvc"
+       xsi:schemaLocation="
         http://www.springframework.org/schema/beans
         http://www.springframework.org/schema/beans/spring-beans.xsd
         http://www.springframework.org/schema/context
@@ -12,60 +12,39 @@
         http://www.springframework.org/schema/mvc
         http://www.springframework.org/schema/mvc/spring-mvc-3.0.xsd">
 
-	<mvc:annotation-driven />
+    <mvc:annotation-driven />
 
-	<bean id="contentNegotiationManager"
-		class="org.springframework.web.accept.ContentNegotiationManagerFactoryBean">
-		<property name="mediaTypes">
-			<value>
-				json=application/json*
-			</value>
-		</property>
-	</bean>
-
-	<bean
-		class="org.springframework.web.servlet.view.ContentNegotiatingViewResolver">
-		<property name="viewResolvers">
-			<list>
-				<bean class="org.springframework.web.servlet.view.BeanNameViewResolver" />
-			</list>
-		</property>
-		<property name="defaultViews">
-			<list>
-				<bean
-					class="org.springframework.web.servlet.view.json.MappingJackson2JsonView">
-					<property name="extractValueFromSingleKeyModel" value="true" />
-					<property name="objectMapper" ref="objectMapper" />
-				</bean>
-			</list>
-		</property>
-		<property name="defaultContentType" value="application/json" />
-	</bean>
-
-    <bean
-        class="org.springframework.http.converter.json.MappingJackson2HttpMessageConverter">
-        <property name="objectMapper" ref="objectMapper" />
+    <bean id="contentNegotiationManager"
+          class="org.springframework.web.accept.ContentNegotiationManagerFactoryBean">
+        <property name="mediaTypes">
+            <value>
+                json=application/json*
+            </value>
+        </property>
     </bean>
 
-    <bean id="objectMapper" class="com.fasterxml.jackson.databind.ObjectMapper">
-        <property name="serializationInclusion">
-            <!-- do not serialize NULL values -->
-            <value type="com.fasterxml.jackson.annotation.JsonInclude.Include">NON_NULL</value>
+    <bean
+        class="org.springframework.web.servlet.view.ContentNegotiatingViewResolver">
+        <property name="viewResolvers">
+            <list>
+                <bean class="org.springframework.web.servlet.view.BeanNameViewResolver" />
+            </list>
         </property>
-        <property name="mixInAnnotations">
-            <util:map>
-                <entry>
-                    <key>
-                        <value>
-                            org.n52.security.service.pdp.simplepermission.PermissionSet
-                        </value>
-                    </key>
-                    <value>
-                        org.n52.sensorweb.series.policy.editor.ctrl.PermissionSetMixIn
-                    </value>
-                </entry>
-            </util:map>
+        <property name="defaultViews">
+            <list>
+                <bean
+                    class="org.springframework.web.servlet.view.json.MappingJackson2JsonView">
+                    <property name="extractValueFromSingleKeyModel" value="true" />
+                    <bean id="objectMapper" class="com.fasterxml.jackson.databind.ObjectMapper" scope="singleton">
+                        <property name="serializationInclusion">
+                             do not serialize NULL values
+                            <value type="com.fasterxml.jackson.annotation.JsonInclude.Include">NON_NULL</value>
+                        </property>
+
+                    </bean>
+            </list>
         </property>
+        <property name="defaultContentType" value="application/json" />
     </bean>
 
 </beans>
