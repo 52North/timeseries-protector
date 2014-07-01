@@ -13,7 +13,7 @@
         http://www.springframework.org/schema/mvc/spring-mvc-3.2.xsd">
 
 	<mvc:annotation-driven />
-
+	
     <import resource="timeseries-api_v1_beans.xml"/>
 
     <bean id="timeseriesServiceProvider" class="org.n52.sensorweb.series.policy.editor.ctrl.TimeseriesService">
@@ -69,5 +69,6 @@
             </util:list>
         </property>
     </bean>
-
+	
+	
 </beans>

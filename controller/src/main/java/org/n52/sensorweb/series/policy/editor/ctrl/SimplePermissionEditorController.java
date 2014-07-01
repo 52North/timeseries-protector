@@ -50,8 +50,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-
 /**
  * 
  * @author Henning Bredel <h.bredel@52north.org>
@@ -307,5 +305,5 @@ public class SimplePermissionEditorController extends BaseController{
     public void setParameterServiceProvider(TimeseriesService parameterServiceProvider) {
         this.parameterServiceProvider = parameterServiceProvider;
     }
-	
+
 }
