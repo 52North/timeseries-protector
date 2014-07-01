@@ -11,3 +11,4 @@ webapp/src/main/tmp/
 nb-configuration.xml
 nbactions.xml
 
+/pom.xml
