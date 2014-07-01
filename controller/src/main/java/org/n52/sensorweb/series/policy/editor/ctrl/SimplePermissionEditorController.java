@@ -29,13 +29,12 @@
 package org.n52.sensorweb.series.policy.editor.ctrl;
 
 import java.util.LinkedHashMap;
-
 import javax.servlet.http.HttpServletRequest;
-
 import org.n52.io.IoParameters;
 import org.n52.security.service.pdp.simplepermission.Permission;
 import org.n52.security.service.pdp.simplepermission.PermissionSet;
 import org.n52.sensorweb.series.policy.api.PermissionManagementException;
+import org.n52.sensorweb.series.policy.api.beans.PermissionSetOutput;
 import org.n52.sensorweb.series.policy.editor.srv.EnforcementPointService;
 import org.n52.sensorweb.series.policy.editor.srv.SimplePermissionService;
 import org.n52.sensorweb.series.policy.editor.srv.UserService;
@@ -50,10 +49,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-
 /**
- * 
+ *
  * @author Henning Bredel <h.bredel@52north.org>
  * @author Dushyant Sabharwal <d.sabharwal@52north.org>
  */
@@ -68,7 +65,7 @@ public class SimplePermissionEditorController extends BaseController{
     private TimeseriesService parameterServiceProvider;
 
     private UserService userService;
-    
+
     /**
      * @return permissionSets to be displayed
      */
@@ -79,7 +76,7 @@ public class SimplePermissionEditorController extends BaseController{
         mav.addObject("permissionSets", simplePermissionService.getPermissionSets());
         mav.addObject("pageTitle", "List Permission Sets");
         mav.addObject("heading", "Timeseries Permission Manager");
-        
+
         LinkedHashMap<String,String> breadCrumb=new LinkedHashMap<String,String>();
         breadCrumb.put("Manager",request.getContextPath()+"/editor/");
         mav.addObject("breadCrumb",breadCrumb);
@@ -95,13 +92,13 @@ public class SimplePermissionEditorController extends BaseController{
         ModelAndView mav = new ModelAndView("createPermissionSet");
         mav.addObject("pageTitle", "Create Permission Set");
         mav.addObject("heading", "Create Permission Set");
-        
-        
+
         LinkedHashMap<String,String> breadCrumb=new LinkedHashMap<String,String>();
         /* the ordering of elements maintains a rendering order for bread crumb*/
         breadCrumb.put("Manager",request.getContextPath()+"/editor/");
         breadCrumb.put("Permission Set",request.getContextPath()+"/editor/new");
         mav.addObject("breadCrumb",breadCrumb);
+
         return mav;
     }
 
@@ -112,15 +109,15 @@ public class SimplePermissionEditorController extends BaseController{
     public ModelAndView createPermission(HttpServletRequest request)
     {
         ModelAndView mav = new ModelAndView("createPermission");
-        
+
         mav.addObject("users", userService.getConfiguredUsers());
         mav.addObject("pageTitle", "Create Permission");
         mav.addObject("heading", "Create Permission");
-        
+
         String [] referer=request.getHeader("referer").split("/");
-        
+
         LinkedHashMap<String,String> breadCrumb=new LinkedHashMap<String,String>();
-        
+
         /* the ordering of elements maintains a rendering order for bread crumb*/
         
         breadCrumb.put("Manager",request.getContextPath()+"/editor/");
@@ -132,15 +129,16 @@ public class SimplePermissionEditorController extends BaseController{
             breadCrumb.put("Permission Set",request.getContextPath()+"/editor/new");
         
         breadCrumb.put("Permission",request.getContextPath()+"/editor/new");
+
         mav.addObject("breadCrumb",breadCrumb);
-        
+
         /*Adding the timeseries parameters now*/
         IoParameters query = IoParameters.createDefaults();
         mav.addObject("offerings", parameterServiceProvider.getOfferingsService().getCondensedParameters(query));
         mav.addObject("procedures", parameterServiceProvider.getProceduresService().getCondensedParameters(query));
         mav.addObject("featuresOfInterest", parameterServiceProvider.getFeaturesService().getCondensedParameters(query));
         mav.addObject("phenomenon", parameterServiceProvider.getPhenomenaService().getCondensedParameters(query));
-        
+
         return mav;
     }
 
@@ -187,7 +185,7 @@ public class SimplePermissionEditorController extends BaseController{
         mav.addObject(permissionSet);
         mav.addObject("pageTitle", "Modify Permission Set");
         mav.addObject("heading", "Modify " + permissionSetName);
-        
+
         LinkedHashMap<String,String> breadCrumb=new LinkedHashMap<String,String>();
         breadCrumb.put("Manager",request.getContextPath()+"/editor/");
         breadCrumb.put("Permission Set",request.getContextPath()+"/editor/edit/"+permissionSetName);
@@ -225,13 +223,13 @@ public class SimplePermissionEditorController extends BaseController{
         mav.addObject(permission);
         mav.addObject("pageTitle", "Modify Permission");
         mav.addObject("heading", "Modify " + permissionName);
-        
+
         LinkedHashMap<String,String> breadCrumb=new LinkedHashMap<String,String>();
         breadCrumb.put("Manager",request.getContextPath()+"/editor/");
         breadCrumb.put("Permission Set",request.getContextPath()+"/editor/edit/"+permissionSetName);
         breadCrumb.put("Permission",request.getContextPath()+"/editor/edit/"+permissionSetName+"/"+permissionName);
         mav.addObject("breadCrumb",breadCrumb);
-        
+
         return mav;
     }
 
@@ -240,21 +238,21 @@ public class SimplePermissionEditorController extends BaseController{
      *        the permission set to be saved
      * @return
      */
-    @RequestMapping(value = "/save", method = RequestMethod.POST)
-    public ModelAndView createPermission(@RequestBody(required = true) PermissionSet permissionSet) {
-        
+@RequestMapping(value = "/save", method = RequestMethod.POST, consumes = "application/json")
+    public ModelAndView createPermission(@RequestBody(required = true) PermissionSetOutput permissionSet) {
+
         PermissionSet result = simplePermissionService.getPermissionSet(permissionSet.getName());
         if (result != null) {
             // TODO already exists ... let GUI ask to edit/override
             throw new BadRequestException("Overriding resources not supported yet.");
         }
         try {
-            result = simplePermissionService.savePermissionSet(permissionSet);
+            result = simplePermissionService.savePermissionSet(permissionSet.getPermissionSet());
         }
         catch (PermissionManagementException e) {
             throw new InternalServerException("Could not create resource.", e);
         }
-        
+
         ModelAndView mav = new ModelAndView("listPermissionSets");
         mav.addObject("permissionSets", simplePermissionService.getPermissionSets());
         return mav;
