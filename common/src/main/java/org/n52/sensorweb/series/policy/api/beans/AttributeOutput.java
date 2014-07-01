@@ -25,22 +25,61 @@
  * WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
  * PARTICULAR PURPOSE. See the GNU General Public License for more details.
  */
-package org.n52.sensorweb.series.policy.editor.ctrl;
 
-import java.util.List;
+package org.n52.sensorweb.series.policy.api.beans;
 
-import org.n52.security.service.pdp.simplepermission.Permission;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import org.n52.security.service.pdp.simplepermission.Attribute;
 
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonProperty;
+/**
+ *
+ * @author Henning Bredel <h.bredel@52north.org>
+ */
+@JsonIgnoreProperties(ignoreUnknown = true)
+final class AttributeOutput {
 
-public class PermissionSetMixIn {
+    private String name;
 
-    @JsonCreator
-    public PermissionSetMixIn(@JsonProperty("name") String m_name,@JsonProperty("resourceDomains") List<String> m_resourceDomains,
-                 @JsonProperty("actionDomains") List<String> m_actionDomains,
-                 @JsonProperty("subjectDomains") List<String> m_subjectDomains,
-                 @JsonProperty("subPermissions") List<Permission> m_subPermissions) {
-    };
-    
+    private Object value;
+
+    private String type;
+
+    public AttributeOutput() {
+        // keep empty constructor
+    }
+
+    public AttributeOutput(Attribute attribute) {
+        setName(attribute.getName());
+        setValue(attribute.getValue());
+        setType(attribute.getType());
+    }
+
+    Attribute getAttribute() {
+        return new Attribute(getName(), getValue(), getName());
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public Object getValue() {
+        return value;
+    }
+
+    public void setValue(Object value) {
+        this.value = value;
+    }
+
+    public String getType() {
+        return type;
+    }
+
+    public void setType(String type) {
+        this.type = type;
+    }
+
 }

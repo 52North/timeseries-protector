@@ -30,39 +30,24 @@
 				<bean class="org.springframework.web.servlet.view.BeanNameViewResolver" />
 			</list>
 		</property>
-		<!-- <property name="defaultViews"> <list> <bean class="org.springframework.web.servlet.view.json.MappingJackson2JsonView" 
-			> <property name="objectMapper" ref="objectMapper" /> <property name="extractValueFromSingleKeyModel" 
-			value="true" /> </bean> </list> </property> -->
-		<property name="defaultContentType" value="application/json" />
-	</bean>
-
-	<bean
-		class="org.springframework.http.converter.json.MappingJackson2HttpMessageConverter"
-		>
-		<property name="objectMapper">
-			<bean id="objectMapper" class="com.fasterxml.jackson.databind.ObjectMapper"
-				>
-				<property name="serializationInclusion">
-					<!-- do not serialize NULL values -->
-					<value type="com.fasterxml.jackson.annotation.JsonInclude.Include">NON_NULL</value>
-				</property>
-				<property name="mixInAnnotations">
-					<util:map map-class="java.util.HashMap">
-						<entry>
-							<key>
-								<value>
-									org.n52.security.service.pdp.simplepermission.PermissionSet
-								</value>
-							</key>
-							<value>
-								org.n52.sensorweb.series.policy.editor.ctrl.PermissionSetMixIn
-							</value>
-						</entry>
-					</util:map>
-				</property>
-			</bean>
-
+		<property name="defaultViews">
+			<list>
+				<bean
+					class="org.springframework.web.servlet.view.json.MappingJackson2JsonView">
+					<property name="extractValueFromSingleKeyModel" value="true" />
+					<property name="objectMapper">
+						<bean id="objectMapper" class="com.fasterxml.jackson.databind.ObjectMapper"
+							scope="singleton">
+							<property name="serializationInclusion">
+								<!--  do not serialize NULL values -->
+								<value type="com.fasterxml.jackson.annotation.JsonInclude.Include">NON_NULL</value>
+							</property>
+						</bean>
+					</property>
+					</bean>
+			</list>
 		</property>
+		<property name="defaultContentType" value="application/json" />
 	</bean>
 
 </beans>
