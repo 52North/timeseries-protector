@@ -55,7 +55,7 @@ public final class PermissionOutput {
     private final List<ObligationOutput> obligationOutputs  = new ArrayList<>();
 
     public Permission getPermission() {
-        return new Permission(name, getResources(), getActions(), getSubjects());
+        return new Permission(name, getResources(), getActions(), getSubjects(),getObligations());
     }
 
     public PermissionOutput() {

@@ -143,9 +143,12 @@ $(document)
 										.setRequestHeader(
 												"Content-Type",
 										"application/json");
+									},
+									success: function(data,status,xhr)
+									{
+										window.location.href=xhr.getResponseHeader('Location');
+										
 									}
-								}).done(function() {
-									// alert("done");
 								});
 					});
 

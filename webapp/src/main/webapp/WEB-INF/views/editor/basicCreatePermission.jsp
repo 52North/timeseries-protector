@@ -10,7 +10,7 @@
 </div>
 
 <div class="form-group">
-	<label class="control-label">* Subject :</label> <select multiple
+	<label class="control-label">* Subject :</label> <select id="selectSubjects" multiple
 		class="form-control">
 		<c:forEach items="${users}" var="user">
 			<c:forEach items="${permission.getSubjects()}" var="subjects">
