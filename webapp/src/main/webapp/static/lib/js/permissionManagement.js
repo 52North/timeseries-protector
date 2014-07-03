@@ -113,12 +113,13 @@ $(document)
 								                                                            	               {
 								                                                            	            	   "m_value" : "observedProperties/*",
 								                                                            	            	   "m_domains" : []
-								                                                            	               } ],
-								                                                            	               "actions" : [ {
+								                                                            	               } 
+								                                                            	              ],
+								                                                            	"actions" : [ {
 								                                                            	            	   "m_value" : "operations/*",
 								                                                            	            	   "m_domains" : []
 								                                                            	               } ],
-								                                                            	               "subjects" : [ {
+								                                                            	"subjects" : [ {
 								                                                            	            	   "m_value" : "t-sos",
 								                                                            	            	   "m_domains" : []
 								                                                            	               } ]

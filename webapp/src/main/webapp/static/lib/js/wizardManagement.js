@@ -31,68 +31,105 @@ $(document).ready(function() {
 	 * Functionality for displaying the corresponding screens
 	 * for add permission
 	 * */
-	$("form div button").click(function(event){
-		var id=this.id.split("-");
-	  if(id[0]!="savePermission")
-	  {	  
-		  $("#"+id[0]).hide();
-		  $("#"+id[1]).show();
-	  }	  
-	});
 	
-	$("#savePermission").click(function(event){
-		var content="";
+	$("#createPermissionForm").submit(function(event){
+		event.preventDefault();
 		
-		content +="<tr id='row-"+$("#permissionName")+"'>";
-		content +="<td> <div class='checkbox'><label> <input id='"+$("#permissionName")+ "type='checkbox'> </label></div></td>";
-		content +="<td>"+$("#permissionName") + "</td>";
-		content += "<td>";
-		for(i=0;i<$("#selectSubjects").val().length;i++)
+		if($("#permissionSet").val()!="new")
 			{
-				content+=$("#selectSubjects").val()[i];
-				content+="<br/>";
+				/*
+				 * Prepare the json and launch the ajax attack :D
+				 * */
+			var actions=[];
+			
+			for(var i=0;i<$("#selectActions").val().length;i++)
+				{
+					items={};
+				    items["value"]="operations/"+$("#selectActions").val()[i];
+					items["domains"]=[];
+					actions.push(items);
+				}	
+			
+			var resources=[];
+			for(var i=0;i<$("#selectProcedures").val().length;i++)
+			{
+				items={};
+			    items["value"]="procedures/"+$("#selectProcedures").val()[i];
+				items["domains"]=[];
+				resources.push(items);
 			}
-		content+="</td>";
-		content+="<td>";
-		for(i=0;i<$("#selectActions").val().length;i++)
-		{
-			content+=$("#selectActions").val()[i];
-			content+="<br/>";
-		}
-		content+="</td>";
-		content+="<td>";
-		
-		for(i=0;i<$("#selectOfferings").val().length;i++)
-		{
-			content+="offerings/"+$("#selectOfferings").val()[i];
-			content+="<br/>";
-		}
-		
-		for(i=0;i<$("#selectProcedures").val().length;i++)
-		{
-			content+="procedures/"+$("#selectProcedures").val()[i];
-			content+="<br/>";
-		}
-		
-		for(i=0;i<$("#selectObservedProperties").val().length;i++)
-		{
-			content+="observedProperties/"+$("#selectObservedProperties").val()[i];
-			content+="<br/>";
-		}
-		
-		for(i=0;i<$("#selectFeaturesOfInterest").val().length;i++)
-		{
-			content+="fFeaturesOfInterest/"+$("#selectFeaturesOfInterest").val()[i];
-			content+="<br/>";
-		}
-		for(i=0;i<$("#selectActions").val().length;i++)
-		{
-			content+="allowedOperations/"+$("#selectActions").val()[i];
-			content+="<br/>";
-		}
-		content+="</td>";
-		content+="<td> Not found </td>";
-		content+="";
+			for(var i=0;i<$("#selectOfferings").val().length;i++)
+			{
+				items={};
+			    items["value"]="offerings/"+$("#selectOfferings").val()[i];
+				items["domains"]=[];
+				resources.push(items);
+			}
+			for(var i=0;i<$("#selectFeaturesOfInterest").val().length;i++)
+			{
+				items={};
+			    items["value"]="featuresOfInterest/"+$("#selectFeaturesOfInterest").val()[i];
+				items["domains"]=[];
+				resources.push(items);
+			}
+			for(var i=0;i<$("#selectObservedProperties").val().length;i++)
+			{
+				items={};
+			    items["value"]="observedProperties/"+$("#selectObservedProperties").val()[i];
+				items["domains"]=[];
+				resources.push(items);
+			}
+			for(var i=0;i<$("#selectActions").val().length;i++)
+			{
+				items={};
+			    items["value"]="allowedOperations/"+$("#selectActions").val()[i];
+				items["domains"]=[];
+				resources.push(items);
+			}
+			var subjects=[];
+			for(var i=0;i<$("#selectSubjects").val().length;i++)
+			{
+				items={};
+			    items["value"]=$("#selectSubjects").val()[i];
+				items["domains"]=[];
+				subjects.push(items);
+			}	 
+				var json= {
+					"name":	$("#permissionName").val(),
+					"resources":resources,
+					 "actions":actions,
+					 "subjects":subjects,
+					 "obligations":[]
+				};
+				
+				$.ajax({
+							url : $(this).attr("action"),
+							data : JSON.stringify(json),
+							contentType : "application/json",
+							type : "POST",
+							beforeSend : function(
+									xhr) {
+								xhr
+								.setRequestHeader(
+										"Accept",
+								"application/json");
+								xhr
+								.setRequestHeader(
+										"Content-Type",
+								"application/json");
+							},
+							success: function(data,status,xhr)
+							{
+								window.location.href=xhr.getResponseHeader('Location');
+							}
+						});
+			}
+		else
+			{
+				/*
+				 * Save data temporarily in the ui
+				 * */
+			}
 		
 	});
 	
@@ -100,3 +137,61 @@ $(document).ready(function() {
 });
 
 /***********************************End of data binding*********************************************/
+
+function prepareContent()
+{
+	var content="";
+	content +="<tr id='row-"+$("#permissionName")+"'>";
+	content +="<td> <div class='checkbox'><label> <input id='"+$("#permissionName")+ "type='checkbox'> </label></div></td>";
+	content +="<td>"+$("#permissionName") + "</td>";
+	content += "<td>";
+	for(i=0;i<$("#selectSubjects").val().length;i++)
+		{
+			content+=$("#selectSubjects").val()[i];
+			content+="<br/>";
+		}
+	content+="</td>";
+	content+="<td>";
+	for(i=0;i<$("#selectActions").val().length;i++)
+	{
+		content+=$("#selectActions").val()[i];
+		content+="<br/>";
+	}
+	content+="</td>";
+	content+="<td>";
+	
+	for(i=0;i<$("#selectOfferings").val().length;i++)
+	{
+		content+="offerings/"+$("#selectOfferings").val()[i];
+		content+="<br/>";
+	}
+	
+	for(i=0;i<$("#selectProcedures").val().length;i++)
+	{
+		content+="procedures/"+$("#selectProcedures").val()[i];
+		content+="<br/>";
+	}
+	
+	for(i=0;i<$("#selectObservedProperties").val().length;i++)
+	{
+		content+="observedProperties/"+$("#selectObservedProperties").val()[i];
+		content+="<br/>";
+	}
+	
+	for(i=0;i<$("#selectFeaturesOfInterest").val().length;i++)
+	{
+		content+="fFeaturesOfInterest/"+$("#selectFeaturesOfInterest").val()[i];
+		content+="<br/>";
+	}
+	for(i=0;i<$("#selectActions").val().length;i++)
+	{
+		content+="allowedOperations/"+$("#selectActions").val()[i];
+		content+="<br/>";
+	}
+	content+="</td>";
+	content+="<td> Not found </td>";
+	content+="";
+	
+	return content;
+
+}

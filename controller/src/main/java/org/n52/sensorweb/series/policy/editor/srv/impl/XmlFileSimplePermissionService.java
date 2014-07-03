@@ -140,7 +140,7 @@ public class XmlFileSimplePermissionService implements SimplePermissionService, 
             throw new ResourceNotFoundException("PermissionSet with name '" + permissionSetName + "' not found.");
 
         simplePermissionValidationService.checkData(permission);
-        if ( !containsPermission(permissionSet, permission))
+        if (containsPermission(permissionSet, permission))
             throw new BadRequestException("PermissionSet '" + permissionSetName + "' already contains permission with name '" + permission.getName() + "'. Try to edit it.");
 
         permissionSet.getSubPermissions().add(permission);

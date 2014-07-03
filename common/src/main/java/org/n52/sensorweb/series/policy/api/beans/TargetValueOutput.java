@@ -43,11 +43,11 @@ import org.n52.security.service.pdp.simplepermission.TargetValue;
  *
  * @author Henning Bredel <h.bredel@52north.org>
  */
-@JsonIgnoreProperties(ignoreUnknown = true)
+
 public final class TargetValueOutput {
 
     private String value;
-    private List<String> domains = new ArrayList<>();
+    private List<String> domains = new ArrayList<String>();
 
     public TargetValueOutput() {
         // keep default constructor

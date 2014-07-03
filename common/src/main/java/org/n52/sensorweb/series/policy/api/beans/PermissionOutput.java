@@ -44,15 +44,15 @@ import org.n52.security.service.pdp.simplepermission.TargetValue;
  *
  * @author Henning Bredel <h.bredel@52north.org>
  */
-@JsonIgnoreProperties(ignoreUnknown = true)
+
 public final class PermissionOutput {
 
     private String name;
 
-    private final List<TargetValueOutput> resources = new ArrayList<>();
-    private final List<TargetValueOutput> actions = new ArrayList<>();
-    private final List<TargetValueOutput> subjects = new ArrayList<>();
-    private final List<ObligationOutput> obligationOutputs  = new ArrayList<>();
+    private final List<TargetValueOutput> resources = new ArrayList<TargetValueOutput>();
+    private final List<TargetValueOutput> actions = new ArrayList<TargetValueOutput>();
+    private final List<TargetValueOutput> subjects = new ArrayList<TargetValueOutput>();
+    private final List<ObligationOutput> obligationOutputs  = new ArrayList<ObligationOutput>();
 
     public Permission getPermission() {
         return new Permission(name, getResources(), getActions(), getSubjects(),getObligations());
@@ -98,7 +98,7 @@ public final class PermissionOutput {
     }
 
     public List<Obligation> getObligations() {
-        ArrayList<Obligation> obligations = new ArrayList<>();
+        ArrayList<Obligation> obligations = new ArrayList<Obligation>();
         for (ObligationOutput obligationOutput : this.obligationOutputs) {
             obligations.add(obligationOutput.getObligation());
         }
@@ -106,7 +106,7 @@ public final class PermissionOutput {
     }
 
     private List<ObligationOutput> createObligationOutputs(List<Obligation> obligations) {
-        List<ObligationOutput> obligationOutputs = new ArrayList<>();
+        List<ObligationOutput> obligationOutputs = new ArrayList<ObligationOutput>();
         for (Obligation obligation : obligations) {
             obligationOutputs.add(new ObligationOutput(obligation));
         }
@@ -127,7 +127,7 @@ public final class PermissionOutput {
     }
 
     private List<TargetValue> createTargetValueList(List<TargetValueOutput> entries) {
-        ArrayList<TargetValue> targetValues = new ArrayList<>();
+        ArrayList<TargetValue> targetValues = new ArrayList<TargetValue>();
         for (TargetValueOutput targetValue : entries) {
             targetValues.add(new TargetValue(targetValue.getValue(), targetValue.getDomains()));
         }
@@ -135,7 +135,7 @@ public final class PermissionOutput {
     }
 
     private List<TargetValueOutput> createTargetValueOutputList(List<TargetValue> entries) {
-        ArrayList<TargetValueOutput> targetValues = new ArrayList<>();
+        ArrayList<TargetValueOutput> targetValues = new ArrayList<TargetValueOutput>();
         for (TargetValue targetValue : entries) {
             targetValues.add(new TargetValueOutput(targetValue));
         }

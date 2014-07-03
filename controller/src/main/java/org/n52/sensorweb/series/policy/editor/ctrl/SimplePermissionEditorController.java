@@ -43,7 +43,6 @@ import org.n52.sensorweb.series.policy.editor.srv.EnforcementPointService;
 import org.n52.sensorweb.series.policy.editor.srv.SimplePermissionService;
 import org.n52.sensorweb.series.policy.editor.srv.UserService;
 import org.n52.sensorweb.series.policy.editor.srv.impl.ActionValues;
-import org.n52.web.BadRequestException;
 import org.n52.web.BaseController;
 import org.n52.web.InternalServerException;
 import org.n52.web.ResourceNotFoundException;
@@ -113,8 +112,8 @@ public class SimplePermissionEditorController extends BaseController{
 	/**
 	 * @return
 	 */
-	@RequestMapping(value = "/newPermission", method = RequestMethod.GET)
-	public ModelAndView createPermission(HttpServletRequest request)
+	@RequestMapping(value = "/edit/{permissionSet}/newPermission", method = RequestMethod.GET)
+	public ModelAndView createPermission(@PathVariable String permissionSet,HttpServletRequest request)
 	{
 		ModelAndView mav = new ModelAndView("createPermission");
 
@@ -147,6 +146,9 @@ public class SimplePermissionEditorController extends BaseController{
 		mav.addObject("featuresOfInterest", parameterServiceProvider.getFeaturesService().getCondensedParameters(query));
 		mav.addObject("phenomenon", parameterServiceProvider.getPhenomenaService().getCondensedParameters(query));
 		mav.addObject("actionValues",ActionValues.getActionValues());
+
+		/* Addded to see whether the user is attempting to save a permission for non-existent permission set*/
+		mav.addObject("permissionSet",permissionSet);
 		return mav;
 	}
 
@@ -190,10 +192,13 @@ public class SimplePermissionEditorController extends BaseController{
 		{
 			throw new ResourceNotFoundException("No permissionSet with name '" + permissionSetName + "'.");
 		}
+
+		/*for page titles*/
 		mav.addObject(permissionSet);
 		mav.addObject("pageTitle", "Modify Permission Set");
 		mav.addObject("heading", "Modify " + permissionSetName);
 
+		/*for the breadcrumb*/
 		LinkedHashMap<String,String> breadCrumb=new LinkedHashMap<String,String>();
 		breadCrumb.put("Manager",request.getContextPath()+"/editor/");
 		breadCrumb.put("Permission Set",request.getContextPath()+"/editor/edit/"+permissionSetName);
@@ -229,6 +234,7 @@ public class SimplePermissionEditorController extends BaseController{
 		 */
 		mav.addObject("users", userService.getConfiguredUsers());
 		mav.addObject(permission);
+		/*for page titles*/
 		mav.addObject("pageTitle", "Modify Permission");
 		mav.addObject("heading", "Modify " + permissionName);
 
@@ -239,11 +245,15 @@ public class SimplePermissionEditorController extends BaseController{
 		mav.addObject("phenomenon", parameterServiceProvider.getPhenomenaService().getCondensedParameters(query));
 		mav.addObject("actionValues",ActionValues.getActionValues());
 
+		/*For the breadcrumb*/
 		LinkedHashMap<String,String> breadCrumb=new LinkedHashMap<String,String>();
 		breadCrumb.put("Manager",request.getContextPath()+"/editor/");
 		breadCrumb.put("Permission Set",request.getContextPath()+"/editor/edit/"+permissionSetName);
 		breadCrumb.put("Permission",request.getContextPath()+"/editor/edit/"+permissionSetName+"/"+permissionName);
 		mav.addObject("breadCrumb",breadCrumb);
+
+		/* Addded to see whether the user is attempting to save a permission for an existent permission set*/
+		mav.addObject("permissionSet",permissionSetName);
 
 		return mav;
 	}
@@ -268,11 +278,23 @@ public class SimplePermissionEditorController extends BaseController{
 		catch (PermissionManagementException e) {
 			throw new InternalServerException("Could not create resource.", e);
 		}
-
-		ModelAndView mav = new ModelAndView("listPermissionSets");
-		mav.addObject("permissionSets", simplePermissionService.getPermissionSets());
 		response.setHeader("Location",request.getContextPath()+"/editor/");
-		return mav;
+		return null;
+	}
+
+	@RequestMapping(value = "/{permissionSet}/save", method = RequestMethod.POST, consumes = "application/json")
+	public ModelAndView savePermission(@PathVariable String permissionSet,@RequestBody(required = true) PermissionOutput permission,
+			HttpServletRequest request,HttpServletResponse response) {
+		try 
+		{
+			simplePermissionService.addPermission(permissionSet, permission.getPermission());
+		} 
+		catch (PermissionManagementException e) 
+		{
+			throw new InternalServerException("Could not create resource.", e);
+		}
+		response.setHeader("Location",request.getContextPath()+"/editor/edit/"+permissionSet);
+		return null;
 	}
 
 	/**

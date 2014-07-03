@@ -45,10 +45,21 @@
 			<p class="help-block">URL for restricting the user role</p>
 		</div>
 
-		<br /> <br /> <a id="btnAddPermission"
-			href="<c:url value="/editor/newPermission" />" class="btn btn-default"
+		<br /> <br /> 
+	<c:choose>	
+	   <c:when test="${permissionSet.getName()!=''}">
+		<a id="btnAddPermission"
+			href="<c:url value="/editor/edit/${permissionSet.getName()}/newPermission" />" class="btn btn-default"
 			title="Add Permission"> <span class="glyphicon glyphicon-plus"></span>
 		</a> &nbsp;
+		</c:when>
+		<c:otherwise>
+			<a id="btnAddPermission"
+			href="<c:url value="/editor/edit/new/newPermission" />" class="btn btn-default"
+			title="Add Permission"> <span class="glyphicon glyphicon-plus"></span>
+		</a> &nbsp;
+		</c:otherwise>
+	</c:choose>	
 		<button type="button" id="btnDeletePermission" class="btn btn-default"
 			title="Delete Permission">
 			<span class="glyphicon glyphicon-trash"></span>

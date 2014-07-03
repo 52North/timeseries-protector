@@ -3,7 +3,7 @@
   <div class="panel-heading">Basic Info</div>
   <div class="panel-body">
 <div class="form-group">
-	<label class="control-label">* Permission Name :</label> <input
+	<label class="control-label">* Permission Name :</label> <input required
 		style="margin-top: 5px" autofocus id="permissionName" class="form-control"
 		type="text" value="${permission.getName()}" name="permissionName"
 		placeholder="Permission Name" />
