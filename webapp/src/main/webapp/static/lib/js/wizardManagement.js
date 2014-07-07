@@ -127,18 +127,10 @@ $(document).ready(function() {
 			}
 		else
 			{
-				/*
-				 * Save data temporarily in the browser
-				 * */
-				if(Storage!="undefined")
-				{
-					localStorage.subPermission=content;
-					window.location.href="/protector-webapp/editor/new";
-				}
+				
 			}
 		
 	});
-	
 	
 });
 

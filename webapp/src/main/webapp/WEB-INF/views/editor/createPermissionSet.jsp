@@ -26,7 +26,7 @@
 						placeholder="Permission Set Name" />
 				  </c:if>
 				  <c:if test="${permissionSet!=null}">
-					<input disabled style="margin-top: 5px" id="permissionSetName"
+					<input readOnly style="margin-top: 5px;" id="permissionSetName"
 						class="form-control" required value="${permissionSet.getName()}"
 						type="text" name="permissionSetName"
 						placeholder="Permission Set Name" />

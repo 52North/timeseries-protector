@@ -142,8 +142,8 @@ $(document)
 			$(window).on('load', function() {
 				if (sessionStorage.length != 0) 
 				{
-					clearTimeout(permissionDeleteTimeoutId);
 					deletePermissions();
+					clearTimeout(permissionDeleteTimeoutId);
 				}
 			});
 

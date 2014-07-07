@@ -17,7 +17,8 @@
 		<tiles:insertDefinition name="actionScreen"></tiles:insertDefinition>
 		 <br/>
 	</div>
-	<button id="savePermission" type="submit" class="btn btn-success">ADD</button>
+	<button id="savePermission" type="submit" class="btn btn-primary">SAVE</button>
+	
 </form>
 </div>
 <script type="text/javascript"

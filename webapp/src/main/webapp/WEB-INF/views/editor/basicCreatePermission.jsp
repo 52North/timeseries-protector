@@ -2,17 +2,18 @@
 <div class="panel panel-default">
 	<div class="panel-heading">Basic Info</div>
 	<div class="panel-body">
-		<div class="form-group">
+		<div id="nameContainer" class="form-group">
 			<label class="control-label">* Permission Name :</label>
-
-			<c:if test="${permission==null}">
+			
+			<input type="hidden" value="" id="originalName" />
+			<c:if test="${permission.getName()==''}">
 				<input required style="margin-top: 5px" autofocus
 					id="permissionName" class="form-control" type="text"
 					value="${permission.getName()}" name="permissionName"
 					placeholder="Permission Name" />
 			</c:if>
-			<c:if test="${permission!=null}">
-				<input disabled required style="margin-top: 5px" autofocus
+			<c:if test="${permission.getName()!=''}">
+				<input readOnly required style="margin-top: 5px;cursor:auto;" autofocus
 					id="permissionName" class="form-control" type="text"
 					value="${permission.getName()}" name="permissionName"
 					placeholder="Permission Name" />

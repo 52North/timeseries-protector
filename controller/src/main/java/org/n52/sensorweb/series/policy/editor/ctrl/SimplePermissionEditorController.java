@@ -278,6 +278,57 @@ public class SimplePermissionEditorController extends BaseController{
 
 		return mav;
 	}
+	
+	@RequestMapping(value = "/copy/{permissionSetName}/{permissionName}", method = RequestMethod.GET)
+	public ModelAndView copyPermission(@PathVariable String permissionSetName, @PathVariable String permissionName, HttpServletRequest request)
+	{
+		ModelAndView mav = new ModelAndView("createPermission");
+		PermissionSet permissionSet = simplePermissionService.getPermissionSet(permissionSetName);
+		Permission permission = simplePermissionService.getPermission(permissionSetName, permissionName);
+		if (permissionSet == null)
+		{
+			throw new ResourceNotFoundException("No permissionSet '" + permissionSetName + "' with permission '"
+					+ permissionName + "'");
+		}
+		if (permission == null)
+		{
+			throw new ResourceNotFoundException("No permission '" + permissionName + "' under permission set '"
+					+ permissionSetName + "'");
+		}
+		/*
+		 * Added because Subject field will need user roles defined in user database
+		 */
+		mav.addObject("users", userService.getConfiguredUsers());
+		
+		/*Emptying the name so that same name does not result*/
+		Permission copyPermission=new Permission(permission.getName(),permission.getResources(),permission.getActions(),permission.getSubjects(),permission.getObligations());
+		copyPermission.setName("");
+		mav.addObject(copyPermission);
+		
+		/*for page titles*/
+		mav.addObject("pageTitle", "Copy Permission");
+		mav.addObject("heading", "Copy " + permissionName);
+
+		IoParameters query = IoParameters.createDefaults();
+		mav.addObject("offerings", parameterServiceProvider.getOfferingsService().getCondensedParameters(query));
+		mav.addObject("procedures", parameterServiceProvider.getProceduresService().getCondensedParameters(query));
+		mav.addObject("featuresOfInterest", parameterServiceProvider.getFeaturesService().getCondensedParameters(query));
+		mav.addObject("phenomenon", parameterServiceProvider.getPhenomenaService().getCondensedParameters(query));
+		mav.addObject("actionValues",ActionValues.getActionValues());
+
+		/*For the breadcrumb*/
+		LinkedHashMap<String,String> breadCrumb=new LinkedHashMap<String,String>();
+		breadCrumb.put("Manager",request.getContextPath()+"/editor/");
+		breadCrumb.put("Permission Set",request.getContextPath()+"/editor/edit/"+permissionSetName);
+		breadCrumb.put("Permission",request.getContextPath()+"/editor/copy/"+permissionSetName+"/"+permissionName);
+		mav.addObject("breadCrumb",breadCrumb);
+
+		/* Addded to see whether the user is attempting to save a permission for an existent permission set*/
+		mav.addObject("permissionSet",permissionSetName);
+
+		return mav;
+	}
+	
 
 	/**
 	 * @param permissionSet

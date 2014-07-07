@@ -76,9 +76,15 @@ vertical-align: top;
 						<c:out value="Not Found"></c:out>
 					</c:otherwise>
 				</c:choose></td>
-			<td><a id="btn#${permissions.getName()}"
+			<td>
+			<a 
 				href="<c:url value="/editor/edit/${permissionSet.getName()}/${permissions.getName()}" />"
-				class="btn btn-default btn-xs" role="button">MODIFY</a></td>
+				class="btn btn-default btn-xs" role="button">MODIFY</a>
+			
+			<a 
+				href="<c:url value="/editor/copy/${permissionSet.getName()}/${permissions.getName()}" />"
+				class="btn btn-default btn-xs" role="button">COPY</a>
+			</td>
 		</tr>
 	</c:forEach>
 </table>
