@@ -45,7 +45,7 @@ vertical-align: top;
 			<td><c:choose>
 					<c:when test="${permissions.getActions().size()>0}">
 						<c:forEach items="${permissions.getActions()}" var="actions">
-							${fn:substringAfter(actions.getValue(),"/")}
+							<c:out value="${actions.getValue()}"></c:out>
 							<br/>
 						</c:forEach>
 					</c:when>

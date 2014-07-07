@@ -105,7 +105,7 @@ public class SimplePermissionEditorController extends BaseController{
 		breadCrumb.put("Manager",request.getContextPath()+"/editor/");
 		breadCrumb.put("Permission Set",request.getContextPath()+"/editor/new");
 		mav.addObject("breadCrumb",breadCrumb);
-
+		mav.addObject("contextUrl",request.getContextPath());
 		return mav;
 	}
 
@@ -160,7 +160,7 @@ public class SimplePermissionEditorController extends BaseController{
 	@RequestMapping(value = "/delete/{permissionSetName}", method = RequestMethod.POST)
 	public ModelAndView deletePermissionSet(@PathVariable String permissionSetName)
 	{
-		ModelAndView mav = new ModelAndView("listPermissionSets");
+		ModelAndView mav = new ModelAndView("listPermissions");
 		// splitting the string to get features which are to be deleted one by one
 		String[] sets = permissionSetName.split(",");
 		try
@@ -175,6 +175,26 @@ public class SimplePermissionEditorController extends BaseController{
 			throw new InternalServerException("Could not delete permission set.", e);
 		}
 		mav.addObject("permissionSets", simplePermissionService.getPermissionSets());
+		return mav;
+	}
+	
+	@RequestMapping(value = "/delete/{permissionSet}/{permission}", method = RequestMethod.POST)
+	public ModelAndView deletePermission(@PathVariable String permissionSet, @PathVariable String permission)
+	{
+		ModelAndView mav = new ModelAndView("createPermissionSet");
+		String [] permissions= permission.split(",");
+		try
+		{
+			for (int i = 0; i < permissions.length; i++)
+			{
+				simplePermissionService.deletePermission(permissionSet,simplePermissionService.getPermission(permissionSet,permissions[i]));
+			}
+		}
+		catch (PermissionManagementException e)
+		{
+			throw new InternalServerException("Could not delete permission.", e);
+		}
+		mav.addObject("permissionSet",simplePermissionService.getPermissionSet(permissionSet));
 		return mav;
 	}
 
@@ -194,7 +214,6 @@ public class SimplePermissionEditorController extends BaseController{
 		}
 
 		/*for page titles*/
-		mav.addObject(permissionSet);
 		mav.addObject("pageTitle", "Modify Permission Set");
 		mav.addObject("heading", "Modify " + permissionSetName);
 
@@ -203,6 +222,8 @@ public class SimplePermissionEditorController extends BaseController{
 		breadCrumb.put("Manager",request.getContextPath()+"/editor/");
 		breadCrumb.put("Permission Set",request.getContextPath()+"/editor/edit/"+permissionSetName);
 		mav.addObject("breadCrumb",breadCrumb);
+		mav.addObject("contextUrl",request.getContextPath());
+		mav.addObject("permissionSet",permissionSet);
 		return mav;
 	}
 

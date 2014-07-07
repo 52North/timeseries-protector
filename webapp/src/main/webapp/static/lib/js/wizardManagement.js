@@ -94,15 +94,16 @@ $(document).ready(function() {
 				items["domains"]=[];
 				subjects.push(items);
 			}	 
-				var json= {
+			
+			var json= {
 					"name":	$("#permissionName").val(),
 					"resources":resources,
-					 "actions":actions,
-					 "subjects":subjects,
-					 "obligations":[]
+					"actions":actions,
+					"subjects":subjects,
+					"obligations":[]
 				};
-				
-				$.ajax({
+			
+			$.ajax({
 							url : $(this).attr("action"),
 							data : JSON.stringify(json),
 							contentType : "application/json",
@@ -127,8 +128,13 @@ $(document).ready(function() {
 		else
 			{
 				/*
-				 * Save data temporarily in the ui
+				 * Save data temporarily in the browser
 				 * */
+				if(Storage!="undefined")
+				{
+					localStorage.subPermission=content;
+					window.location.href="/protector-webapp/editor/new";
+				}
 			}
 		
 	});
@@ -190,7 +196,9 @@ function prepareContent()
 	}
 	content+="</td>";
 	content+="<td> Not found </td>";
-	content+="";
+	content+="<td> <a href='#' id='btn#"+$("#permissionName")+"' ";
+	content+="class='btn btn-default btn-xs' role='button'>MODIFY</a></td>";
+				
 	
 	return content;
 

@@ -131,6 +131,7 @@ public class XmlFileSimplePermissionService implements SimplePermissionService, 
                 it.remove();
             }
         }
+        savePermissionFile();
     }
 
     @Override
@@ -140,10 +141,19 @@ public class XmlFileSimplePermissionService implements SimplePermissionService, 
             throw new ResourceNotFoundException("PermissionSet with name '" + permissionSetName + "' not found.");
 
         simplePermissionValidationService.checkData(permission);
-        if (containsPermission(permissionSet, permission))
-            throw new BadRequestException("PermissionSet '" + permissionSetName + "' already contains permission with name '" + permission.getName() + "'. Try to edit it.");
-
-        permissionSet.getSubPermissions().add(permission);
+        if(containsPermission(permissionSet, permission))
+        {
+        	Iterator<Permission> it=permissionSet.getSubPermissions().iterator();
+        	while(it.hasNext())
+        	{
+        		Permission subPermission = it.next();
+        		if(subPermission.getName().equals(permission.getName()))
+        		{
+        			it.remove();
+        		}
+        	}
+        }
+         permissionSet.getSubPermissions().add(permission);
         savePermissionFile();
     }
 
@@ -175,7 +185,18 @@ public class XmlFileSimplePermissionService implements SimplePermissionService, 
 
     @Override
     public void deletePermission(String permissionSetName, Permission permission) throws PermissionManagementException {
-
+  
+    	Iterator<Permission> itp= getPermissionSet(permissionSetName).getSubPermissions().iterator();
+        while(itp.hasNext())
+        {
+        	Permission subPermission = itp.next();
+        	if(subPermission.getName().equals(permission.getName()))
+        	{
+        		itp.remove();
+        		break;
+        	}
+        }
+        savePermissionFile();
     }
 
     /**

@@ -153,7 +153,8 @@ $(document)
 			});
 
 		});
-//this part here deals with the deletion of the permission set from the arrayList
+
+//this part here deals with the deletion of the permission set permanently
 function deleteSets() 
 {
 	$.ajax({

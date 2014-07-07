@@ -38,7 +38,7 @@ import org.n52.security.service.pdp.simplepermission.PermissionSet;
  *
  * @author Henning Bredel <h.bredel@52north.org>
  */
-@JsonIgnoreProperties(ignoreUnknown = true)
+
 public final class PermissionSetOutput {
 
     private List<String> resourceDomains = new ArrayList<String>();

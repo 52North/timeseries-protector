@@ -62,6 +62,91 @@ $(document)
 					"targets" : 0
 				} ]
 			});
+			
+			/*
+			 * Functionality for deleting the sub permissions
+			 * temporarily or permanently
+			 * */
+			$("#btnDeletePermission")
+			.click(
+					function(event) {
+						/*
+						 * fetching to see how many records are
+						 * to be deleted, which then will be
+						 * stored in the session
+						 */
+						var permissionsToDelete = $("#permissionTable label input:checked");
+						if (permissionsToDelete.length > 0) {
+							if (typeof (Storage) !== "undefined") {
+								/*
+								 * storing the names in the
+								 * session variable and will be
+								 * deleted once window is closed
+								 * or refreshed
+								 */
+								var permissionsToStore = new Array();
+								for (var i = 0; i < permissionsToDelete.length; i++) {
+									permissionsToStore[i] = permissionsToDelete[i].id;
+									/*
+									 * adding the hiding support
+									 * for multiple rows
+									 */
+									$("[id='row-" + permissionsToStore[i]+"']")
+									.hide("500");
+								}
+								sessionStorage.permissions = permissionsToStore;
+								// need to separate the undo
+								// from label
+								$("#deleteWarning")
+								.html(
+										permissionsToDelete.length
+										+ " permission(s) moved to trash ");
+								$("#undoWarning").show();
+								permissionDeleteTimeoutId = setTimeout(function(){deletePermissions();},10000);
+
+							}
+						}
+					});
+			$("#undoWarning").click(function() {
+
+				clearTimeout(permissionDeleteTimeoutId);
+
+				var ids = sessionStorage.permissions.split(",");
+
+				for (var i = 0; i < ids.length; i++) {
+					$("[id='row-" + ids[i]+"']").show("500");
+				}
+
+				sessionStorage.clear();
+
+				$("#deleteWarning").html("");
+				$(this).hide();
+			});
+
+			/* before loading unload event is fired warn the user if
+					 	there are items to be deleted
+			 */
+			$(window).on('beforeunload', function() {
+				if (sessionStorage.length != 0) 
+				{
+					clearTimeout(permissionDeleteTimeoutId);
+					permissionDeleteTimeoutId=setTimeout(function(){deletePermissions();},10000);
+					return "You have items which will be deleted";
+				}
+			});
+			/*
+			 * If there were and the user confirmed the loading
+			 * all the items will be deleted from the session storage
+			 * and from the permission xml file
+			 * */
+			$(window).on('load', function() {
+				if (sessionStorage.length != 0) 
+				{
+					clearTimeout(permissionDeleteTimeoutId);
+					deletePermissions();
+				}
+			});
+
 
 			/*
 			 * Attach a click handler to the save button for saving the
@@ -78,54 +163,64 @@ $(document)
 
 						// preparing the json data, change the
 						// names for the new form
-						var name = $("#permissionSetName")
-						.val();
-						var actionDomain = $("#actionDomain")
-						.val();
-						var subjectDomain = $("#subjectDomain")
-						.val();
-						var resourceDomain = $(
-						"#resourceDomain").val();
-
-						var json = {
-
-								"name" : name,
-								"resourceDomains" : [ 
-								                     resourceDomain
-								                     ],
-								                     "actionDomains" : [ 
-								                                        actionDomain
-								                                        ],
-								                                        "subjectDomains" : [ 
-								                                                            subjectDomain
-								                                                            ],
-								                                                            "subPermissions" : [ {
-								                                                            	"name" : "full_access",
-								                                                            	"resources" : [
-								                                                            	               {
-								                                                            	            	   "m_value" : "offerings/*",
-								                                                            	            	   "m_domains" : []
-								                                                            	               },
-								                                                            	               {
-								                                                            	            	   "m_value" : "procedures/*",
-								                                                            	            	   "m_domains" : []
-								                                                            	               },
-								                                                            	               {
-								                                                            	            	   "m_value" : "observedProperties/*",
-								                                                            	            	   "m_domains" : []
-								                                                            	               } 
-								                                                            	              ],
-								                                                            	"actions" : [ {
-								                                                            	            	   "m_value" : "operations/*",
-								                                                            	            	   "m_domains" : []
-								                                                            	               } ],
-								                                                            	"subjects" : [ {
-								                                                            	            	   "m_value" : "t-sos",
-								                                                            	            	   "m_domains" : []
-								                                                            	               } ]
-								                                                            } ]
-
+						
+						var subPermissions=[];
+						
+						var rows=$("#permissionTable tr");
+						
+						for(var i=1;i<rows.length;i++)
+						{
+							var td=$("#"+rows[i].id+" td");
+							
+							var subPermission={};
+							subPermission["name"]=td[1].innerHTML;
+							
+							var subjects=[];
+							var values=td[2].innerHTML.split("<br>");
+							for(var j=0;j<values.length-1;j++)
+							{
+								items={};
+								items["value"]=$.trim(values[j]);
+								items["domains"]=[];
+								subjects.push(items);
+							}
+							
+							var actions=[];
+							values=td[3].innerHTML.split("<br>");
+							for(j=0;j<values.length-1;j++)
+							{
+								items={};
+								items["value"]=$.trim(values[j]);
+								items["domains"]=[];
+								actions.push(items);
+							}
+							
+							var resources=[];
+							values=td[4].innerHTML.split("<br>");
+							for(j=0;j<values.length-1;j++)
+							{
+								items={};
+								items["value"]=$.trim(values[j]);
+								items["domains"]=[];
+								resources.push(items);
+							}
+							
+							subPermission["resources"]=resources;
+							subPermission["actions"]=actions;
+							subPermission["subjects"]=subjects;
+							subPermission["obligations"]=[];
+							
+							subPermissions.push(subPermission);
+						}
+						
+						var json={
+								"name":$("#permissionSetName").val(),
+								"actionDomains":[$("#actionDomain").val()],
+								"subjectDomains":[$("#subjectDomain").val()],
+								"resourceDomains":[$("#resourceDomain").val()],
+								"subPermissions":subPermissions
 						};
+						
 						$
 						.ajax(
 								{
@@ -154,3 +249,20 @@ $(document)
 					});
 
 		});
+
+											/************End of Data binding **************/
+
+//this part here deals with the deletion of the permissions permanently
+function deletePermissions() 
+{
+	$.ajax({
+		url : $("#contextUrl").val() + "/editor/delete/" +$("#permissionSetName").val()+"/"+ sessionStorage.permissions,
+		type : "POST",
+		success: function()
+		{
+			sessionStorage.clear();
+			window.location.reload(true);
+		}
+
+	});
+}

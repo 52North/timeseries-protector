@@ -72,7 +72,6 @@
 
 	<br />
 
-
 	<center>
 		<tiles:insertAttribute name="footer" />
 	</center>
