@@ -19,10 +19,18 @@
 			<label class="control-label">* Name :</label>
 			<div class="row">
 				<div class="col-xs-8">
+				  <c:if test="${permissionSet==null}">
 					<input autofocus style="margin-top: 5px" id="permissionSetName"
 						class="form-control" required value="${permissionSet.getName()}"
 						type="text" name="permissionSetName"
 						placeholder="Permission Set Name" />
+				  </c:if>
+				  <c:if test="${permissionSet!=null}">
+					<input disabled style="margin-top: 5px" id="permissionSetName"
+						class="form-control" required value="${permissionSet.getName()}"
+						type="text" name="permissionSetName"
+						placeholder="Permission Set Name" />
+				  </c:if>		
 				</div>
 			</div>
 			<p class="help-block">Permission set name</p>

@@ -223,7 +223,7 @@ public class SimplePermissionEditorController extends BaseController{
 		breadCrumb.put("Permission Set",request.getContextPath()+"/editor/edit/"+permissionSetName);
 		mav.addObject("breadCrumb",breadCrumb);
 		mav.addObject("contextUrl",request.getContextPath());
-		mav.addObject("permissionSet",permissionSet);
+		mav.addObject(permissionSet);
 		return mav;
 	}
 
