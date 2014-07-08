@@ -6,14 +6,23 @@
 			<label class="control-label">* Permission Name :</label>
 			
 			<input type="hidden" value="" id="originalName" />
-			<c:if test="${permission.getName()==''}">
+			<!-- for the new sub permission case -->
+			<c:if test="${permission==null}">
 				<input required style="margin-top: 5px" autofocus
 					id="permissionName" class="form-control" type="text"
 					value="${permission.getName()}" name="permissionName"
 					placeholder="Permission Name" />
 			</c:if>
-			<c:if test="${permission.getName()!=''}">
+			<!-- for the modify sub permission case -->
+			<c:if test="${permission!=null && permission.getName()!=''}">
 				<input readOnly required style="margin-top: 5px;cursor:auto;" autofocus
+					id="permissionName" class="form-control" type="text"
+					value="${permission.getName()}" name="permissionName"
+					placeholder="Permission Name" />
+			</c:if>
+			<!-- for the copy sub permission case -->
+			<c:if test="${permission!=null && permission.getName()==''}">
+				<input required style="margin-top: 5px" autofocus
 					id="permissionName" class="form-control" type="text"
 					value="${permission.getName()}" name="permissionName"
 					placeholder="Permission Name" />
