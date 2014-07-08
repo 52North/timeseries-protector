@@ -2,7 +2,7 @@
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
 
 <div class="panel panel-default">
-	<div class="panel-heading">Actions</div>
+	<div class="panel-heading">Operations</div>
 	<div class="panel-body">
 		<div id="action">
 			<select multiple id="selectActions" class="form-control">
