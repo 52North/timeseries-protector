@@ -2,33 +2,23 @@
 <%@ taglib uri="http://tiles.apache.org/tags-tiles" prefix="tiles"%>
 
 <div class="container-fluid">
-	<form role="form" action="#" enctype="application/json" method="POST"
+	<form role="form" action="<c:url value="/editor/${permissionSet}/save"/>" enctype="application/json" method="POST"
 		id="createPermissionForm">
-	
+	<input id="permissionSet" type="hidden" value="${permissionSet}" />
 	<div id="basicScreen">	
 		<tiles:insertDefinition name="basicScreen"></tiles:insertDefinition>
-		
-		<button id="basicScreen-resourceScreen" type="button"
-			class="btn btn-primary">Next ></button>
 	</div>
 	
-	<div id="resourceScreen" style="display:none;">
+	<div id="resourceScreen" >
 		<tiles:insertDefinition name="resourceScreen"></tiles:insertDefinition>
-		<br/> <br/>
-		<button id="resourceScreen-basicScreen" type="button"
-			class="btn btn-info">&lt; Back</button>
-		<button id="resourceScreen-actionScreen" type="button"
-			class="btn btn-primary">Next &gt;</button>
 	</div>
 	
-	<div id="actionScreen" style="display:none;">
+	<div id="actionScreen" >
 		<tiles:insertDefinition name="actionScreen"></tiles:insertDefinition>
-		<br/> <br/>
-		<button id="actionScreen-resourceScreen" type="button"
-			class="btn btn-info">&lt; Back</button>
-		<button id="savePermission" type="button" class="btn btn-success">Add
-		</button>
+		 <br/>
 	</div>
+	<button id="savePermission" type="submit" class="btn btn-primary">SAVE</button>
+	
 </form>
 </div>
 <script type="text/javascript"

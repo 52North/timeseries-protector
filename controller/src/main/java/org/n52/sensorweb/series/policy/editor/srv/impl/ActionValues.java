@@ -25,24 +25,52 @@
  * WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
  * PARTICULAR PURPOSE. See the GNU General Public License for more details.
  */
-package org.n52.sensorweb.series.policy.editor.ctrl;
+/**
+ * 
+ */
+package org.n52.sensorweb.series.policy.editor.srv.impl;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
-import org.n52.security.service.pdp.simplepermission.Permission;
+/**
+ * @author Dushyant Sabharwal
+ * Enum class containing the predefined
+ * action values for SOS enforcement point
+ *
+ */
+public enum ActionValues {
 
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonProperty;
+	GET_CAPABILITIES("GetCapabilities"),
+	GET_FEATURES_OF_INTEREST("GetFeaturesOfInterest"),
+	GET_FEATURES_OF_INTEREST_TIME("GetFeaturesOfInterestTime"),
+	GET_RESULT("GetResult"),
+	GET_OBSERVATION("GetObservation"),
+	DESCRIBE_SENSOR("DescribeSensor"),
+	DESCRIBE_FEATURE_TYPE("DescribeFeatureType"),
+	INSERT_SENSOR("InsertSensor"),
+	DELETE_SENSOR("DeleteSensor"),
+	UPDATE_SENSOR_DESCRIPTION("UpdateSensorDescription");
+	
+	private String actionValue;
+	
+	ActionValues(String actionValue)
+	{
+		this.setActionValue(actionValue);
+	}
 
-public abstract class PermissionSetMixIn {
+	public String getActionValue() {
+		return actionValue;
+	}
+	
+	public static List<ActionValues> getActionValues()
+	{
+		return new ArrayList<ActionValues>(Arrays.asList(ActionValues.values()));
+	}
 
-    @JsonCreator
-    public PermissionSetMixIn(@JsonProperty("name") String m_name,@JsonProperty("resourceDomains") List<String> m_resourceDomains,
-                 @JsonProperty("actionDomains") List<String> m_actionDomains,
-                 @JsonProperty("subjectDomains") List<String> m_subjectDomains,
-                 @JsonProperty("subPermissions") List<Permission> m_subPermissions) {
-    };
-    
-    
-
+	public void setActionValue(String actionValue) {
+		this.actionValue = actionValue;
+	}
+	
 }

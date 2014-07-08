@@ -31,45 +31,167 @@ $(document).ready(function() {
 	 * Functionality for displaying the corresponding screens
 	 * for add permission
 	 * */
-	$("form div button").click(function(event){
-		var id=this.id.split("-");
-		$("#"+id[0]).hide();
-		$("#"+id[1]).show();
-	});
 	
+	$("#createPermissionForm").submit(function(event){
+		event.preventDefault();
+		
+		if($("#permissionSet").val()!="new")
+			{
+				/*
+				 * Prepare the json and launch the ajax attack :D
+				 * */
+			var actions=[];
+			
+			for(var i=0;i<$("#selectActions").val().length;i++)
+				{
+					items={};
+				    items["value"]="operations/"+$("#selectActions").val()[i];
+					items["domains"]=[];
+					actions.push(items);
+				}	
+			
+			var resources=[];
+			for(var i=0;i<$("#selectProcedures").val().length;i++)
+			{
+				items={};
+			    items["value"]="procedures/"+$("#selectProcedures").val()[i];
+				items["domains"]=[];
+				resources.push(items);
+			}
+			for(var i=0;i<$("#selectOfferings").val().length;i++)
+			{
+				items={};
+			    items["value"]="offerings/"+$("#selectOfferings").val()[i];
+				items["domains"]=[];
+				resources.push(items);
+			}
+			for(var i=0;i<$("#selectFeaturesOfInterest").val().length;i++)
+			{
+				items={};
+			    items["value"]="featuresOfInterest/"+$("#selectFeaturesOfInterest").val()[i];
+				items["domains"]=[];
+				resources.push(items);
+			}
+			for(var i=0;i<$("#selectObservedProperties").val().length;i++)
+			{
+				items={};
+			    items["value"]="observedProperties/"+$("#selectObservedProperties").val()[i];
+				items["domains"]=[];
+				resources.push(items);
+			}
+			for(var i=0;i<$("#selectActions").val().length;i++)
+			{
+				items={};
+			    items["value"]="allowedOperations/"+$("#selectActions").val()[i];
+				items["domains"]=[];
+				resources.push(items);
+			}
+			var subjects=[];
+			for(var i=0;i<$("#selectSubjects").val().length;i++)
+			{
+				items={};
+			    items["value"]=$("#selectSubjects").val()[i];
+				items["domains"]=[];
+				subjects.push(items);
+			}	 
+			
+			var json= {
+					"name":	$("#permissionName").val(),
+					"resources":resources,
+					"actions":actions,
+					"subjects":subjects,
+					"obligations":[]
+				};
+			
+			$.ajax({
+							url : $(this).attr("action"),
+							data : JSON.stringify(json),
+							contentType : "application/json",
+							type : "POST",
+							beforeSend : function(
+									xhr) {
+								xhr
+								.setRequestHeader(
+										"Accept",
+								"application/json");
+								xhr
+								.setRequestHeader(
+										"Content-Type",
+								"application/json");
+							},
+							success: function(data,status,xhr)
+							{
+								window.location.href=xhr.getResponseHeader('Location');
+							}
+						});
+			}
+		else
+			{
+				
+			}
+		
+	});
 	
 });
 
 /***********************************End of data binding*********************************************/
 
-/******************************End of Resource Screen**************************************/
-
-/*
- * Method for appending new rows for actions on add click
- * */
-function addAction()
+function prepareContent()
 {
-	var length=$("#action .row").length;
-	length++;
+	var content="";
+	content +="<tr id='row-"+$("#permissionName")+"'>";
+	content +="<td> <div class='checkbox'><label> <input id='"+$("#permissionName")+ "type='checkbox'> </label></div></td>";
+	content +="<td>"+$("#permissionName") + "</td>";
+	content += "<td>";
+	for(i=0;i<$("#selectSubjects").val().length;i++)
+		{
+			content+=$("#selectSubjects").val()[i];
+			content+="<br/>";
+		}
+	content+="</td>";
+	content+="<td>";
+	for(i=0;i<$("#selectActions").val().length;i++)
+	{
+		content+=$("#selectActions").val()[i];
+		content+="<br/>";
+	}
+	content+="</td>";
+	content+="<td>";
+	
+	for(i=0;i<$("#selectOfferings").val().length;i++)
+	{
+		content+="offerings/"+$("#selectOfferings").val()[i];
+		content+="<br/>";
+	}
+	
+	for(i=0;i<$("#selectProcedures").val().length;i++)
+	{
+		content+="procedures/"+$("#selectProcedures").val()[i];
+		content+="<br/>";
+	}
+	
+	for(i=0;i<$("#selectObservedProperties").val().length;i++)
+	{
+		content+="observedProperties/"+$("#selectObservedProperties").val()[i];
+		content+="<br/>";
+	}
+	
+	for(i=0;i<$("#selectFeaturesOfInterest").val().length;i++)
+	{
+		content+="fFeaturesOfInterest/"+$("#selectFeaturesOfInterest").val()[i];
+		content+="<br/>";
+	}
+	for(i=0;i<$("#selectActions").val().length;i++)
+	{
+		content+="allowedOperations/"+$("#selectActions").val()[i];
+		content+="<br/>";
+	}
+	content+="</td>";
+	content+="<td> Not found </td>";
+	content+="<td> <a href='#' id='btn#"+$("#permissionName")+"' ";
+	content+="class='btn btn-default btn-xs' role='button'>MODIFY</a></td>";
+				
+	
+	return content;
 
-	var html="<div id='actionRow-"+length+"' class='row'>";
-
-	html+="<div class='col-xs-1'><button onclick='addAction();' type='button' class='btn btn-xs' title='Add Observed Properties'>" +
-	"<span class='glyphicon glyphicon-plus'></span> </button></div>";
-	html+="<div class='col-xs-9'><div class='form-group'><input id='action"+length+"' class='form-control'" +
-	" type='text' placeholder='action value' /></div></div>";
-	html+="<div class='col-xs-2'><button onclick='deleteAction(this.id);' id='deleteAction-"+length+"'" +
-	" type='button' class='btn btn-xs' title='Delete Observed Property'>" +"<span class='glyphicon glyphicon-trash'></span></button></div>";
-
-	$("#action").append(html);
 }
-
-/*
- * Method for deleting the action
- * */
-function deleteAction(id)
-{
-	$("#actionRow-"+id.split("-")[1]).remove();
-}
-
-/*******************************************End of Action Screen*************************************************/
