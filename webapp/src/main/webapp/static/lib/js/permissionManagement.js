@@ -30,6 +30,12 @@ $(document)
 		function() {
 
 			/*
+			 * Making sure that the url inputs fields have urls decoded
+			 * */
+			$("#actionDomain").val(decodeURI($("#actionDomain").val()));
+			$("#resourceDomain").val(decodeURI($("#resourceDomain").val()));
+			
+			/*
 			 * functionality for select all checkbox in permission
 			 * management screen
 			 */
@@ -173,10 +179,10 @@ $(document)
 							var td=$("#"+rows[i].id+" td");
 							
 							var subPermission={};
-							subPermission["name"]=td[1].innerHTML;
+							subPermission["name"]=td[2].innerHTML;
 							
 							var subjects=[];
-							var values=td[2].innerHTML.split("<br>");
+							var values=td[3].innerHTML.split("<br>");
 							for(var j=0;j<values.length-1;j++)
 							{
 								items={};
@@ -186,7 +192,7 @@ $(document)
 							}
 							
 							var actions=[];
-							values=td[3].innerHTML.split("<br>");
+							values=td[4].innerHTML.split("<br>");
 							for(j=0;j<values.length-1;j++)
 							{
 								items={};
@@ -196,7 +202,7 @@ $(document)
 							}
 							
 							var resources=[];
-							values=td[4].innerHTML.split("<br>");
+							values=td[5].innerHTML.split("<br>");
 							for(j=0;j<values.length-1;j++)
 							{
 								items={};
@@ -213,11 +219,14 @@ $(document)
 							subPermissions.push(subPermission);
 						}
 						
+						var resourceDomains=encodeURI($("#resourceDomain").val());
+						var actionDomains=encodeURI($("#actionDomain").val());
+						
 						var json={
 								"name":$("#permissionSetName").val(),
-								"actionDomains":[$("#actionDomain").val()],
+								"actionDomains":[actionDomains],
 								"subjectDomains":[$("#subjectDomain").val()],
-								"resourceDomains":[$("#resourceDomain").val()],
+								"resourceDomains":[resourceDomains],
 								"subPermissions":subPermissions
 						};
 						

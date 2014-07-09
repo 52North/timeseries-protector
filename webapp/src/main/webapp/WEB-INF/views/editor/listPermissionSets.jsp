@@ -32,8 +32,8 @@
 				<tr>
 					<th><input id="selectAllPermissionSet" type="checkbox" />
 						Select All</th>
+					<th>Action</th>	
 					<th>Name</th>
-					<th>Action</th>
 					<th>Subject Domain</th>
 					<th>Resource Domain</th>
 					<th>Action Domain</th>
@@ -58,11 +58,11 @@
 					</c:forEach>
 					<c:forEach items="${permissionSet.getResourceDomains()}"
 						var="resourceDomains">
-						<td><c:out value="${resourceDomains}" /></td>
+						<td id="resourceDomain"><c:out value="${resourceDomains}" /></td>
 					</c:forEach>
 					<c:forEach items="${permissionSet.getActionDomains()}"
 						var="actionDomains">
-						<td><c:out value="${actionDomains}" /></td>
+						<td id="actionDomain"><c:out value="${actionDomains}" /></td>
 					</c:forEach>
 				</tr>
 			</c:forEach>
