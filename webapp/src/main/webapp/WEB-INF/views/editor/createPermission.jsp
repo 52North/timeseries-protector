@@ -5,18 +5,20 @@
 	<form role="form" action="<c:url value="/editor/${permissionSet}/save"/>" enctype="application/json" method="POST"
 		id="createPermissionForm">
 	<input id="permissionSet" type="hidden" value="${permissionSet}" />
+	
 	<div id="basicScreen">	
 		<tiles:insertDefinition name="basicScreen"></tiles:insertDefinition>
-	</div>
-	
-	<div id="resourceScreen" >
-		<tiles:insertDefinition name="resourceScreen"></tiles:insertDefinition>
 	</div>
 	
 	<div id="actionScreen" >
 		<tiles:insertDefinition name="actionScreen"></tiles:insertDefinition>
 		 <br/>
 	</div>
+	
+	<div id="resourceScreen" >
+		<tiles:insertDefinition name="resourceScreen"></tiles:insertDefinition>
+	</div>
+	
 	<button id="savePermission" type="submit" class="btn btn-primary">SAVE</button>
 	
 </form>

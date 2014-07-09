@@ -62,7 +62,8 @@ $(document)
 			 */
 			$("#permissionTable").dataTable({
 				"paging" : false,
-				"order" : [ 1, 'asc' ],
+				"processing": true,
+				"order" : [ 2, 'asc' ],
 				"columnDefs" : [ {
 					"orderable" : false,
 					"targets" : 0
@@ -179,6 +180,11 @@ $(document)
 							var td=$("#"+rows[i].id+" td");
 							
 							var subPermission={};
+							
+							/** Have to be careful below because the td's have been indexed hardcoded which means
+							 * it should be consistent with the ordering of cells in the permissionTable.jsp
+							 * otherwise it will cause problem
+							 * **/
 							subPermission["name"]=td[2].innerHTML;
 							
 							var subjects=[];
