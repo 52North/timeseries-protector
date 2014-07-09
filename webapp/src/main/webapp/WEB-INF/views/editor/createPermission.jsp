@@ -19,6 +19,7 @@
 		<tiles:insertDefinition name="resourceScreen"></tiles:insertDefinition>
 	</div>
 	
+	<br/>
 	<button id="savePermission" type="submit" class="btn btn-primary">SAVE</button>
 	
 </form>
