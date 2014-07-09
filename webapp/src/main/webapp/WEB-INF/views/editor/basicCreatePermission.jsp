@@ -1,7 +1,7 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
-<div class="panel panel-default">
-	<div class="panel-heading">Basic Info</div>
-	<div class="panel-body">
+
+
+<br/>
 		<div id="nameContainer" class="form-group">
 			<label class="control-label">* Permission Name :</label>
 			
@@ -45,5 +45,5 @@
 				</c:forEach>
 			</select>
 		</div>
-	</div>
-</div>
+<br/>		
+<hr/>
