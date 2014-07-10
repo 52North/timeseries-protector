@@ -4,12 +4,35 @@
 <label class="control-label">* Resources</label>
 <br />
 <ul class="nav nav-tabs">
-	<li class="active"><a href="#procedures" data-toggle="tab">Procedures</a></li>
-	<li><a href="#offerings" data-toggle="tab">Offerings</a></li>
-	<li><a href="#featuresOfInterest" data-toggle="tab">Features
-			Of Interest</a></li>
-	<li><a href="#observedProperties" data-toggle="tab">Observed
-			Properties</a></li>
+ <!-- Do not change the id of the badges as the javascript will break -->
+	<li class="active">
+	   <a href="#procedures" data-toggle="tab">Procedures
+	    <span class="badge">
+	    	<span id="selectProceduresCount"></span>/ <span>${procedureLength}</span>
+	   	</span>
+	   </a>
+	</li>
+	<li>
+	   <a href="#offerings" data-toggle="tab">Offerings
+	     <span class="badge">
+	     	<span id="selectOfferingsCount"></span>/ <span>${offeringLength}</span>
+	     </span>
+	   </a>
+	</li>
+	<li>
+		<a href="#featuresOfInterest" data-toggle="tab">Features Of Interest 
+		  <span class="badge">
+		  	<span id="selectFeaturesOfInterestCount"></span>/ <span>${featureOfInterestLength}</span>
+		  </span> 
+		</a>
+	</li>
+	<li>
+	   <a href="#observedProperties" data-toggle="tab">Observed Properties
+	   		<span class="badge">
+	   			<span id="selectObservedPropertiesCount"></span>/ <span>${phenomenaLength}</span>
+	   		</span>
+	   </a>
+	 </li>
 </ul>
 
 <!-- Tab panes -->

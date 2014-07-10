@@ -21,16 +21,15 @@
 		</div>
 
 		<br />
-		<button id="savePermission" type="submit" class="btn btn-primary">Save</button>
+		<button title="Save Permission" id="savePermission" type="submit" class="btn btn-primary">Save</button>
 		<c:forEach varStatus="loop" items="${breadCrumb}" var="entry">
 			<c:choose>
 				<c:when test="${loop.index==breadCrumb.size()-2}">
-					<button onclick="window.location.href='${entry.value}'"
+					<button title="Cancel Permission" onclick="window.location.href='${entry.value}'"
 						type="button" class="btn btn-default">Cancel</button>
 				</c:when>
 			</c:choose>
 		</c:forEach>
-
 	</form>
 </div>
 <script type="text/javascript"

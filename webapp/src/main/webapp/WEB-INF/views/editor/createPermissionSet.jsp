@@ -60,7 +60,7 @@
 				class="form-control"
 				value="${permissionSet.getSubjectDomains().get(0)}" type="url"
 				name="subjectDomain" placeholder="Subject Domain URL" />
-			<p class="help-block">URL for restricting the user role</p>
+			<p class="help-block">Domain specifying the user roles which will be restricted</p>
 		</div>
 
 		<br /> <br />
@@ -88,11 +88,11 @@
 			<tiles:insertDefinition name="permissionTable"></tiles:insertDefinition>
 		</div>
 		<br /> <br />
-		<button type="submit" class="btn btn-primary">Save</button>
+		<button title="Save Permission Set" type="submit" class="btn btn-primary">Save</button>
 		<c:forEach varStatus="loop" items="${breadCrumb}" var="entry">
 			<c:choose>	
 				<c:when test="${loop.index==breadCrumb.size()-2}">
-				    <button onclick="window.location.href='${entry.value}'" type="button" class="btn btn-default">Cancel</button>
+				    <button title="Cancel Permission Set" onclick="window.location.href='${entry.value}'" type="button" class="btn btn-default">Cancel</button>
 				</c:when>
 			</c:choose>	
 		</c:forEach>
