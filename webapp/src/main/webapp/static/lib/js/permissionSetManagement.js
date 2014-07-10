@@ -35,8 +35,8 @@ $(document)
 			/*
 			 * Making sure that the url inputs fields have urls decoded
 			 * */
-			 $("#actionDomain").html(decodeURI($("#actionDomain").html()));
-			 $("#resourceDomain").html(decodeURI($("#resourceDomain").html()));
+			 $("#actionDomain").html(decodeURIComponent($("#actionDomain").html().replace(/\+/g," ")));
+			 $("#resourceDomain").html(decodeURIComponent($("#resourceDomain").html().replace(/\+/g," ")));
 			
 			/*
 			 * Functionality for sorting and searching
