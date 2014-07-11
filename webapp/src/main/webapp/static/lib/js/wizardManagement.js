@@ -28,10 +28,17 @@
 $(document).ready(function() {
 
 	/*for setting the values for badges on load */
-	$("#selectProceduresCount").html($("#selectProcedures option[selected]").length);
-	$("#selectOfferingsCount").html($("#selectOfferings option[selected]").length);
-	$("#selectFeaturesOfInterestCount").html($("#selectFeaturesOfInterest option[selected]").length);
-	$("#selectObservedPropertiesCount").html($("#selectObservedProperties option[selected]").length);
+	$.each($("select[multiple]"),function(name,value){
+		
+		$("#"+value.id+"Count").html($("#"+this.id+" option[selected]").length);
+	});
+	
+	/*for setting the total no. of values for badges on load */
+	$("#totalProceduresCount").html($("#selectProcedures option").length);
+	$("#totalOfferingsCount").html($("#selectOfferings option").length);
+	$("#totalFeaturesOfInterestCount").html($("#selectFeaturesOfInterest option").length);
+	$("#totalObservedPropertiesCount").html($("#selectObservedProperties option").length);
+	
 	/*
 	 * Functionality for displaying the count of selected
 	 * parameters in the badge
