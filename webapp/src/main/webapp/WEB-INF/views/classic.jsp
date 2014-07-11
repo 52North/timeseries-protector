@@ -52,22 +52,23 @@
 <title>${pageTitle}</title>
 </head>
 <body>
+	<ol class="breadcrumb navbar-fixed-top">
+		<c:forEach varStatus="loop" items="${breadCrumb}" var="entry">
+			<c:choose>
+				<c:when test="${loop.index==breadCrumb.size()-1}">
+					<li class="active">${entry.key}</li>
+				</c:when>
+				<c:otherwise>
+					<li><a href="${entry.value}"> ${entry.key} </a></li>
+				</c:otherwise>
+			</c:choose>
+		</c:forEach>
+	</ol>
+	
+	<br/>
 	<h1>
 		<center>${heading}</center>
 	</h1>
-	<br/>
-	<ol class="breadcrumb">
-		<c:forEach varStatus="loop" items="${breadCrumb}" var="entry">
-			<c:choose>
-					<c:when test="${loop.index==breadCrumb.size()-1}">
-						<li class="active">${entry.key}</li>
-					</c:when>
-					<c:otherwise>
-					    <li><a href="${entry.value}"> ${entry.key} </a></li>
-					</c:otherwise>
-				</c:choose>
-		</c:forEach>
-	</ol>
 	<tiles:insertAttribute name="body" />
 
 	<br />

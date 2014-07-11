@@ -27,6 +27,20 @@
  */
 $(document).ready(function() {
 
+	/*for setting the values for badges on load */
+	$("#selectProceduresCount").html($("#selectProcedures option[selected]").length);
+	$("#selectOfferingsCount").html($("#selectOfferings option[selected]").length);
+	$("#selectFeaturesOfInterestCount").html($("#selectFeaturesOfInterest option[selected]").length);
+	$("#selectObservedPropertiesCount").html($("#selectObservedProperties option[selected]").length);
+	/*
+	 * Functionality for displaying the count of selected
+	 * parameters in the badge
+	 * 
+	 * */
+	$("select[multiple]").on("change",function() {
+		  $("#"+this.id+"Count").html($("#"+this.id).val().length);
+	});
+	
 	/*
 	 * Functionality for displaying the corresponding screens
 	 * for add permission
@@ -51,41 +65,95 @@ $(document).ready(function() {
 				}	
 			
 			var resources=[];
-			for(var i=0;i<$("#selectProcedures").val().length;i++)
-			{
+			if($("#selectProcedures option").length==$("#selectProcedures").val().length)
+			{	
 				items={};
-			    items["value"]="procedures/"+$("#selectProcedures").val()[i];
+				items["value"]="procedures/*";
 				items["domains"]=[];
 				resources.push(items);
 			}
-			for(var i=0;i<$("#selectOfferings").val().length;i++)
+			else
 			{
+				for(var i=0;i<$("#selectProcedures").val().length;i++)
+				{
+					items={};
+				    items["value"]="procedures/"+$("#selectProcedures").val()[i];
+					items["domains"]=[];
+					resources.push(items);
+				}
+			}
+			
+			if($("#selectOfferings option").length==$("#selectOfferings").val().length)
+			{	
 				items={};
-			    items["value"]="offerings/"+$("#selectOfferings").val()[i];
+				items["value"]="offerings/*";
 				items["domains"]=[];
 				resources.push(items);
 			}
-			for(var i=0;i<$("#selectFeaturesOfInterest").val().length;i++)
+			else
 			{
+				for(var i=0;i<$("#selectOfferings").val().length;i++)
+				{
+					items={};
+				    items["value"]="offerings/"+$("#selectOfferings").val()[i];
+					items["domains"]=[];
+					resources.push(items);
+				}
+			}
+			
+			if($("#selectFeaturesOfInterest option").length==$("#selectFeaturesOfInterest").val().length)
+			{	
 				items={};
-			    items["value"]="featuresOfInterest/"+$("#selectFeaturesOfInterest").val()[i];
+				items["value"]="featuresOfInterest/*";
 				items["domains"]=[];
 				resources.push(items);
 			}
-			for(var i=0;i<$("#selectObservedProperties").val().length;i++)
+			else
 			{
+				for(var i=0;i<$("#selectFeaturesOfInterest").val().length;i++)
+				{
+					items={};
+				    items["value"]="featuresOfInterest/"+$("#selectFeaturesOfInterest").val()[i];
+					items["domains"]=[];
+					resources.push(items);
+				}
+			}	
+			if($("#selectObservedProperties option").length==$("#selectObservedProperties").val().length)
+			{	
 				items={};
-			    items["value"]="observedProperties/"+$("#selectObservedProperties").val()[i];
+				items["value"]="observedProperties/*";
 				items["domains"]=[];
 				resources.push(items);
 			}
-			for(var i=0;i<$("#selectActions").val().length;i++)
+			else
+			{
+				for(var i=0;i<$("#selectObservedProperties").val().length;i++)
+				{
+					items={};
+				    items["value"]="observedProperties/"+$("#selectObservedProperties").val()[i];
+					items["domains"]=[];
+					resources.push(items);
+				}
+			}
+			
+			if($("#selectActions option").length==$("#selectActions").val().length)
 			{
 				items={};
-			    items["value"]="allowedOperations/"+$("#selectActions").val()[i];
+				items["value"]="allowedOperations/*";
 				items["domains"]=[];
 				resources.push(items);
 			}
+			else
+			{
+				for(var i=0;i<$("#selectActions").val().length;i++)
+				{
+					items={};
+				    items["value"]="allowedOperations/"+$("#selectActions").val()[i];
+					items["domains"]=[];
+					resources.push(items);
+				}
+			}
+			
 			var subjects=[];
 			for(var i=0;i<$("#selectSubjects").val().length;i++)
 			{

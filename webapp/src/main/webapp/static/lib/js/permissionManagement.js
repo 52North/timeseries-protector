@@ -30,6 +30,12 @@ $(document)
 		function() {
 
 			/*
+			 * Making sure that the url inputs fields have urls decoded while displaying to the user
+			 * */
+			$("#actionDomain").val(decodeURIComponent($("#actionDomain").val().replace(/\+/g," ")));
+			$("#resourceDomain").val(decodeURIComponent($("#resourceDomain").val().replace(/\+/g," ")));
+			
+			/*
 			 * functionality for select all checkbox in permission
 			 * management screen
 			 */
@@ -56,7 +62,8 @@ $(document)
 			 */
 			$("#permissionTable").dataTable({
 				"paging" : false,
-				"order" : [ 1, 'asc' ],
+				"processing": true,
+				"order" : [ 2, 'asc' ],
 				"columnDefs" : [ {
 					"orderable" : false,
 					"targets" : 0
@@ -173,10 +180,15 @@ $(document)
 							var td=$("#"+rows[i].id+" td");
 							
 							var subPermission={};
-							subPermission["name"]=td[1].innerHTML;
+							
+							/** Have to be careful below because the td's have been indexed hardcoded which means
+							 * it should be consistent with the ordering of cells in the permissionTable.jsp
+							 * otherwise it will cause problem
+							 * **/
+							subPermission["name"]=td[2].innerHTML;
 							
 							var subjects=[];
-							var values=td[2].innerHTML.split("<br>");
+							var values=td[3].innerHTML.split("<br>");
 							for(var j=0;j<values.length-1;j++)
 							{
 								items={};
@@ -186,7 +198,7 @@ $(document)
 							}
 							
 							var actions=[];
-							values=td[3].innerHTML.split("<br>");
+							values=td[4].innerHTML.split("<br>");
 							for(j=0;j<values.length-1;j++)
 							{
 								items={};
@@ -196,7 +208,7 @@ $(document)
 							}
 							
 							var resources=[];
-							values=td[4].innerHTML.split("<br>");
+							values=td[5].innerHTML.split("<br>");
 							for(j=0;j<values.length-1;j++)
 							{
 								items={};
@@ -213,11 +225,14 @@ $(document)
 							subPermissions.push(subPermission);
 						}
 						
+						var resourceDomains=encodeURIComponent($("#resourceDomain").val()).replace(/'/g,"%27").replace(/"/g,"%22");
+						var actionDomains=encodeURIComponent($("#actionDomain").val()).replace(/'/g,"%27").replace(/"/g,"%22");
+						
 						var json={
 								"name":$("#permissionSetName").val(),
-								"actionDomains":[$("#actionDomain").val()],
+								"actionDomains":[actionDomains],
 								"subjectDomains":[$("#subjectDomain").val()],
-								"resourceDomains":[$("#resourceDomain").val()],
+								"resourceDomains":[resourceDomains],
 								"subPermissions":subPermissions
 						};
 						

@@ -33,12 +33,18 @@ $(document)
 		function() {
 
 			/*
+			 * Making sure that the url inputs fields have urls decoded
+			 * */
+			 $("#actionDomain").html(decodeURIComponent($("#actionDomain").html().replace(/\+/g," ")));
+			 $("#resourceDomain").html(decodeURIComponent($("#resourceDomain").html().replace(/\+/g," ")));
+			
+			/*
 			 * Functionality for sorting and searching
 			 * on permission set table
 			 * */
 			$("#permissionSetTable").dataTable({
 				"paging":   false,
-				"order": [ 1, 'asc' ],
+				"order": [ 2, 'asc' ],
 				"columnDefs": [
 				               { "orderable": false, "targets": 0 }
 				               ]

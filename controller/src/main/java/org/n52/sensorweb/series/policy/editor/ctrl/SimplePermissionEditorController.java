@@ -34,6 +34,10 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.n52.io.IoParameters;
+import org.n52.io.v1.data.FeatureOutput;
+import org.n52.io.v1.data.OfferingOutput;
+import org.n52.io.v1.data.PhenomenonOutput;
+import org.n52.io.v1.data.ProcedureOutput;
 import org.n52.security.service.pdp.simplepermission.Permission;
 import org.n52.security.service.pdp.simplepermission.PermissionSet;
 import org.n52.sensorweb.series.policy.api.PermissionManagementException;
@@ -141,11 +145,22 @@ public class SimplePermissionEditorController extends BaseController{
 
 		/*Adding the timeseries parameters now*/
 		IoParameters query = IoParameters.createDefaults();
-		mav.addObject("offerings", parameterServiceProvider.getOfferingsService().getCondensedParameters(query));
-		mav.addObject("procedures", parameterServiceProvider.getProceduresService().getCondensedParameters(query));
-		mav.addObject("featuresOfInterest", parameterServiceProvider.getFeaturesService().getCondensedParameters(query));
-		mav.addObject("phenomenon", parameterServiceProvider.getPhenomenaService().getCondensedParameters(query));
-		mav.addObject("actionValues",ActionValues.getActionValues());
+		OfferingOutput [] offerings=parameterServiceProvider.getOfferingsService().getCondensedParameters(query);
+        ProcedureOutput [] procedures=parameterServiceProvider.getProceduresService().getCondensedParameters(query);
+        FeatureOutput [] featuresOfInterest =parameterServiceProvider.getFeaturesService().getCondensedParameters(query);
+        PhenomenonOutput [] phenomenon= parameterServiceProvider.getPhenomenaService().getCondensedParameters(query);
+                
+        mav.addObject("offerings", offerings);
+        mav.addObject("procedures",procedures );
+        mav.addObject("featuresOfInterest", featuresOfInterest);
+        mav.addObject("phenomenon",phenomenon );
+        mav.addObject("actionValues",ActionValues.getActionValues());
+        
+        /*lengths for displaying in the badges for resources tab*/
+        mav.addObject("procedureLength",procedures.length);
+        mav.addObject("offeringLength",offerings.length);
+        mav.addObject("featureOfInterestLength",featuresOfInterest.length);
+        mav.addObject("phenomenaLength",phenomenon.length);
 
 		/* Addded to see whether the user is attempting to save a permission for non-existent permission set*/
 		mav.addObject("permissionSet",permissionSet);
@@ -160,7 +175,7 @@ public class SimplePermissionEditorController extends BaseController{
 	@RequestMapping(value = "/delete/{permissionSetName}", method = RequestMethod.POST)
 	public ModelAndView deletePermissionSet(@PathVariable String permissionSetName)
 	{
-		ModelAndView mav = new ModelAndView("listPermissions");
+		ModelAndView mav = new ModelAndView("listPermissionSets");
 		// splitting the string to get features which are to be deleted one by one
 		String[] sets = permissionSetName.split(",");
 		try
@@ -260,12 +275,24 @@ public class SimplePermissionEditorController extends BaseController{
 		mav.addObject("heading", "Modify " + permissionName);
 
 		IoParameters query = IoParameters.createDefaults();
-		mav.addObject("offerings", parameterServiceProvider.getOfferingsService().getCondensedParameters(query));
-		mav.addObject("procedures", parameterServiceProvider.getProceduresService().getCondensedParameters(query));
-		mav.addObject("featuresOfInterest", parameterServiceProvider.getFeaturesService().getCondensedParameters(query));
-		mav.addObject("phenomenon", parameterServiceProvider.getPhenomenaService().getCondensedParameters(query));
+		
+		OfferingOutput [] offerings=parameterServiceProvider.getOfferingsService().getCondensedParameters(query);
+		ProcedureOutput [] procedures=parameterServiceProvider.getProceduresService().getCondensedParameters(query);
+		FeatureOutput [] featuresOfInterest =parameterServiceProvider.getFeaturesService().getCondensedParameters(query);
+		PhenomenonOutput [] phenomenon= parameterServiceProvider.getPhenomenaService().getCondensedParameters(query);
+		        
+		mav.addObject("offerings", offerings);
+		mav.addObject("procedures",procedures );
+		mav.addObject("featuresOfInterest", featuresOfInterest);
+		mav.addObject("phenomenon",phenomenon );
 		mav.addObject("actionValues",ActionValues.getActionValues());
-
+		
+		/*lengths for displaying in the badges for resources tab*/
+		mav.addObject("procedureLength",procedures.length);
+		mav.addObject("offeringLength",offerings.length);
+		mav.addObject("featureOfInterestLength",featuresOfInterest.length);
+		mav.addObject("phenomenaLength",phenomenon.length);
+		
 		/*For the breadcrumb*/
 		LinkedHashMap<String,String> breadCrumb=new LinkedHashMap<String,String>();
 		breadCrumb.put("Manager",request.getContextPath()+"/editor/");
@@ -310,12 +337,23 @@ public class SimplePermissionEditorController extends BaseController{
 		mav.addObject("heading", "Copy " + permissionName);
 
 		IoParameters query = IoParameters.createDefaults();
-		mav.addObject("offerings", parameterServiceProvider.getOfferingsService().getCondensedParameters(query));
-		mav.addObject("procedures", parameterServiceProvider.getProceduresService().getCondensedParameters(query));
-		mav.addObject("featuresOfInterest", parameterServiceProvider.getFeaturesService().getCondensedParameters(query));
-		mav.addObject("phenomenon", parameterServiceProvider.getPhenomenaService().getCondensedParameters(query));
-		mav.addObject("actionValues",ActionValues.getActionValues());
-
+		OfferingOutput [] offerings=parameterServiceProvider.getOfferingsService().getCondensedParameters(query);
+        ProcedureOutput [] procedures=parameterServiceProvider.getProceduresService().getCondensedParameters(query);
+        FeatureOutput [] featuresOfInterest =parameterServiceProvider.getFeaturesService().getCondensedParameters(query);
+        PhenomenonOutput [] phenomenon= parameterServiceProvider.getPhenomenaService().getCondensedParameters(query);
+                
+        mav.addObject("offerings", offerings);
+        mav.addObject("procedures",procedures );
+        mav.addObject("featuresOfInterest", featuresOfInterest);
+        mav.addObject("phenomenon",phenomenon );
+        mav.addObject("actionValues",ActionValues.getActionValues());
+        
+        /*lengths for displaying in the badges for resources tab*/
+        mav.addObject("procedureLength",procedures.length);
+        mav.addObject("offeringLength",offerings.length);
+        mav.addObject("featureOfInterestLength",featuresOfInterest.length);
+        mav.addObject("phenomenaLength",phenomenon.length);
+        
 		/*For the breadcrumb*/
 		LinkedHashMap<String,String> breadCrumb=new LinkedHashMap<String,String>();
 		breadCrumb.put("Manager",request.getContextPath()+"/editor/");
