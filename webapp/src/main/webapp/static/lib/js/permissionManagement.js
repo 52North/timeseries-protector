@@ -36,6 +36,18 @@ $(document)
 			$("#resourceDomain").val(decodeURIComponent($("#resourceDomain").val().replace(/\+/g," ")));
 			
 			/*
+			 * event binding for toggling the arrow
+			 * */
+			$('#collapseOne').on('show.bs.collapse', function () {
+				  $("#toggleArrow").removeClass();
+				  $("#toggleArrow").addClass("glyphicon glyphicon-chevron-down");
+				});
+			$('#collapseOne').on('hidden.bs.collapse', function () {
+				  $("#toggleArrow").removeClass();
+				  $("#toggleArrow").addClass("glyphicon glyphicon-chevron-right");
+				});
+			
+			/*
 			 * functionality for select all checkbox in permission
 			 * management screen
 			 */
@@ -225,9 +237,16 @@ $(document)
 							subPermissions.push(subPermission);
 						}
 						
-						var resourceDomains=encodeURIComponent($("#resourceDomain").val()).replace(/'/g,"%27").replace(/"/g,"%22");
 						var actionDomains=encodeURIComponent($("#actionDomain").val()).replace(/'/g,"%27").replace(/"/g,"%22");
-						
+						var resourceDomains;
+						if($("#resourceDomain").val()!="")
+						{	
+							resourceDomains=encodeURIComponent($("#resourceDomain").val()).replace(/'/g,"%27").replace(/"/g,"%22");
+						}
+						else
+						{
+							resourceDomains=actionDomains;
+						}
 						var json={
 								"name":$("#permissionSetName").val(),
 								"actionDomains":[actionDomains],

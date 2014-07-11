@@ -44,26 +44,13 @@
 				name="actionDomain" placeholder="Action Domain URL" />
 			<p class="help-block">URL for the Operations</p>
 		</div>
-
-		<div class="form-group">
-			<label class="control-label">* Resource Domain :</label> <input
-				style="margin-top: 5px" required id="resourceDomain"
-				class="form-control" type="url"
-				value="${permissionSet.getResourceDomains().get(0)}"
-				name="resourceDomain" placeholder="Resource Domain URL" />
-			<p class="help-block">URL of the end point to protect</p>
-		</div>
-
-		<div class="form-group">
-			<label class="control-label">* Subject Domain :</label> <input
-				style="margin-top: 5px" required id="subjectDomain"
-				class="form-control"
-				value="${permissionSet.getSubjectDomains().get(0)}" type="url"
-				name="subjectDomain" placeholder="Subject Domain URL" />
-			<p class="help-block">Domain specifying the user roles which will be restricted</p>
-		</div>
-
+		
+		<br/>
+		<!-- Tiles definition for the advance content -->
+		<tiles:insertDefinition name="advanceSection"></tiles:insertDefinition>
+		
 		<br /> <br />
+		
 		<c:choose>
 			<c:when test="${permissionSet!=null}">
 				<a id="btnAddPermission"

@@ -3,27 +3,43 @@
        "-//Apache Software Foundation//DTD Tiles Configuration 3.0//EN"
        "http://tiles.apache.org/dtds/tiles-config_3_0.dtd">
 <tiles-definitions>
+
     <definition name="common" template="/WEB-INF/views/classic.jsp">
         <put-attribute name="footer" value="/WEB-INF/views/footer.jsp" />
     </definition>
-
+	
+	<!-- Table of Permission Sets -->
+    <definition name="listPermissionSets" extends="common">
+        <put-attribute name="body" value="/WEB-INF/views/editor/listPermissionSets.jsp" />
+    </definition>
+    
+	<!-- Permission Set Form -->
     <definition name="createPermissionSet" extends="common">
         <put-attribute name="body" value="/WEB-INF/views/editor/createPermissionSet.jsp" />
     </definition>
     
+    <!-- Advance Sections in Create Permission Set Form -->
+    <definition name="advanceSection" template="/WEB-INF/views/editor/advanceCreatePermissionSet.jsp">
+    </definition>
+    
+    <!-- Sub Permissions Form -->
 	<definition name="createPermission" extends="common">
         <put-attribute name="body" value="/WEB-INF/views/editor/createPermission.jsp" />
     </definition>
     
+    <!-- Basic Info Section -->
     <definition name="basicScreen" template="/WEB-INF/views/editor/basicCreatePermission.jsp">
     </definition>
     
+    <!-- Resources Section -->
     <definition name="resourceScreen" template="/WEB-INF/views/editor/resourcesCreatePermission.jsp">
     </definition>
     
+    <!-- Action  Section-->
     <definition name="actionScreen" template="/WEB-INF/views/editor/actionCreatePermission.jsp">
     </definition>
     
+    <!-- Table of Sub Permissions -->
     <definition name="permissionTable" template="/WEB-INF/views/editor/permissionTable.jsp">
     </definition>
     
@@ -31,11 +47,4 @@
         <put-attribute name="body" value="/WEB-INF/views/timeseries.jsp" />
     </definition>
 	
-	<definition name="resultView" extends="common">
-        <put-attribute name="body" value="/WEB-INF/views/result.jsp" />
-    </definition>
-	
-    <definition name="listPermissionSets" extends="common">
-        <put-attribute name="body" value="/WEB-INF/views/editor/listPermissionSets.jsp" />
-    </definition>
 </tiles-definitions>
