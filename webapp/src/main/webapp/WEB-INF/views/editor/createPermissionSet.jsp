@@ -19,18 +19,18 @@
 			<label class="control-label">* Name :</label>
 			<div class="row">
 				<div class="col-xs-8">
-				  <c:if test="${permissionSet==null}">
-					<input autofocus style="margin-top: 5px" id="permissionSetName"
-						class="form-control" required value="${permissionSet.getName()}"
-						type="text" name="permissionSetName"
-						placeholder="Permission Set Name" />
-				  </c:if>
-				  <c:if test="${permissionSet!=null}">
-					<input readOnly style="margin-top: 5px;" id="permissionSetName"
-						class="form-control" required value="${permissionSet.getName()}"
-						type="text" name="permissionSetName"
-						placeholder="Permission Set Name" />
-				  </c:if>		
+					<c:if test="${permissionSet==null}">
+						<input autofocus style="margin-top: 5px" id="permissionSetName"
+							class="form-control" required value="${permissionSet.getName()}"
+							type="text" name="permissionSetName"
+							placeholder="Permission Set Name" />
+					</c:if>
+					<c:if test="${permissionSet!=null}">
+						<input readOnly style="margin-top: 5px;" id="permissionSetName"
+							class="form-control" required value="${permissionSet.getName()}"
+							type="text" name="permissionSetName"
+							placeholder="Permission Set Name" />
+					</c:if>
 				</div>
 			</div>
 			<p class="help-block">Permission set name</p>
@@ -60,7 +60,7 @@
 				class="form-control"
 				value="${permissionSet.getSubjectDomains().get(0)}" type="url"
 				name="subjectDomain" placeholder="Subject Domain URL" />
-			<p class="help-block">URL for restricting the user role</p>
+			<p class="help-block">Domain specifying the user roles which will be restricted</p>
 		</div>
 
 		<br /> <br />
@@ -88,9 +88,17 @@
 			<tiles:insertDefinition name="permissionTable"></tiles:insertDefinition>
 		</div>
 		<br /> <br />
-		<button type="submit" class="btn btn-primary">Save</button>
+		<button title="Save Permission Set" type="submit" class="btn btn-primary">Save</button>
+		<c:forEach varStatus="loop" items="${breadCrumb}" var="entry">
+			<c:choose>	
+				<c:when test="${loop.index==breadCrumb.size()-2}">
+				    <button title="Cancel Permission Set" onclick="window.location.href='${entry.value}'" type="button" class="btn btn-default">Cancel</button>
+				</c:when>
+			</c:choose>	
+		</c:forEach>
 	</form>
 </div>
 <script type="text/javascript"
 	src="<c:url value="/static/lib/js/permissionManagement.js" />">
+	
 </script>

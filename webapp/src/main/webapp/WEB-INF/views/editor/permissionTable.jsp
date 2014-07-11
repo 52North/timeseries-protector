@@ -60,9 +60,50 @@ td {
 				</c:choose></td>
 			<td><c:choose>
 					<c:when test="${permissions.getResources().size()>0}">
+						<c:set var="start_proc" value=""/>
+						<c:set var="start_off" value=""/>
+						<c:set var="start_foi" value=""/>
+						<c:set var="start_obp" value=""/>
+						<c:set var="start_ao" value=""/>
 						<c:forEach items="${permissions.getResources()}" var="resources">
-							${resources.getValue()}
-							<br />
+						   <c:choose>
+						   		<c:when test="${fn:substringBefore(resources.getValue(),'/')=='procedures'}">
+						   		   <c:if test="${start_proc==''}"> 
+						   		   	   <label style="font-style:oblique;" class="control-label">Procedures</label> <br/>
+						   		   	   <c:set var="start_proc" value="found"/>
+						   		   </c:if>
+						   			${fn:substringAfter(resources.getValue(),'procedures/')}
+						   		</c:when>
+						   		<c:when test="${fn:substringBefore(resources.getValue(),'/')=='offerings'}">
+						   			<c:if test="${start_off==''}"> 
+						   		   	   <label style="font-style:oblique;" class="control-label">Offerings</label> <br/>
+						   		   	   <c:set var="start_off" value="found"/>
+						   		   </c:if>
+						   			${fn:substringAfter(resources.getValue(),'offerings/')}
+						   		</c:when>
+						   		<c:when test="${fn:substringBefore(resources.getValue(),'/')=='featuresOfInterest'}">
+						   			<c:if test="${start_foi==''}"> 
+						   		   	   <label style="font-style:oblique;" class="control-label">Features of Interest</label> <br/>
+						   		   	   <c:set var="start_foi" value="found"/>
+						   		   </c:if>
+						   			${fn:substringAfter(resources.getValue(),'featuresOfInterest/')}
+						   	   </c:when>
+						   	   <c:when test="${fn:substringBefore(resources.getValue(),'/')=='observedProperties'}">
+						   	   		<c:if test="${start_obp==''}"> 
+						   		   	   <label style="font-style:oblique;" class="control-label">Observed Properties</label> <br/>
+						   		   	   <c:set var="start_obp" value="found"/>
+						   		   </c:if>
+						   	   		${fn:substringAfter(resources.getValue(),'observedProperties/')}
+						   	   </c:when>
+						   	   <c:when test="${fn:substringBefore(resources.getValue(),'/')=='allowedOperations'}">
+						   	   	    <c:if test="${start_ao==''}"> 
+						   		   	   <label style="font-style:oblique;" class="control-label">Allowed Operations</label> <br/>
+						   		   	   <c:set var="start_ao" value="found"/>
+						   		   </c:if>
+						   	   		${fn:substringAfter(resources.getValue(),'allowedOperations/')}
+						   	   </c:when>
+						   </c:choose>
+						   <br/>
 						</c:forEach>
 					</c:when>
 					<c:otherwise>

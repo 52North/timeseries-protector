@@ -30,10 +30,10 @@ $(document)
 		function() {
 
 			/*
-			 * Making sure that the url inputs fields have urls decoded
+			 * Making sure that the url inputs fields have urls decoded while displaying to the user
 			 * */
-			$("#actionDomain").val(decodeURI($("#actionDomain").val()));
-			$("#resourceDomain").val(decodeURI($("#resourceDomain").val()));
+			$("#actionDomain").val(decodeURIComponent($("#actionDomain").val().replace(/\+/g," ")));
+			$("#resourceDomain").val(decodeURIComponent($("#resourceDomain").val().replace(/\+/g," ")));
 			
 			/*
 			 * functionality for select all checkbox in permission
@@ -225,8 +225,8 @@ $(document)
 							subPermissions.push(subPermission);
 						}
 						
-						var resourceDomains=encodeURI($("#resourceDomain").val());
-						var actionDomains=encodeURI($("#actionDomain").val());
+						var resourceDomains=encodeURIComponent($("#resourceDomain").val()).replace(/'/g,"%27").replace(/"/g,"%22");
+						var actionDomains=encodeURIComponent($("#actionDomain").val()).replace(/'/g,"%27").replace(/"/g,"%22");
 						
 						var json={
 								"name":$("#permissionSetName").val(),
