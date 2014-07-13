@@ -39,7 +39,7 @@
 <div class="tab-content">
 	<div class="tab-pane active" id="procedures">
 		<br />
-		<div style="resize: vertical; overflow: auto;">
+		<div id="selectProceduresContainer" style="resize: vertical; overflow: auto;">
 			<select style="height: inherit;" multiple id="selectProcedures"
 				class="form-control">
 				<c:forEach items="${procedures}" var="procedure">
@@ -68,7 +68,7 @@
 
 	<div class="tab-pane" id="offerings">
 		<br />
-		<div style="resize: vertical; overflow: auto;">
+		<div id="selectOfferingsContainer" style="resize: vertical; overflow: auto;">
 			<select style="height: inherit;" multiple id="selectOfferings"
 				class="form-control">
 				<c:forEach items="${offerings}" var="off">
@@ -94,7 +94,7 @@
 
 	<div class="tab-pane" id="featuresOfInterest">
 		<br />
-		<div style="resize: vertical; overflow: auto;">
+		<div id="selectFeaturesOfInterestContainer" style="resize: vertical; overflow: auto;">
 			<select style="height: inherit;" multiple
 				id="selectFeaturesOfInterest" class="form-control">
 				<c:forEach items="${featuresOfInterest}" var="foi">
@@ -120,7 +120,7 @@
 
 	<div class="tab-pane" id="observedProperties">
 		<br />
-		<div style="resize: vertical; overflow: auto;">
+		<div id="selectObservedPropertiesContainer" style="resize: vertical; overflow: auto;">
 			<select style="height: inherit;" multiple
 				id="selectObservedProperties" class="form-control">
 				<c:forEach items="${phenomenon}" var="phenomenon">

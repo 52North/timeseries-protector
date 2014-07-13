@@ -2,6 +2,14 @@
 <%@ taglib uri="http://tiles.apache.org/tags-tiles" prefix="tiles"%>
 
 <div class="container-fluid">
+	<div id="alert" style="display:none;" class="alert alert-danger alert-dismissible" role="alert">
+		<button type="button" class="close" data-dismiss="alert">
+			<span aria-hidden="true">&times;</span><span class="sr-only">Close</span>
+		</button>
+		<ul id="errorList">
+			
+		</ul>
+	</div>
 	<form role="form"
 		action="<c:url value="/editor/${permissionSet}/save"/>"
 		enctype="application/json" method="POST" id="createPermissionForm">
@@ -21,12 +29,14 @@
 		</div>
 
 		<br />
-		<button title="Save Permission" id="savePermission" type="submit" class="btn btn-primary">Save</button>
+		<button title="Save Permission" id="savePermission" type="submit"
+			class="btn btn-primary">Save</button>
 		<c:forEach varStatus="loop" items="${breadCrumb}" var="entry">
 			<c:choose>
 				<c:when test="${loop.index==breadCrumb.size()-2}">
-					<button title="Cancel Permission" onclick="window.location.href='${entry.value}'"
-						type="button" class="btn btn-default">Cancel</button>
+					<button title="Cancel Permission"
+						onclick="window.location.href='${entry.value}'" type="button"
+						class="btn btn-default">Cancel</button>
 				</c:when>
 			</c:choose>
 		</c:forEach>
