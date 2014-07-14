@@ -32,7 +32,7 @@
 				<tr>
 					<th><input id="selectAllPermissionSet" type="checkbox" />
 						Select All</th>
-					<th>Action</th>	
+					<th>Action</th>
 					<th>Name</th>
 					<th>Subject Domain</th>
 					<th>Resource Domain</th>
@@ -48,9 +48,17 @@
 							</label>
 						</div>
 					</td>
-					<td><a id="btn#${permissionSet.getName()}"
-						href="<c:url value="/editor/edit/${permissionSet.getName()}" />"
-						class="btn btn-default btn-xs" role="button">MODIFY</a></td>
+					<td>
+						 <a 
+							href="<c:url value="/editor/edit/${permissionSet.getName()}" />"
+							class="btn btn-default btn-xs" role="button">MODIFY
+						</a>
+						<a 
+							href="<c:url value="/editor/copy/${permissionSet.getName()}" />"
+							class="btn btn-default btn-xs" role="button">COPY
+						</a>
+					</td>
+					
 					<td><c:out value="${permissionSet.getName()}"></c:out></td>
 					<c:forEach items="${permissionSet.getSubjectDomains()}"
 						var="subjectDomains">
@@ -72,4 +80,5 @@
 
 <script type="text/javascript"
 	src="<c:url value="/static/lib/js/permissionSetManagement.js" />">
+	
 </script>

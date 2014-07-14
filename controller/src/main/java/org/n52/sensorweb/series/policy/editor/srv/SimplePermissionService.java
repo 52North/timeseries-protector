@@ -25,6 +25,7 @@
  * WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
  * PARTICULAR PURPOSE. See the GNU General Public License for more details.
  */
+
 package org.n52.sensorweb.series.policy.editor.srv;
 
 import java.util.List;
@@ -33,7 +34,7 @@ import org.n52.security.service.pdp.simplepermission.PermissionSet;
 import org.n52.sensorweb.series.policy.api.PermissionManagementException;
 
 /**
- *
+ * 
  * @author Henning Bredel <h.bredel@52north.org>
  */
 public interface SimplePermissionService {
@@ -42,40 +43,70 @@ public interface SimplePermissionService {
 
     /**
      * Gets the permission set by name.
-     *
-     * @param name the set's name.
+     * 
+     * @param name
+     *        the set's name.
      * @return the permission set or <code>null</code> if not found.
      */
     public PermissionSet getPermissionSet(String name);
 
     /**
-     *
-     * @param permissionSet the permission set to create.
+     * 
+     * @param permissionSet
+     *        the permission set to create.
      * @return the created permission set.
-     * @throws PermissionManagementException if creation failed for internal reasons.
+     * @throws PermissionManagementException
+     *         if creation failed for internal reasons.
      */
     public PermissionSet savePermissionSet(PermissionSet permissionSet) throws PermissionManagementException;
 
+    /**
+     * 
+     * @param permissionSet
+     *        the permission set to modify.
+     * @param existingName
+     *        the name of the existing permission set which is to be modified
+     * @return the created permission set.
+     * @throws PermissionManagementException
+     *         if creation failed for internal reasons.
+     */
+    public PermissionSet editPermissionSet(PermissionSet permissionSet, String existingName) throws PermissionManagementException;
+
     public void deletePermissionSet(String name) throws PermissionManagementException;
+
     /**
      * Adds a permission to a given permission set.
-     *
-     * @param permissionSetName the persmissionSet's name to add the permission to.
-     * @param permission the permission to add.
-     * @throws PermissionManagementException if permission management task failed.
-     * @throws NullPointerException if permission is <code>null</code>.
+     * 
+     * @param permissionSetName
+     *        the persmissionSet's name to add the permission to.
+     * @param permission
+     *        the permission to add.
+     * @throws PermissionManagementException
+     *         if permission management task failed.
+     * @throws NullPointerException
+     *         if permission is <code>null</code>.
      */
     public void addPermission(String permissionSetName, Permission permission) throws PermissionManagementException;
 
     /**
-     * @param permissionSetName whose permission is to be fetched
-     * @param permissionName the permission to be fetched
+     * @param permissionSetName
+     *        whose permission is to be fetched
+     * @param permissionName
+     *        the permission to be fetched
      * @return permission
      * @throws PermissionManagementException
      */
-    public Permission getPermission(String permissionSetName,String permissionName);
-    
-    public void editPermission(String permissionSetName, Permission permission) throws PermissionManagementException;
+    public Permission getPermission(String permissionSetName, String permissionName);
+
+    /**
+     * @param permissionSetName
+     *        the persmissionSet's name whose sub permission is to be modified
+     * @param permission
+     *        the sub permission to be modified
+     * @throws PermissionManagementException
+     *         if permission management task failed
+     */
+    public void editPermission(String permissionSetName, Permission permission, String existingName) throws PermissionManagementException;
 
     public void deletePermission(String permissionSetName, Permission permission) throws PermissionManagementException;
 

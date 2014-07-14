@@ -3,7 +3,7 @@
  * Software GmbH
  *
  * This program is free software; you can redistribute it and/or modify it under
- * the terms of the GNU General Public License version 2 as publishedby the Free
+ * the terms of the GNU General Public License version 2 as published by the Free
  * Software Foundation.
  *
  * If the program is linked with libraries which are licensed under one of the
@@ -35,6 +35,12 @@ $(document)
 			$("#actionDomain").val(decodeURIComponent($("#actionDomain").val().replace(/\+/g," ")));
 			$("#resourceDomain").val(decodeURIComponent($("#resourceDomain").val().replace(/\+/g," ")));
 			
+			/*
+			 * hide the div on click of close button
+			 * */
+			$("button[class='close']").click(function(event){
+				$("#alert").hide();
+			});
 			/*
 			 * event binding for toggling the arrow
 			 * */
@@ -278,7 +284,14 @@ $(document)
 									{
 										window.location.href=xhr.getResponseHeader('Location');
 										
-									}
+									},
+									error: function (xhr, status, thrownError) {
+										var errorMessage="<li>"+jQuery.parseJSON(xhr.responseText).userMessage+"</li>";
+								         $("#errorList").html(errorMessage);
+								         $('html,body').animate({ scrollTop: 0 }, 'slow', function () {
+								          });
+								         $("#alert").show();
+								      }
 								});
 					});
 

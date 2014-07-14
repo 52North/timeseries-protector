@@ -38,7 +38,14 @@ $(document).ready(function() {
 	$("#totalOfferingsCount").html($("#selectOfferings option").length);
 	$("#totalFeaturesOfInterestCount").html($("#selectFeaturesOfInterest option").length);
 	$("#totalObservedPropertiesCount").html($("#selectObservedProperties option").length);
-
+	
+	/*
+	 * hide the div on click of close button
+	 * */
+	$("button[class='close']").click(function(event){
+		$("#alert").hide();
+	});
+	
 	/*
 	 * Functionality for displaying the count of selected
 	 * parameters in the badge
@@ -50,12 +57,10 @@ $(document).ready(function() {
 		if($("#"+this.id+"Container").hasClass("has-error")) {
 		  $("#"+this.id+"Container").removeClass("has-error");
 		  $("#"+this.id+"Validation").remove();
-		  console.log($("#errorList li").length);
 		  if($("#errorList li").length==0)
 		   {
-			  $(".close").click();
+			  $("#alert").hide();
 		   }
-		  
 		}
 	});
 
@@ -210,7 +215,14 @@ $(document).ready(function() {
 					success: function(data,status,xhr)
 					{
 						window.location.href=xhr.getResponseHeader('Location');
-					}
+					},
+					error: function (xhr, status, thrownError) {
+						var errorMessage="<li>"+jQuery.parseJSON(xhr.responseText).userMessage+"</li>";
+				         $("#errorList").html(errorMessage);
+				         $('html,body').animate({ scrollTop: 0 }, 'slow', function () {
+				          });
+				         $("#alert").show();
+				      }
 				});
 			}
 			else
@@ -289,62 +301,3 @@ function validateOptions()
 	return submit;
 }
 
-function prepareContent()
-{
-	var content="";
-	content +="<tr id='row-"+$("#permissionName")+"'>";
-	content +="<td> <div class='checkbox'><label> <input id='"+$("#permissionName")+ "type='checkbox'> </label></div></td>";
-	content +="<td>"+$("#permissionName") + "</td>";
-	content += "<td>";
-	for(i=0;i<$("#selectSubjects").val().length;i++)
-	{
-		content+=$("#selectSubjects").val()[i];
-		content+="<br/>";
-	}
-	content+="</td>";
-	content+="<td>";
-	for(i=0;i<$("#selectActions").val().length;i++)
-	{
-		content+=$("#selectActions").val()[i];
-		content+="<br/>";
-	}
-	content+="</td>";
-	content+="<td>";
-
-	for(i=0;i<$("#selectOfferings").val().length;i++)
-	{
-		content+="offerings/"+$("#selectOfferings").val()[i];
-		content+="<br/>";
-	}
-
-	for(i=0;i<$("#selectProcedures").val().length;i++)
-	{
-		content+="procedures/"+$("#selectProcedures").val()[i];
-		content+="<br/>";
-	}
-
-	for(i=0;i<$("#selectObservedProperties").val().length;i++)
-	{
-		content+="observedProperties/"+$("#selectObservedProperties").val()[i];
-		content+="<br/>";
-	}
-
-	for(i=0;i<$("#selectFeaturesOfInterest").val().length;i++)
-	{
-		content+="fFeaturesOfInterest/"+$("#selectFeaturesOfInterest").val()[i];
-		content+="<br/>";
-	}
-	for(i=0;i<$("#selectActions").val().length;i++)
-	{
-		content+="allowedOperations/"+$("#selectActions").val()[i];
-		content+="<br/>";
-	}
-	content+="</td>";
-	content+="<td> Not found </td>";
-	content+="<td> <a href='#' id='btn#"+$("#permissionName")+"' ";
-	content+="class='btn btn-default btn-xs' role='button'>MODIFY</a></td>";
-
-
-	return content;
-
-}
