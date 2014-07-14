@@ -3,7 +3,7 @@
 
 <label class="control-label">* Actions</label>
 <br />
-<div style="resize: vertical; overflow: auto;" id="actions">
+<div style="resize: vertical; overflow: auto;" id="selectActionsContainer">
 	<select style="height: inherit;" multiple id="selectActions"
 		class="form-control">
 		<c:choose>

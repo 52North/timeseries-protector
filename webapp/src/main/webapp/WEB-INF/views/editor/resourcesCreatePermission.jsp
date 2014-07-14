@@ -4,32 +4,32 @@
 <label class="control-label">* Resources</label>
 <br />
 <ul class="nav nav-tabs">
- <!-- Do not change the id of the badges as the javascript will break -->
+ <!-- IMPORTANT!!  Do not change the id of the badges as the javascript will break -->
 	<li class="active">
 	   <a href="#procedures" data-toggle="tab">Procedures
 	    <span class="badge">
-	    	<span id="selectProceduresCount"></span>/ <span>${procedureLength}</span>
+	    	<span id="selectProceduresCount"></span>/ <span id="totalProceduresCount"></span>
 	   	</span>
 	   </a>
 	</li>
 	<li>
 	   <a href="#offerings" data-toggle="tab">Offerings
 	     <span class="badge">
-	     	<span id="selectOfferingsCount"></span>/ <span>${offeringLength}</span>
+	     	<span id="selectOfferingsCount"></span>/ <span id="totalOfferingsCount"></span>
 	     </span>
 	   </a>
 	</li>
 	<li>
 		<a href="#featuresOfInterest" data-toggle="tab">Features Of Interest 
 		  <span class="badge">
-		  	<span id="selectFeaturesOfInterestCount"></span>/ <span>${featureOfInterestLength}</span>
+		  	<span id="selectFeaturesOfInterestCount"></span>/ <span id="totalFeaturesOfInterestCount"></span>
 		  </span> 
 		</a>
 	</li>
 	<li>
 	   <a href="#observedProperties" data-toggle="tab">Observed Properties
 	   		<span class="badge">
-	   			<span id="selectObservedPropertiesCount"></span>/ <span>${phenomenaLength}</span>
+	   			<span id="selectObservedPropertiesCount"></span>/ <span id="totalObservedPropertiesCount"></span>
 	   		</span>
 	   </a>
 	 </li>
@@ -39,7 +39,7 @@
 <div class="tab-content">
 	<div class="tab-pane active" id="procedures">
 		<br />
-		<div style="resize: vertical; overflow: auto;">
+		<div id="selectProceduresContainer" style="resize: vertical; overflow: auto;">
 			<select style="height: inherit;" multiple id="selectProcedures"
 				class="form-control">
 				<c:forEach items="${procedures}" var="procedure">
@@ -68,7 +68,7 @@
 
 	<div class="tab-pane" id="offerings">
 		<br />
-		<div style="resize: vertical; overflow: auto;">
+		<div id="selectOfferingsContainer" style="resize: vertical; overflow: auto;">
 			<select style="height: inherit;" multiple id="selectOfferings"
 				class="form-control">
 				<c:forEach items="${offerings}" var="off">
@@ -94,7 +94,7 @@
 
 	<div class="tab-pane" id="featuresOfInterest">
 		<br />
-		<div style="resize: vertical; overflow: auto;">
+		<div id="selectFeaturesOfInterestContainer" style="resize: vertical; overflow: auto;">
 			<select style="height: inherit;" multiple
 				id="selectFeaturesOfInterest" class="form-control">
 				<c:forEach items="${featuresOfInterest}" var="foi">
@@ -120,7 +120,7 @@
 
 	<div class="tab-pane" id="observedProperties">
 		<br />
-		<div style="resize: vertical; overflow: auto;">
+		<div id="selectObservedPropertiesContainer" style="resize: vertical; overflow: auto;">
 			<select style="height: inherit;" multiple
 				id="selectObservedProperties" class="form-control">
 				<c:forEach items="${phenomenon}" var="phenomenon">
