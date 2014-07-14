@@ -6,7 +6,7 @@
 
     <instance>
          <itemName>52°North GEOWOW SOS v4.0.0 with Hydrology Profile</itemName>
-         <url>http://geowow.dev.52north.org/52n-sos-grdc-webapp/service</url>
+         <url>http://geowow.dev.52north.org/52n-sos-grdc-webapp/service/soap</url>
          <version>2.0.0</version>
          <waterML>false</waterML>
          <supportsFirstLatest>false</supportsFirstLatest>
