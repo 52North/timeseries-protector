@@ -155,12 +155,6 @@ public class SimplePermissionEditorController extends BaseController{
         mav.addObject("featuresOfInterest", featuresOfInterest);
         mav.addObject("phenomenon",phenomenon );
         mav.addObject("actionValues",ActionValues.getActionValues());
-        
-        /*lengths for displaying in the badges for resources tab*/
-        mav.addObject("procedureLength",procedures.length);
-        mav.addObject("offeringLength",offerings.length);
-        mav.addObject("featureOfInterestLength",featuresOfInterest.length);
-        mav.addObject("phenomenaLength",phenomenon.length);
 
 		/* Addded to see whether the user is attempting to save a permission for non-existent permission set*/
 		mav.addObject("permissionSet",permissionSet);
@@ -287,12 +281,6 @@ public class SimplePermissionEditorController extends BaseController{
 		mav.addObject("phenomenon",phenomenon );
 		mav.addObject("actionValues",ActionValues.getActionValues());
 		
-		/*lengths for displaying in the badges for resources tab*/
-		mav.addObject("procedureLength",procedures.length);
-		mav.addObject("offeringLength",offerings.length);
-		mav.addObject("featureOfInterestLength",featuresOfInterest.length);
-		mav.addObject("phenomenaLength",phenomenon.length);
-		
 		/*For the breadcrumb*/
 		LinkedHashMap<String,String> breadCrumb=new LinkedHashMap<String,String>();
 		breadCrumb.put("Manager",request.getContextPath()+"/editor/");
@@ -347,12 +335,6 @@ public class SimplePermissionEditorController extends BaseController{
         mav.addObject("featuresOfInterest", featuresOfInterest);
         mav.addObject("phenomenon",phenomenon );
         mav.addObject("actionValues",ActionValues.getActionValues());
-        
-        /*lengths for displaying in the badges for resources tab*/
-        mav.addObject("procedureLength",procedures.length);
-        mav.addObject("offeringLength",offerings.length);
-        mav.addObject("featureOfInterestLength",featuresOfInterest.length);
-        mav.addObject("phenomenaLength",phenomenon.length);
         
 		/*For the breadcrumb*/
 		LinkedHashMap<String,String> breadCrumb=new LinkedHashMap<String,String>();
