@@ -9,7 +9,7 @@
          <url>http://geowow.dev.52north.org/52n-sos-grdc-webapp/service/soap</url>
          <version>2.0.0</version>
          <waterML>false</waterML>
-         <supportsFirstLatest>true</supportsFirstLatest>
+         <supportsFirstLatest>false</supportsFirstLatest>
          <metadataHandler>org.n52.server.sos.connector.hydro.HydroMetadataHandler</metadataHandler>
          <adapter>org.n52.server.sos.connector.hydro.SOSwithSoapAdapter</adapter>
          <requestChunk>300</requestChunk>
