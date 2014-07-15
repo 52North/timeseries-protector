@@ -20,11 +20,17 @@
 				</div>
 
 				<div class="form-group">
-					<label class="control-label"> Subject Domain :</label> <input
+					<label class="control-label"> Subject Domain :</label> 
+					<input
 						style="margin-top: 5px" id="subjectDomain"
 						class="form-control"
-						value="${permissionSet.getSubjectDomains().get(0)}" type="url"
-						name="subjectDomain" placeholder="Subject Domain URL" />
+						<c:if test="${permissionSet!=null}">
+							value="${permissionSet.getSubjectDomains().get(0)}"
+						</c:if>
+						<c:if test="${permissionSet==null}">
+							value="urn:conterra:names:sdi-suite:policy:attribute:role"
+						</c:if>
+						name="subjectDomain" type="url" placeholder="Subject Domain URL" />
 					<p class="help-block">Domain specifying the user roles which
 						will be restricted</p>
 				</div>
