@@ -20,8 +20,8 @@
 				</div>
 
 				<div class="form-group">
-					<label class="control-label">* Subject Domain :</label> <input
-						style="margin-top: 5px" required id="subjectDomain"
+					<label class="control-label"> Subject Domain :</label> <input
+						style="margin-top: 5px" id="subjectDomain"
 						class="form-control"
 						value="${permissionSet.getSubjectDomains().get(0)}" type="url"
 						name="subjectDomain" placeholder="Subject Domain URL" />

@@ -63,7 +63,21 @@ $(document).ready(function() {
 		   }
 		}
 	});
-
+	
+	$("input[data-required='true']").on("change",function(){
+		if($("#"+this.id).val()!="")
+		{
+		 	if($("#"+this.id+"Container").hasClass("has-error")){
+				$("#"+this.id+"Container").removeClass("has-error");
+				$("#"+this.id+"Validation").remove();
+				if($("#errorList li").length==0)
+				 {
+					  $("#alert").hide();
+				 }
+		 	}	
+		}
+	});
+	
 	/*
 	 * Functionality for displaying the corresponding screens
 	 * for add permission
@@ -72,7 +86,7 @@ $(document).ready(function() {
 	$("#createPermissionForm").submit(function(event){
 		event.preventDefault();
 
-		if(validateOptions())
+		if(validateFields())
 		{	 
 			if($("#permissionSet").val()!="new")
 			{
@@ -195,7 +209,7 @@ $(document).ready(function() {
 						"subjects":subjects,
 						"obligations":[]
 				};
-
+				
 				$.ajax({
 					url : $(this).attr("action"),
 					data : JSON.stringify(json),
@@ -243,10 +257,23 @@ $(document).ready(function() {
  * form is submitted
  * 
  **/
-function validateOptions()
+function validateFields()
 { 
 	var submit=true;
 	var errorHtml="";
+	$.each($("input[data-required='true']"),function(index,selectInput){
+		
+	if($("#"+selectInput.id).val()=="")
+		{
+			if(selectInput.id=="permissionName")
+			{	
+				$("#"+selectInput.id+"Container").addClass("has-error");
+				errorHtml+="<li id='"+selectInput.id+"Validation'> <b> Sub Permission </b> name cannot be empty </li>";
+			}
+			submit=false;
+		}
+	});
+	
 	$.each($("select[multiple]"),function(index,selectInput){
 
 		if($("#"+selectInput.id).val()==null)
@@ -254,32 +281,32 @@ function validateOptions()
 			if(selectInput.id=="selectSubjects")
 			{
 				$("#"+selectInput.id+"Container").addClass("has-error");
-				errorHtml+="<li id='selectSubjectsValidation'> <b> Subjects </b> cannot be empty </li>";
+				errorHtml+="<li id='"+selectInput.id+"Validation'> <b> Subjects </b> cannot be empty </li>";
 			}
 			else if(selectInput.id=="selectActions")
 			{  
 				$("#"+selectInput.id+"Container").addClass("has-error");
-				errorHtml+="<li id='selectActionsValidation'> <b> Actions </b> cannot be empty </li>";
+				errorHtml+="<li id='"+selectInput.id+"Validation'> <b> Actions </b> cannot be empty </li>";
 			}
 			else if(selectInput.id=="selectProcedures")
 			{  
 				$("#"+selectInput.id+"Container").addClass("has-error");
-				errorHtml+="<li id='selectProceduresValidation'> <b>Procedures</b> cannot be empty </li>";
+				errorHtml+="<li id='"+selectInput.id+"Validation'> <b>Procedures</b> cannot be empty </li>";
 			}
 			else if(selectInput.id=="selectOfferings")
 			{  
 				$("#"+selectInput.id+"Container").addClass("has-error");
-				errorHtml+="<li id='selectOfferingsValidation'> <b>Offerings</b> cannot be empty </li>";
+				errorHtml+="<li id='"+selectInput.id+"Validation'> <b>Offerings</b> cannot be empty </li>";
 			}
 			else if(selectInput.id=="selectFeaturesOfInterest")
 			{  
 				$("#"+selectInput.id+"Container").addClass("has-error");
-				errorHtml+="<li id='selectFeaturesOfInterestValidation'> <b>Features of Interest</b> cannot be empty </li>";
+				errorHtml+="<li id='"+selectInput.id+"Validation'> <b>Features of Interest</b> cannot be empty </li>";
 			}
 			else if(selectInput.id=="selectObservedProperties")
 			{  
 				$("#"+selectInput.id+"Container").addClass("has-error");
-				errorHtml+="<li id='selectObservedPropertiesValidation'> <b>Observerd Properties</b> cannot be empty </li>";
+				errorHtml+="<li id='"+selectInput.id+"Validation'> <b>Observerd Properties</b> cannot be empty </li>";
 			}
 			submit=false;
 		}

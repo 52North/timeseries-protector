@@ -2,12 +2,14 @@
 
 
 <br />
-<div id="nameContainer" class="form-group">
-	<label class="control-label">* Permission Name :</label> <input
-		required style="margin-top: 5px; cursor: auto;" autofocus
-		id="permissionName" class="form-control" type="text"
-		value="${permission.getName()}" name="permissionName"
-		placeholder="Permission Name" />
+<div class="form-group">
+	<label class="control-label">* Permission Name :</label>
+	<div id="permissionNameContainer">
+		<input data-required="true" style="margin-top: 5px; cursor: auto;" autofocus
+			id="permissionName" class="form-control" type="text"
+			value="${permission.getName()}" name="permissionName"
+			placeholder="Permission Name" />
+	</div>
 </div>
 <label class="control-label">* Subject :</label>
 <div id="selectSubjectsContainer">

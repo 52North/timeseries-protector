@@ -20,7 +20,7 @@
 		</ul>
 	</div>
 	<form enctype="application/json" autocomplete="on" role="form"
-		id="createPermissionSetForm" 
+		id="createPermissionSetForm"
 		<c:if test="${context!='modify'}">
 		   	action="<c:url value='/editor/save' />"
 		</c:if>
@@ -32,9 +32,9 @@
 		<div class="form-group">
 			<label class="control-label">* Name :</label>
 			<div class="row">
-				<div class="col-xs-8">
-					<input autofocus style="margin-top: 5px" id="permissionSetName"
-						class="form-control" required value="${permissionSet.getName()}"
+				<div id="permissionSetNameContainer" class="col-xs-8">
+					<input data-required="true" autofocus style="margin-top: 5px" id="permissionSetName"
+						class="form-control" value="${permissionSet.getName()}"
 						type="text" name="permissionSetName"
 						placeholder="Permission Set Name" />
 				</div>
@@ -43,11 +43,13 @@
 		</div>
 
 		<div class="form-group">
-			<label class="control-label">* Action Domain :</label> <input
-				style="margin-top: 5px" required id="actionDomain"
-				class="form-control" type="url"
-				value="${permissionSet.getActionDomains().get(0)}"
-				name="actionDomain" placeholder="Action Domain URL" />
+			<label class="control-label">* Action Domain :</label>
+			<div id="actionDomainContainer">
+				<input data-required="true" style="margin-top: 5px" id="actionDomain"
+					class="form-control" type="url"
+					value="${permissionSet.getActionDomains().get(0)}"
+					name="actionDomain" placeholder="Action Domain URL" />
+			</div>
 			<p class="help-block">URL for the Operations</p>
 		</div>
 

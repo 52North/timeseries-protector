@@ -36,6 +36,24 @@ $(document)
 			$("#resourceDomain").val(decodeURIComponent($("#resourceDomain").val().replace(/\+/g," ")));
 			
 			/*
+			 * Removing the error class if a user
+			 * has entered the data
+			 * */
+			$("input[data-required='true']").on("change",function(){
+				if($("#"+this.id).val()!="")
+				{
+				 	if($("#"+this.id+"Container").hasClass("has-error")){
+						$("#"+this.id+"Container").removeClass("has-error");
+						$("#"+this.id+"Validation").remove();
+						if($("#errorList li").length==0)
+						 {
+							  $("#alert").hide();
+						 }
+				 	}	
+				}
+			});
+			
+			/*
 			 * hide the div on click of close button
 			 * */
 			$("button[class='close']").click(function(event){
@@ -182,7 +200,8 @@ $(document)
 					function(event) {
 
 						event.preventDefault();
-
+					if(validateInput())
+					{	
 						// form action url
 						url = $(this).attr("action");
 
@@ -293,11 +312,43 @@ $(document)
 								         $("#alert").show();
 								      }
 								});
+					    }
 					});
 
 		});
 
 											/************End of Data binding **************/
+
+function validateInput()
+{
+	var submit=true;
+	var errorHtml="";
+	$.each($("input[data-required='true']"),function(index,selectInput){	
+		
+		if($("#"+selectInput.id).val()=="")
+		{
+			 if(selectInput.id=="permissionSetName"){
+				 errorHtml+="<li id='"+selectInput.id+"Validation'> <b>Permission set</b> name cannot be empty </li>";
+				 $("#"+selectInput.id+"Container").addClass("has-error");
+				 submit=false;
+			 }
+			 else if(selectInput.id=="actionDomain"){
+				 errorHtml+="<li id='"+selectInput.id+"Validation'> <b>Action Domain</b> cannot be empty </li>";
+				 $("#"+selectInput.id+"Container").addClass("has-error");
+				 submit=false;
+			 }
+		}
+	});
+	if(!submit)
+	{
+		$("#errorList").html(errorHtml);
+		$('html,body').animate({ scrollTop: 0 }, 'slow', function () {
+          });
+		$("#alert").show();
+	}
+	
+	return submit;
+}
 
 //this part here deals with the deletion of the permissions permanently
 function deletePermissions() 
