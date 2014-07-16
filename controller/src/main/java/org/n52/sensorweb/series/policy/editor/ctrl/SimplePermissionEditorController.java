@@ -40,6 +40,7 @@ import org.n52.io.v1.data.PhenomenonOutput;
 import org.n52.io.v1.data.ProcedureOutput;
 import org.n52.security.service.pdp.simplepermission.Permission;
 import org.n52.security.service.pdp.simplepermission.PermissionSet;
+import org.n52.security.service.pdp.simplepermission.TargetValue;
 import org.n52.sensorweb.series.policy.api.PermissionManagementException;
 import org.n52.sensorweb.series.policy.api.beans.PermissionOutput;
 import org.n52.sensorweb.series.policy.api.beans.PermissionSetOutput;
@@ -151,7 +152,7 @@ public class SimplePermissionEditorController extends BaseController {
                                                 HttpServletResponse response,
                                                 HttpServletRequest request) {
         try {
-            simplePermissionService.editPermissionSet(permissionSet.getPermissionSet(),permissionSetName);
+            simplePermissionService.editPermissionSet(permissionSet.getPermissionSet(), permissionSetName);
         }
         catch (PermissionManagementException e) {
             throw new InternalServerException(e.getMessage(), e);
@@ -211,10 +212,42 @@ public class SimplePermissionEditorController extends BaseController {
         breadCrumb.put("Permission Set", request.getContextPath() + "/editor/edit/" + permissionSetName);
         mav.addObject("breadCrumb", breadCrumb);
         mav.addObject("contextUrl", request.getContextPath());
+
+        /* Preparing the array to be used in the UI */
+        String[][] array_subjects = new String[permissionSet.getSubPermissions().size()][];
+        String[][] array_resources = new String[permissionSet.getSubPermissions().size()][];
+        String[][] array_actions = new String[permissionSet.getSubPermissions().size()][];
+        int count = 0;
+        int row_count = 0;
+
+        for (Permission permission : permissionSet.getSubPermissions()) {
+            array_subjects[row_count] = new String[permission.getSubjects().size()];
+            for (TargetValue tv : permission.getSubjects())
+            {
+                array_subjects[row_count][count++] = tv.getValue();
+            }
+            count = 0;
+            array_resources[row_count] = new String[permission.getResources().size()];
+            for (TargetValue tv : permission.getResources())
+            {
+                array_resources[row_count][count++] = tv.getValue();
+            }
+            count = 0;
+            array_actions[row_count] = new String[permission.getActions().size()];
+            for (TargetValue tv : permission.getActions())
+            {
+                array_actions[row_count][count++] = tv.getValue();
+            }
+            count = 0;
+            mav.addObject("array_subjects_" + row_count, array_subjects[row_count]);
+            mav.addObject("array_actions_" + row_count, array_actions[row_count]);
+            mav.addObject("array_resources_" + row_count, array_resources[row_count]);
+            row_count++;
+        }
         mav.addObject(permissionSet);
-        
-        /*Adding additional parameters so as the UI should be aware of the context*/
-        mav.addObject("context","modify");
+
+        /* Adding additional parameters so as the UI should be aware of the context */
+        mav.addObject("context", "modify");
         return mav;
     }
 
@@ -243,6 +276,39 @@ public class SimplePermissionEditorController extends BaseController {
         breadCrumb.put("Permission Set", request.getContextPath() + "/editor/edit/" + permissionSetName);
         mav.addObject("breadCrumb", breadCrumb);
         mav.addObject("contextUrl", request.getContextPath());
+        
+        /* Preparing the array to be used in the UI */
+        String[][] array_subjects = new String[permissionSet.getSubPermissions().size()][];
+        String[][] array_resources = new String[permissionSet.getSubPermissions().size()][];
+        String[][] array_actions = new String[permissionSet.getSubPermissions().size()][];
+        int count = 0;
+        int row_count = 0;
+
+        for (Permission permission : permissionSet.getSubPermissions()) {
+            array_subjects[row_count] = new String[permission.getSubjects().size()];
+            for (TargetValue tv : permission.getSubjects())
+            {
+                array_subjects[row_count][count++] = tv.getValue();
+            }
+            count = 0;
+            array_resources[row_count] = new String[permission.getResources().size()];
+            for (TargetValue tv : permission.getResources())
+            {
+                array_resources[row_count][count++] = tv.getValue();
+            }
+            count = 0;
+            array_actions[row_count] = new String[permission.getActions().size()];
+            for (TargetValue tv : permission.getActions())
+            {
+                array_actions[row_count][count++] = tv.getValue();
+            }
+            count = 0;
+            mav.addObject("array_subjects_" + row_count, array_subjects[row_count]);
+            mav.addObject("array_actions_" + row_count, array_actions[row_count]);
+            mav.addObject("array_resources_" + row_count, array_resources[row_count]);
+            row_count++;
+        }
+        
         mav.addObject(permissionSet);
         return mav;
     }
@@ -481,7 +547,7 @@ public class SimplePermissionEditorController extends BaseController {
         {
             throw new InternalServerException("Could not create resource.", e);
         }
-        response.setHeader("Location", request.getContextPath() + "/editor/edit/" + permissionSet);
+        response.setHeader("Location", request.getHeader("referer"));
         return null;
     }
 
@@ -509,7 +575,7 @@ public class SimplePermissionEditorController extends BaseController {
         {
             throw new InternalServerException(e.getMessage(), e);
         }
-        response.setHeader("Location", request.getContextPath() + "/editor/edit/" + permissionSet);
+        response.setHeader("Location", request.getHeader("referer"));
         return null;
     }
 

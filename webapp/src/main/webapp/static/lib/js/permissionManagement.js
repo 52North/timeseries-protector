@@ -199,7 +199,7 @@ $(document)
 			.submit(
 					function(event) {
 
-						event.preventDefault();
+					event.preventDefault();
 					if(validateInput())
 					{	
 						// form action url
@@ -211,10 +211,9 @@ $(document)
 						var subPermissions=[];
 						
 						var rows=$("#permissionTable tr");
-						
+						/*first row is the header, so ignoring that*/
 						for(var i=1;i<rows.length;i++)
 						{
-							var td=$("#"+rows[i].id+" td");
 							
 							var subPermission={};
 							
@@ -222,11 +221,13 @@ $(document)
 							 * it should be consistent with the ordering of cells in the permissionTable.jsp
 							 * otherwise it will cause problem
 							 * **/
-							subPermission["name"]=td[2].innerHTML;
+							subPermission["name"]=$("#"+rows[i].id+" td[data-name]").attr("data-name");
 							
 							var subjects=[];
-							var values=td[3].innerHTML.split("<br>");
-							for(var j=0;j<values.length-1;j++)
+							
+							var values=$("#"+rows[i].id+" td[data-subjects]").attr("data-subjects").split(",");
+							
+							for(var j=0;j<values.length;j++)
 							{
 								items={};
 								items["value"]=$.trim(values[j]);
@@ -235,8 +236,8 @@ $(document)
 							}
 							
 							var actions=[];
-							values=td[4].innerHTML.split("<br>");
-							for(j=0;j<values.length-1;j++)
+							values=$("#"+rows[i].id+" td[data-actions]").attr("data-actions").split(",");
+							for(j=0;j<values.length;j++)
 							{
 								items={};
 								items["value"]=$.trim(values[j]);
@@ -245,8 +246,8 @@ $(document)
 							}
 							
 							var resources=[];
-							values=td[5].innerHTML.split("<br>");
-							for(j=0;j<values.length-1;j++)
+							values=$("#"+rows[i].id+" td[data-resources]").attr("data-resources").split(",");
+							for(j=0;j<values.length;j++)
 							{
 								items={};
 								items["value"]=$.trim(values[j]);
@@ -312,7 +313,7 @@ $(document)
 								         $("#alert").show();
 								      }
 								});
-					    }
+					    	}
 					});
 
 		});

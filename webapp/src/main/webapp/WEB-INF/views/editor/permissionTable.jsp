@@ -20,7 +20,7 @@ td {
 			<th>Obligation(s)</th>
 		</tr>
 	</thead>
-	<c:forEach items="${permissionSet.getSubPermissions()}"
+	<c:forEach varStatus="loop" items="${permissionSet.getSubPermissions()}"
 		var="permissions">
 		<tr id="row-${permissions.getName()}">
 			<td>
@@ -35,46 +35,88 @@ td {
 				class="btn btn-default btn-xs" role="button">MODIFY</a> <a
 				href="<c:url value="/editor/copy/${permissionSet.getName()}/${permissions.getName()}" />"
 				class="btn btn-default btn-xs" role="button">COPY</a></td>
-			<td><c:out value="${permissions.getName()}"></c:out></td>
-			<td><c:choose>
+			<td data-name="${permissions.getName()}"><c:out value="${permissions.getName()}"></c:out></td>
+		
+			<td data-subjects="${fn:join(array_subjects_loop.index,',')}">
+				<c:choose>
 					<c:when test="${permissions.getSubjects().size()>0}">
 						<c:forEach items="${permissions.getSubjects()}" var="subjects">
 							<c:out value="${subjects.getValue()}"></c:out>
-							<br />
+							<br/>
 						</c:forEach>
 					</c:when>
 					<c:otherwise>
 						<c:out value="Not Found"></c:out>
 					</c:otherwise>
-				</c:choose></td>
-			<td><c:choose>
+				</c:choose>
+			</td>
+			<td data-actions="${fn:join(array_actions_loop.index,',')}">
+				<c:choose>
 					<c:when test="${permissions.getActions().size()>0}">
 						<c:forEach items="${permissions.getActions()}" var="actions">
-							<c:out value="${actions.getValue()}"></c:out>
-							<br />
+							<c:out value="${fn:substringAfter(actions.getValue(),'operations/')}"></c:out>
+							<br/>
 						</c:forEach>
 					</c:when>
 					<c:otherwise>
-						<c:out value="Not Found"></c:out>
+						<c:out value=""></c:out>
 					</c:otherwise>
-				</c:choose></td>
-			<td><c:choose>
+				</c:choose>
+			</td>
+			<td data-resources="${fn:join(array_resources_loop.index,',')}">
+				<c:choose>
 					<c:when test="${permissions.getResources().size()>0}">
+						<c:set var="start_proc" value=""/>
+						<c:set var="start_off" value=""/>
+						<c:set var="start_foi" value=""/>
+						<c:set var="start_obp" value=""/>
 						<c:forEach items="${permissions.getResources()}" var="resources">
-						   ${resources.getValue()}
-						   <br/>
+						   <c:choose>
+						   		<c:when test="${fn:substringBefore(resources.getValue(),'/')=='procedures'}">
+						   		   <c:if test="${start_proc==''}"> 
+						   		   	   <label style="font-style:oblique;" class="control-label">Procedures</label> <br/>
+						   		   	   <c:set var="start_proc" value="found"/>
+						   		   </c:if>
+						   			&nbsp;${fn:substringAfter(resources.getValue(),'procedures/')}
+						   			 <br/>
+						   		</c:when>
+						   		<c:when test="${fn:substringBefore(resources.getValue(),'/')=='offerings'}">
+						   			<c:if test="${start_off==''}"> 
+						   		   	   <label style="font-style:oblique;" class="control-label">Offerings</label> <br/>
+						   		   	   <c:set var="start_off" value="found"/>
+						   		   </c:if>
+						   			&nbsp;${fn:substringAfter(resources.getValue(),'offerings/')}
+						   			 <br/>
+						   		</c:when>
+						   		<c:when test="${fn:substringBefore(resources.getValue(),'/')=='featuresOfInterest'}">
+						   			<c:if test="${start_foi==''}"> 
+						   		   	   <label style="font-style:oblique;" class="control-label">Features of Interest</label> <br/>
+						   		   	   <c:set var="start_foi" value="found"/>
+						   		   </c:if>
+						   			&nbsp;${fn:substringAfter(resources.getValue(),'featuresOfInterest/')}
+						   			 <br/>
+						   	   </c:when>
+						   	   <c:when test="${fn:substringBefore(resources.getValue(),'/')=='observedProperties'}">
+						   	   		<c:if test="${start_obp==''}"> 
+						   		   	   <label style="font-style:oblique;" class="control-label">Observed Properties</label> <br/>
+						   		   	   <c:set var="start_obp" value="found"/>
+						   		   </c:if>
+						   	   		&nbsp;${fn:substringAfter(resources.getValue(),'observedProperties/')}
+						   	   		 <br/>
+						   	   </c:when>
+						   </c:choose>
 						</c:forEach>
 					</c:when>
 					<c:otherwise>
 						<c:out value="Not Found"></c:out>
 					</c:otherwise>
-				</c:choose></td>
+				</c:choose>
+				</td>
 			<td><c:choose>
 					<c:when test="${permissions.getObligations().size()>0}">
 						<c:forEach items="${permissions.getObligations()}"
 							var="obligations">
 							${obligations.getValue()}
-							<br />
 						</c:forEach>
 					</c:when>
 					<c:otherwise>
