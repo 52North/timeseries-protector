@@ -172,16 +172,27 @@ function pushPermission(buttonId)
 			 * Prepare the json and launch the ajax attack :D
 			 * */
 			var actions=[];
-
-			for(var i=0;i<$("#selectActions").val().length;i++)
-			{
+			
+			if($("#selectActions option").length==$("#selectActions").val().length)
+			{	
 				items={};
-				items["value"]="operations/"+$("#selectActions").val()[i];
+				items["value"]="operations/*";
 				items["domains"]=[];
 				actions.push(items);
+			}
+			else
+			{
+				for(var i=0;i<$("#selectActions").val().length;i++)
+				{
+					items={};
+					items["value"]="operations/"+$("#selectActions").val()[i];
+					items["domains"]=[];
+					actions.push(items);
+				}
 			}	
-
+			
 			var resources=[];
+			
 			if($("#selectProcedures option").length==$("#selectProcedures").val().length)
 			{	
 				items={};
