@@ -2,16 +2,8 @@
 <%@ taglib uri="http://tiles.apache.org/tags-tiles" prefix="tiles"%>
 <div class="container-fluid">
 
-	<div id="warningContainer" class="container-fluid">
-		<center>
-			<h4>
-				<span id="deleteWarning" class="label label-warning"></span>
-			</h4>
-			<button style="display: none;" id="undoWarning" type="button"
-				class="btn btn-warning">Undo</button>
-		</center>
-	</div>
-
+	<tiles:insertDefinition name="warningSection"></tiles:insertDefinition>
+	
 	<br /> <a title="Add Permission Set"
 		href="<c:url value="/editor/new" />" id="btnAddPermissionSet"
 		class="btn btn-default" role="button"> <span
@@ -52,10 +44,6 @@
 						 <a 
 							href="<c:url value="/editor/edit/${permissionSet.getName()}" />"
 							class="btn btn-default btn-xs" role="button">MODIFY
-						</a>
-						<a 
-							href="<c:url value="/editor/copy/${permissionSet.getName()}" />"
-							class="btn btn-default btn-xs" role="button">COPY
 						</a>
 					</td>
 					

@@ -22,7 +22,12 @@
     <definition name="advanceSection" template="/WEB-INF/views/editor/advanceCreatePermissionSet.jsp">
     </definition>
     
+    <!-- Section for showing the UI validation errors -->
     <definition name="errorSection" template="/WEB-INF/views/editor/errorNotifications.jsp">
+    </definition>
+    
+    <!-- Section for showing the Delete Warnings -->
+    <definition name="warningSection" template="/WEB-INF/views/editor/deleteNotifications.jsp">
     </definition>
     
     <!-- Sub Permissions Form -->
