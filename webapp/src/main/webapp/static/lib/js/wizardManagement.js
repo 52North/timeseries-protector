@@ -52,6 +52,7 @@ $(document).ready(function() {
 	 * 
 	 * */
 	$("select[multiple]").on("change",function() {
+		
 		$("#"+this.id+"Count").html($("#"+this.id).val().length);
 		
 		if($("#"+this.id+"Container").hasClass("has-error")) {
@@ -78,9 +79,80 @@ $(document).ready(function() {
 		}
 	});
 	
+	/*for the resources*/
+	$("#toggleResources").click(function(event){
+		
+		/*we get the opened tab here*/
+		var div=$("div[class='tab-pane active']");
+		
+		/*getting the select options now*/
+		var select=$("#"+div.attr("id")+" select[multiple]");
+		
+		var option=$("#"+select.attr("id")+" option");
+		
+		$.each(option,function(index,e){
+			if(e.selected)
+			{
+				e.selected=false;
+			}
+			else
+			{
+				e.selected=true;
+			}	
+		});
+		$(select).trigger("change");
+	});
+	
+	$("#clearResources").click(function(event){
+			
+			/*we get the opened tab here*/
+			var div=$("div[class='tab-pane active']");
+			
+			/*getting the select options now*/
+			var select=$("#"+div.attr("id")+" select[multiple]");
+			
+			var option=$("#"+select.attr("id")+" option");
+			
+			$.each(option,function(index,e){
+					e.selected=false;
+			});		
+			
+			$("#"+select.attr("id")+"Count").html("0");
+	});
+	
+	/*for the actions*/
+	$("#toggleActions").click(function(event){
+		
+		/*getting the select options now*/
+		
+		var option=$("#selectActions"+" option");
+		
+		$.each(option,function(index,e){
+			if(e.selected)
+			{
+				e.selected=false;
+			}
+			else
+			{
+				e.selected=true;
+			}	
+		});
+	});
+	
+	$("#clearActions").click(function(event){
+		
+		var option=$("#selectActions"+" option");
+		
+		$.each(option,function(index,e){
+				e.selected=false;
+		});
+	});
 });
 
+
 /***********************************End of data binding*********************************************/
+
+
 function pushPermission(buttonId)
 {
 	if(validateFields())
