@@ -2,14 +2,9 @@
 <%@ taglib uri="http://tiles.apache.org/tags-tiles" prefix="tiles"%>
 
 <div class="container-fluid">
-	<div id="alert" style="display: none;"
-		class="alert alert-danger alert-dismissible" role="alert">
-		<button type="button" class="close">
-			<span aria-hidden="true">&times;</span><span class="sr-only">Close</span>
-		</button>
-		<ul id="errorList">
-		</ul>
-	</div>
+	
+	<tiles:insertDefinition name="errorSection"></tiles:insertDefinition>
+	
 	<form role="form" enctype="application/json" method="POST"
 		id="createPermissionForm">
 

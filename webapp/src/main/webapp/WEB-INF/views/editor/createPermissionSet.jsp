@@ -10,15 +10,9 @@
 				class="btn btn-warning">Undo</button>
 		</center>
 	</div>
-	<div id="alert" style="display: none;"
-		class="alert alert-danger alert-dismissible" role="alert">
-		<button type="button" class="close">
-			<span aria-hidden="true">&times;</span><span class="sr-only">Close</span>
-		</button>
-		<ul id="errorList">
-
-		</ul>
-	</div>
+	
+	<tiles:insertDefinition name="errorSection"></tiles:insertDefinition>
+	
 	<form enctype="application/json" autocomplete="on" role="form"
 		id="createPermissionSetForm" method="POST">
 		<input id="contextUrl" type="hidden" value="${contextUrl}" />

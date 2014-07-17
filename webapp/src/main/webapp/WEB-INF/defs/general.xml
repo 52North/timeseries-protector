@@ -22,6 +22,9 @@
     <definition name="advanceSection" template="/WEB-INF/views/editor/advanceCreatePermissionSet.jsp">
     </definition>
     
+    <definition name="errorSection" template="/WEB-INF/views/editor/errorNotifications.jsp">
+    </definition>
+    
     <!-- Sub Permissions Form -->
 	<definition name="createPermission" extends="common">
         <put-attribute name="body" value="/WEB-INF/views/editor/createPermission.jsp" />
