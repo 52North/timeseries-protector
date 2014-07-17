@@ -386,7 +386,7 @@ public class SimplePermissionEditorController extends BaseController {
         }
         catch (PermissionManagementException e)
         {
-            throw new InternalServerException("Could not create resource.", e);
+            throw new InternalServerException(e.getMessage(), e);
         }
         response.setHeader("Location", request.getContextPath()+"/editor/edit/"+permissionSet);
         return null;

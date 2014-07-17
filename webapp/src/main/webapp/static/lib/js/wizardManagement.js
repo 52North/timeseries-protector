@@ -90,7 +90,7 @@ function pushPermission(buttonId)
 			var url;
 			if(buttonId=="modifyAction")
 			{
-				url=$("#url").val()+$("#permissionName").val()+"/modify";
+				url=$("#url").val()+$("#permissionIdentifier").val()+"/modify";
 			}
 			else if(buttonId=="modifyNewAction")
 			{

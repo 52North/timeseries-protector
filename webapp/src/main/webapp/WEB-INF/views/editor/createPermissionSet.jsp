@@ -1,14 +1,14 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib uri="http://tiles.apache.org/tags-tiles" prefix="tiles"%>
 <div class="container-fluid">
-	
+
 	<tiles:insertDefinition name="warningSection"></tiles:insertDefinition>
-	
+
 	<tiles:insertDefinition name="errorSection"></tiles:insertDefinition>
-	
+
 	<form enctype="application/json" autocomplete="on" role="form"
 		id="createPermissionSetForm" method="POST">
-		<input id="contextUrl" type="hidden" value="${contextUrl}" />
+
 		<div class="form-group">
 			<label class="control-label">* Name :</label>
 			<div class="row">
@@ -21,6 +21,11 @@
 			</div>
 			<p class="help-block">Permission set name</p>
 		</div>
+
+		<!-- Hidden fields for house keeping tasks -->
+		<input id="contextUrl" type="hidden" value="${contextUrl}" /> <input
+			type="hidden" id="permissionSetIdentifier"
+			value="${permissionSet.getName()}" />
 
 		<div class="form-group">
 			<label class="control-label">* Action Domain :</label>

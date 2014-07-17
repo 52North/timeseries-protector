@@ -11,7 +11,8 @@
 
 <!--  Jquery -->
 <script type="text/javascript"
-	src="<c:url value="/static/lib/js/jquery-1.8.2.min.js" />"></script>
+	src="<c:url value="/static/lib/js/jquery-1.8.2.min.js" />">
+	</script>
 
 <!-- Bootstrap core files  -->
 <link rel="stylesheet"
@@ -52,7 +53,7 @@
 <title>${pageTitle}</title>
 </head>
 <body>
-	<ol class="breadcrumb navbar-fixed-top">
+	<ol style="background-color: #DDDCDC" class="breadcrumb navbar-fixed-top">
 		<c:forEach varStatus="loop" items="${breadCrumb}" var="entry">
 			<c:choose>
 				<c:when test="${loop.index==breadCrumb.size()-1}">

@@ -199,7 +199,7 @@ function pushPermissionSet(buttonId)
 		// form action url
 		if(buttonId=="modifyAction")
 		{	
-			url = $("#contextUrl").val()+"/editor/"+$("#permissionSetName").val()+"/modify";
+			url = $("#contextUrl").val()+"/editor/"+$("#permissionSetIdentifier").val()+"/modify";
 		}
 		else if(buttonId=="modifyNewAction" || buttonId=="newAction")
 		{
