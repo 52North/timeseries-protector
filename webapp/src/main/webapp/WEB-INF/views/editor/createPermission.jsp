@@ -10,19 +10,14 @@
 		<ul id="errorList">
 		</ul>
 	</div>
-	<form role="form"
-		<c:if test="${context=='modify'}">	
-		action="<c:url value="/editor/${permissionSet}/${permission.getName()}/modify"/>"
-	   </c:if>
-		<c:if test="${context!='modify'}">	
-		action="<c:url value="/editor/${permissionSet}/save"/>"
-	   </c:if>
-		enctype="application/json" method="POST" id="createPermissionForm">
-		
+	<form role="form" enctype="application/json" method="POST"
+		id="createPermissionForm">
+
 		<!-- Hidden fields for house keeping tasks -->
-		  <input id="permissionSet" type="hidden" value="${permissionSet}" />
-		  <input id="permissionIdentifier" value="${permission.getName()}" name="existingName" type="hidden">
-		
+		<input id="permissionSet" type="hidden" value="${permissionSet}" /> <input
+			id="permissionIdentifier" value="${permission.getName()}"
+			name="existingName" type="hidden">
+
 		<div id="basicScreen">
 			<tiles:insertDefinition name="basicScreen"></tiles:insertDefinition>
 		</div>
@@ -38,8 +33,23 @@
 
 		<br />
 
-		<button title="Save Permission" id="savePermission" type="submit"
-			class="btn btn-primary">Save</button>
+		<c:if test="${context!='modify'}">
+			<button onclick="pushPermission(this.id)" id="newAction"
+				title="Save Permission Temporarily" type="button"
+				class="btn btn-info">Save Temporarily</button>
+		</c:if>
+
+		<c:if test="${context=='modify'}">
+			<button onclick="pushPermission(this.id)" id="modifyAction"
+				title="Save Permission" type="button" class="btn btn-primary">Save</button>
+
+			<button onclick="pushPermission(this.id)" id="modifyNewAction"
+				title="Save As New Permission" type="button" class="btn btn-info">Save
+				As New</button>
+
+			<input id="url" type="hidden"
+				value="<c:url value="/editor/${permissionSetName}/" />" />
+		</c:if>
 
 		<!-- Setting the url for cancel button appropriately -->
 		<c:forEach varStatus="loop" items="${breadCrumb}" var="entry">

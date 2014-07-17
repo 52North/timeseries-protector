@@ -78,179 +78,179 @@ $(document).ready(function() {
 		}
 	});
 	
-	/*
-	 * Functionality for displaying the corresponding screens
-	 * for add permission
-	 * */
-
-	$("#createPermissionForm").submit(function(event){
-		event.preventDefault();
-
-		if(validateFields())
-		{	 
-			if($("#permissionSet").val()!="new")
-			{
-				/*
-				 * Prepare the json and launch the ajax attack :D
-				 * */
-				var actions=[];
-
-				for(var i=0;i<$("#selectActions").val().length;i++)
-				{
-					items={};
-					items["value"]="operations/"+$("#selectActions").val()[i];
-					items["domains"]=[];
-					actions.push(items);
-				}	
-
-				var resources=[];
-				if($("#selectProcedures option").length==$("#selectProcedures").val().length)
-				{	
-					items={};
-					items["value"]="procedures/*";
-					items["domains"]=[];
-					resources.push(items);
-				}
-				else
-				{
-					for(var i=0;i<$("#selectProcedures").val().length;i++)
-					{
-						items={};
-						items["value"]="procedures/"+$("#selectProcedures").val()[i];
-						items["domains"]=[];
-						resources.push(items);
-					}
-				}
-
-				if($("#selectOfferings option").length==$("#selectOfferings").val().length)
-				{	
-					items={};
-					items["value"]="offerings/*";
-					items["domains"]=[];
-					resources.push(items);
-				}
-				else
-				{
-					for(var i=0;i<$("#selectOfferings").val().length;i++)
-					{
-						items={};
-						items["value"]="offerings/"+$("#selectOfferings").val()[i];
-						items["domains"]=[];
-						resources.push(items);
-					}
-				}
-
-				if($("#selectFeaturesOfInterest option").length==$("#selectFeaturesOfInterest").val().length)
-				{	
-					items={};
-					items["value"]="featuresOfInterest/*";
-					items["domains"]=[];
-					resources.push(items);
-				}
-				else
-				{
-					for(var i=0;i<$("#selectFeaturesOfInterest").val().length;i++)
-					{
-						items={};
-						items["value"]="featuresOfInterest/"+$("#selectFeaturesOfInterest").val()[i];
-						items["domains"]=[];
-						resources.push(items);
-					}
-				}	
-				if($("#selectObservedProperties option").length==$("#selectObservedProperties").val().length)
-				{	
-					items={};
-					items["value"]="observedProperties/*";
-					items["domains"]=[];
-					resources.push(items);
-				}
-				else
-				{
-					for(var i=0;i<$("#selectObservedProperties").val().length;i++)
-					{
-						items={};
-						items["value"]="observedProperties/"+$("#selectObservedProperties").val()[i];
-						items["domains"]=[];
-						resources.push(items);
-					}
-				}
-
-				if($("#selectActions option").length==$("#selectActions").val().length)
-				{
-					items={};
-					items["value"]="allowedOperations/*";
-					items["domains"]=[];
-					resources.push(items);
-				}
-				else
-				{
-					for(var i=0;i<$("#selectActions").val().length;i++)
-					{
-						items={};
-						items["value"]="allowedOperations/"+$("#selectActions").val()[i];
-						items["domains"]=[];
-						resources.push(items);
-					}
-				}
-
-				var subjects=[];
-				for(var i=0;i<$("#selectSubjects").val().length;i++)
-				{
-					items={};
-					items["value"]=$("#selectSubjects").val()[i];
-					items["domains"]=[];
-					subjects.push(items);
-				}	 
-
-				var json= {
-						"name":	$("#permissionName").val(),
-						"resources":resources,
-						"actions":actions,
-						"subjects":subjects,
-						"obligations":[]
-				};
-				
-				$.ajax({
-					url : $(this).attr("action"),
-					data : JSON.stringify(json),
-					contentType : "application/json",
-					type : "POST",
-					beforeSend : function(
-							xhr) {
-						xhr
-						.setRequestHeader(
-								"Accept",
-						"application/json");
-						xhr
-						.setRequestHeader(
-								"Content-Type",
-						"application/json");
-					},
-					success: function(data,status,xhr)
-					{
-						window.location.href=xhr.getResponseHeader('Location');
-					},
-					error: function (xhr, status, thrownError) {
-						var errorMessage="<li>"+jQuery.parseJSON(xhr.responseText).userMessage+"</li>";
-				         $("#errorList").html(errorMessage);
-				         $('html,body').animate({ scrollTop: 0 }, 'slow', function () {
-				          });
-				         $("#alert").show();
-				      }
-				});
-			}
-			else
-			{
-
-			}
-		}
-
-	});
-
 });
 
 /***********************************End of data binding*********************************************/
+function pushPermission(buttonId)
+{
+	if(validateFields())
+	{	 
+		if($("#permissionSet").val()!="new")
+		{
+			var url;
+			if(buttonId=="modifyAction")
+			{
+				url=$("#url").val()+$("#permissionName").val()+"/modify";
+			}
+			else if(buttonId=="modifyNewAction")
+			{
+				url=$("#url").val()+"/save";
+			}	
+			/*
+			 * Prepare the json and launch the ajax attack :D
+			 * */
+			var actions=[];
 
+			for(var i=0;i<$("#selectActions").val().length;i++)
+			{
+				items={};
+				items["value"]="operations/"+$("#selectActions").val()[i];
+				items["domains"]=[];
+				actions.push(items);
+			}	
+
+			var resources=[];
+			if($("#selectProcedures option").length==$("#selectProcedures").val().length)
+			{	
+				items={};
+				items["value"]="procedures/*";
+				items["domains"]=[];
+				resources.push(items);
+			}
+			else
+			{
+				for(var i=0;i<$("#selectProcedures").val().length;i++)
+				{
+					items={};
+					items["value"]="procedures/"+$("#selectProcedures").val()[i];
+					items["domains"]=[];
+					resources.push(items);
+				}
+			}
+
+			if($("#selectOfferings option").length==$("#selectOfferings").val().length)
+			{	
+				items={};
+				items["value"]="offerings/*";
+				items["domains"]=[];
+				resources.push(items);
+			}
+			else
+			{
+				for(var i=0;i<$("#selectOfferings").val().length;i++)
+				{
+					items={};
+					items["value"]="offerings/"+$("#selectOfferings").val()[i];
+					items["domains"]=[];
+					resources.push(items);
+				}
+			}
+
+			if($("#selectFeaturesOfInterest option").length==$("#selectFeaturesOfInterest").val().length)
+			{	
+				items={};
+				items["value"]="featuresOfInterest/*";
+				items["domains"]=[];
+				resources.push(items);
+			}
+			else
+			{
+				for(var i=0;i<$("#selectFeaturesOfInterest").val().length;i++)
+				{
+					items={};
+					items["value"]="featuresOfInterest/"+$("#selectFeaturesOfInterest").val()[i];
+					items["domains"]=[];
+					resources.push(items);
+				}
+			}	
+			if($("#selectObservedProperties option").length==$("#selectObservedProperties").val().length)
+			{	
+				items={};
+				items["value"]="observedProperties/*";
+				items["domains"]=[];
+				resources.push(items);
+			}
+			else
+			{
+				for(var i=0;i<$("#selectObservedProperties").val().length;i++)
+				{
+					items={};
+					items["value"]="observedProperties/"+$("#selectObservedProperties").val()[i];
+					items["domains"]=[];
+					resources.push(items);
+				}
+			}
+
+			if($("#selectActions option").length==$("#selectActions").val().length)
+			{
+				items={};
+				items["value"]="allowedOperations/*";
+				items["domains"]=[];
+				resources.push(items);
+			}
+			else
+			{
+				for(var i=0;i<$("#selectActions").val().length;i++)
+				{
+					items={};
+					items["value"]="allowedOperations/"+$("#selectActions").val()[i];
+					items["domains"]=[];
+					resources.push(items);
+				}
+			}
+
+			var subjects=[];
+			for(var i=0;i<$("#selectSubjects").val().length;i++)
+			{
+				items={};
+				items["value"]=$("#selectSubjects").val()[i];
+				items["domains"]=[];
+				subjects.push(items);
+			}	 
+
+			var json= {
+					"name":	$("#permissionName").val(),
+					"resources":resources,
+					"actions":actions,
+					"subjects":subjects,
+					"obligations":[]
+			};
+			
+			$.ajax({
+				url : url,
+				data : JSON.stringify(json),
+				contentType : "application/json",
+				type : "POST",
+				beforeSend : function(
+						xhr) {
+					xhr
+					.setRequestHeader(
+							"Accept",
+					"application/json");
+					xhr
+					.setRequestHeader(
+							"Content-Type",
+					"application/json");
+				},
+				success: function(data,status,xhr)
+				{
+					window.location.href=xhr.getResponseHeader('Location');
+				},
+				error: function (xhr, status, thrownError) {
+					var errorMessage="<li>"+jQuery.parseJSON(xhr.responseText).userMessage+"</li>";
+			         $("#errorList").html(errorMessage);
+			         $('html,body').animate({ scrollTop: 0 }, 'slow', function () {
+			          });
+			         $("#alert").show();
+			      }
+			});
+		}
+		else
+		{
+
+		}
+	}
+}
 /*
  * Function for validation the
  * select input fields before the

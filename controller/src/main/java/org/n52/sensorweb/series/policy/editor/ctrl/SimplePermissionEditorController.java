@@ -211,105 +211,11 @@ public class SimplePermissionEditorController extends BaseController {
         breadCrumb.put("Manager", request.getContextPath() + "/editor/");
         breadCrumb.put("Permission Set", request.getContextPath() + "/editor/edit/" + permissionSetName);
         mav.addObject("breadCrumb", breadCrumb);
-        mav.addObject("contextUrl", request.getContextPath());
-
-        /* Preparing the array to be used in the UI */
-        String[][] array_subjects = new String[permissionSet.getSubPermissions().size()][];
-        String[][] array_resources = new String[permissionSet.getSubPermissions().size()][];
-        String[][] array_actions = new String[permissionSet.getSubPermissions().size()][];
-        int count = 0;
-        int row_count = 0;
-
-        for (Permission permission : permissionSet.getSubPermissions()) {
-            array_subjects[row_count] = new String[permission.getSubjects().size()];
-            for (TargetValue tv : permission.getSubjects())
-            {
-                array_subjects[row_count][count++] = tv.getValue();
-            }
-            count = 0;
-            array_resources[row_count] = new String[permission.getResources().size()];
-            for (TargetValue tv : permission.getResources())
-            {
-                array_resources[row_count][count++] = tv.getValue();
-            }
-            count = 0;
-            array_actions[row_count] = new String[permission.getActions().size()];
-            for (TargetValue tv : permission.getActions())
-            {
-                array_actions[row_count][count++] = tv.getValue();
-            }
-            count = 0;
-            mav.addObject("array_subjects_" + row_count, array_subjects[row_count]);
-            mav.addObject("array_actions_" + row_count, array_actions[row_count]);
-            mav.addObject("array_resources_" + row_count, array_resources[row_count]);
-            row_count++;
-        }
         mav.addObject(permissionSet);
 
         /* Adding additional parameters so as the UI should be aware of the context */
-        mav.addObject("context", "modify");
-        return mav;
-    }
-
-    /**
-     * @param permissionSetName
-     *        the permission set to be copied
-     * @return permissionSet
-     */
-    @RequestMapping(value = "/copy/{permissionSetName}", method = RequestMethod.GET)
-    public ModelAndView copyPermissionSet(@PathVariable String permissionSetName, HttpServletRequest request)
-    {
-        ModelAndView mav = new ModelAndView("createPermissionSet");
-        PermissionSet permissionSet = simplePermissionService.getPermissionSet(permissionSetName);
-        if (permissionSet == null)
-        {
-            throw new ResourceNotFoundException("No permissionSet with name '" + permissionSetName + "'.");
-        }
-
-        /* for page titles */
-        mav.addObject("pageTitle", "Copy Permission Set");
-        mav.addObject("heading", "Copy " + permissionSetName);
-
-        /* for the breadcrumb */
-        LinkedHashMap<String, String> breadCrumb = new LinkedHashMap<String, String>();
-        breadCrumb.put("Manager", request.getContextPath() + "/editor/");
-        breadCrumb.put("Permission Set", request.getContextPath() + "/editor/edit/" + permissionSetName);
-        mav.addObject("breadCrumb", breadCrumb);
         mav.addObject("contextUrl", request.getContextPath());
-        
-        /* Preparing the array to be used in the UI */
-        String[][] array_subjects = new String[permissionSet.getSubPermissions().size()][];
-        String[][] array_resources = new String[permissionSet.getSubPermissions().size()][];
-        String[][] array_actions = new String[permissionSet.getSubPermissions().size()][];
-        int count = 0;
-        int row_count = 0;
-
-        for (Permission permission : permissionSet.getSubPermissions()) {
-            array_subjects[row_count] = new String[permission.getSubjects().size()];
-            for (TargetValue tv : permission.getSubjects())
-            {
-                array_subjects[row_count][count++] = tv.getValue();
-            }
-            count = 0;
-            array_resources[row_count] = new String[permission.getResources().size()];
-            for (TargetValue tv : permission.getResources())
-            {
-                array_resources[row_count][count++] = tv.getValue();
-            }
-            count = 0;
-            array_actions[row_count] = new String[permission.getActions().size()];
-            for (TargetValue tv : permission.getActions())
-            {
-                array_actions[row_count][count++] = tv.getValue();
-            }
-            count = 0;
-            mav.addObject("array_subjects_" + row_count, array_subjects[row_count]);
-            mav.addObject("array_actions_" + row_count, array_actions[row_count]);
-            mav.addObject("array_resources_" + row_count, array_resources[row_count]);
-            row_count++;
-        }
-        
-        mav.addObject(permissionSet);
+        mav.addObject("context", "modify");
         return mav;
     }
 
@@ -455,71 +361,6 @@ public class SimplePermissionEditorController extends BaseController {
         return mav;
     }
 
-    /**
-     * @param permissionSetName
-     *        The permission set whose sub permission is to be copied
-     * @param permissionName
-     *        The sub permission to be copied
-     * @param request
-     *        HttpServeltRequest object
-     * @return
-     */
-    @RequestMapping(value = "/copy/{permissionSetName}/{permissionName}", method = RequestMethod.GET)
-    public ModelAndView copyPermission(@PathVariable String permissionSetName,
-                                       @PathVariable String permissionName,
-                                       HttpServletRequest request)
-    {
-        ModelAndView mav = new ModelAndView("createPermission");
-        PermissionSet permissionSet = simplePermissionService.getPermissionSet(permissionSetName);
-        Permission permission = simplePermissionService.getPermission(permissionSetName, permissionName);
-        if (permissionSet == null)
-        {
-            throw new ResourceNotFoundException("No permissionSet '" + permissionSetName + "' with permission '"
-                    + permissionName + "'");
-        }
-        if (permission == null)
-        {
-            throw new ResourceNotFoundException("No permission '" + permissionName + "' under permission set '"
-                    + permissionSetName + "'");
-        }
-        /*
-         * Added because Subject field will need user roles defined in user database
-         */
-        mav.addObject("users", userService.getConfiguredUsers());
-
-        /* Emptying the name so that same name does not result */
-        mav.addObject(permission);
-
-        /* for page titles */
-        mav.addObject("pageTitle", "Copy Permission");
-        mav.addObject("heading", "Copy " + permissionName);
-
-        /* preparing the timeseries parameters */
-        IoParameters query = IoParameters.createDefaults();
-        OfferingOutput[] offerings = parameterServiceProvider.getOfferingsService().getCondensedParameters(query);
-        ProcedureOutput[] procedures = parameterServiceProvider.getProceduresService().getCondensedParameters(query);
-        FeatureOutput[] featuresOfInterest = parameterServiceProvider.getFeaturesService().getCondensedParameters(query);
-        PhenomenonOutput[] phenomenon = parameterServiceProvider.getPhenomenaService().getCondensedParameters(query);
-
-        mav.addObject("offerings", offerings);
-        mav.addObject("procedures", procedures);
-        mav.addObject("featuresOfInterest", featuresOfInterest);
-        mav.addObject("phenomenon", phenomenon);
-        mav.addObject("actionValues", ActionValues.getActionValues());
-
-        /* For the breadcrumb */
-        LinkedHashMap<String, String> breadCrumb = new LinkedHashMap<String, String>();
-        breadCrumb.put("Manager", request.getContextPath() + "/editor/");
-        breadCrumb.put("Permission Set", request.getContextPath() + "/editor/edit/" + permissionSetName);
-        breadCrumb.put("Permission", request.getContextPath() + "/editor/copy/" + permissionSetName + "/"
-                + permissionName);
-        mav.addObject("breadCrumb", breadCrumb);
-
-        /* Addded to see whether the user is attempting to save a permission for an existent permission set */
-        mav.addObject("permissionSet", permissionSetName);
-
-        return mav;
-    }
 
     /**
      * @param permissionSet
@@ -547,7 +388,7 @@ public class SimplePermissionEditorController extends BaseController {
         {
             throw new InternalServerException("Could not create resource.", e);
         }
-        response.setHeader("Location", request.getHeader("referer"));
+        response.setHeader("Location", request.getContextPath()+"/editor/edit/"+permissionSet);
         return null;
     }
 
@@ -575,7 +416,7 @@ public class SimplePermissionEditorController extends BaseController {
         {
             throw new InternalServerException(e.getMessage(), e);
         }
-        response.setHeader("Location", request.getHeader("referer"));
+        response.setHeader("Location", request.getContextPath()+"/editor/edit/"+permissionSet);
         return null;
     }
 

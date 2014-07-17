@@ -20,23 +20,16 @@
 		</ul>
 	</div>
 	<form enctype="application/json" autocomplete="on" role="form"
-		id="createPermissionSetForm"
-		<c:if test="${context!='modify'}">
-		   	action="<c:url value='/editor/save' />"
-		</c:if>
-		<c:if test="${context=='modify'}">
-		   	action="<c:url value='/editor/${permissionSet.getName()}/modify' />"
-		</c:if>
-		method="POST">
+		id="createPermissionSetForm" method="POST">
 		<input id="contextUrl" type="hidden" value="${contextUrl}" />
 		<div class="form-group">
 			<label class="control-label">* Name :</label>
 			<div class="row">
 				<div id="permissionSetNameContainer" class="col-xs-8">
-					<input data-required="true" autofocus style="margin-top: 5px" id="permissionSetName"
-						class="form-control" value="${permissionSet.getName()}"
-						type="text" name="permissionSetName"
-						placeholder="Permission Set Name" />
+					<input data-required="true" autofocus style="margin-top: 5px"
+						id="permissionSetName" class="form-control"
+						value="${permissionSet.getName()}" type="text"
+						name="permissionSetName" placeholder="Permission Set Name" />
 				</div>
 			</div>
 			<p class="help-block">Permission set name</p>
@@ -45,8 +38,8 @@
 		<div class="form-group">
 			<label class="control-label">* Action Domain :</label>
 			<div id="actionDomainContainer">
-				<input data-required="true" style="margin-top: 5px" id="actionDomain"
-					class="form-control" type="url"
+				<input data-required="true" style="margin-top: 5px"
+					id="actionDomain" class="form-control" type="url"
 					value="${permissionSet.getActionDomains().get(0)}"
 					name="actionDomain" placeholder="Action Domain URL" />
 			</div>
@@ -83,8 +76,21 @@
 			<tiles:insertDefinition name="permissionTable"></tiles:insertDefinition>
 		</div>
 		<br /> <br />
-		<button title="Save Permission Set" type="submit"
-			class="btn btn-primary">Save</button>
+
+		<c:if test="${context!='modify'}">
+			<button onclick="pushPermissionSet(this.id)" id="newAction"
+				title="Save Permission Set" type="button" class="btn btn-primary">Save</button>
+		</c:if>
+
+		<c:if test="${context=='modify'}">
+			<button onclick="pushPermissionSet(this.id)" id="modifyAction"
+				title="Save Permission Set" type="button" class="btn btn-primary">Save</button>
+
+			<button onclick="pushPermissionSet(this.id)" id="modifyNewAction"
+				title="Save As New Permission Set" type="button"
+				class="btn btn-info">Save As New</button>
+		</c:if>
+
 		<c:forEach varStatus="loop" items="${breadCrumb}" var="entry">
 			<c:choose>
 				<c:when test="${loop.index==breadCrumb.size()-2}">

@@ -189,136 +189,133 @@ $(document)
 					clearTimeout(permissionDeleteTimeoutId);
 				}
 			});
-
-
-			/*
-			 * Attach a click handler to the save button for saving the
-			 * permission set
-			 */
-			$("#createPermissionSetForm")
-			.submit(
-					function(event) {
-
-					event.preventDefault();
-					if(validateInput())
-					{	
-						// form action url
-						url = $(this).attr("action");
-
-						// preparing the json data, change the
-						// names for the new form
-						
-						var subPermissions=[];
-						
-						var rows=$("#permissionTable tr");
-						/*first row is the header, so ignoring that*/
-						for(var i=1;i<rows.length;i++)
-						{
-							
-							var subPermission={};
-							
-							/** Have to be careful below because the td's have been indexed hardcoded which means
-							 * it should be consistent with the ordering of cells in the permissionTable.jsp
-							 * otherwise it will cause problem
-							 * **/
-							subPermission["name"]=$("#"+rows[i].id+" td[data-name]").attr("data-name");
-							
-							var subjects=[];
-							
-							var values=$("#"+rows[i].id+" td[data-subjects]").attr("data-subjects").split(",");
-							
-							for(var j=0;j<values.length;j++)
-							{
-								items={};
-								items["value"]=$.trim(values[j]);
-								items["domains"]=[];
-								subjects.push(items);
-							}
-							
-							var actions=[];
-							values=$("#"+rows[i].id+" td[data-actions]").attr("data-actions").split(",");
-							for(j=0;j<values.length;j++)
-							{
-								items={};
-								items["value"]=$.trim(values[j]);
-								items["domains"]=[];
-								actions.push(items);
-							}
-							
-							var resources=[];
-							values=$("#"+rows[i].id+" td[data-resources]").attr("data-resources").split(",");
-							for(j=0;j<values.length;j++)
-							{
-								items={};
-								items["value"]=$.trim(values[j]);
-								items["domains"]=[];
-								resources.push(items);
-							}
-							
-							subPermission["resources"]=resources;
-							subPermission["actions"]=actions;
-							subPermission["subjects"]=subjects;
-							subPermission["obligations"]=[];
-							
-							subPermissions.push(subPermission);
-						}
-						
-						var actionDomains=encodeURIComponent($("#actionDomain").val()).replace(/'/g,"%27").replace(/"/g,"%22");
-						var resourceDomains;
-						if($("#resourceDomain").val()!="")
-						{	
-							resourceDomains=encodeURIComponent($("#resourceDomain").val()).replace(/'/g,"%27").replace(/"/g,"%22");
-						}
-						else
-						{
-							resourceDomains=actionDomains;
-						}
-						var json={
-								"name":$("#permissionSetName").val(),
-								"actionDomains":[actionDomains],
-								"subjectDomains":[$("#subjectDomain").val()],
-								"resourceDomains":[resourceDomains],
-								"subPermissions":subPermissions
-						};
-						
-						$
-						.ajax(
-								{
-									url : url,
-									data : JSON
-									.stringify(json),
-									contentType : "application/json",
-									type : "POST",
-									beforeSend : function(
-											xhr) {
-										xhr
-										.setRequestHeader(
-												"Accept",
-										"application/json");
-										xhr
-										.setRequestHeader(
-												"Content-Type",
-										"application/json");
-									},
-									success: function(data,status,xhr)
-									{
-										window.location.href=xhr.getResponseHeader('Location');
-										
-									},
-									error: function (xhr, status, thrownError) {
-										var errorMessage="<li>"+jQuery.parseJSON(xhr.responseText).userMessage+"</li>";
-								         $("#errorList").html(errorMessage);
-								         $('html,body').animate({ scrollTop: 0 }, 'slow', function () {
-								          });
-								         $("#alert").show();
-								      }
-								});
-					    	}
-					});
-
 		});
 
 											/************End of Data binding **************/
+function pushPermissionSet(buttonId)
+{
+	if(validateInput())
+	{	
+		// form action url
+		if(buttonId=="modifyAction")
+		{	
+			url = $("#contextUrl").val()+"/editor/"+$("#permissionSetName").val()+"/modify";
+		}
+		else if(buttonId=="modifyNewAction" || buttonId=="newAction")
+		{
+			url = $("#contextUrl").val()+"/editor/save";
+		}	
+
+		// preparing the json data, change the
+		// names for the new form
+		
+		var subPermissions=[];
+		
+		var rows=$("#permissionTable tr");
+		/*first row is the header, so ignoring that*/
+		for(var i=1;i<rows.length;i++)
+		{
+			
+			var subPermission={};
+			
+			/** Have to be careful below because the td's have been indexed hardcoded which means
+			 * it should be consistent with the ordering of cells in the permissionTable.jsp
+			 * otherwise it will cause problem
+			 * **/
+			subPermission["name"]=$("#"+rows[i].id+" td[data-name]").attr("data-name");
+			
+			var subjects=[];
+			
+			var values=$("#"+rows[i].id+" td[data-subjects]").attr("data-subjects").split("<br/>");
+			
+			for(var j=0;j<values.length-1;j++)
+			{
+				items={};
+				items["value"]=$.trim(values[j]);
+				items["domains"]=[];
+				subjects.push(items);
+			}
+			
+			var actions=[];
+			values=$("#"+rows[i].id+" td[data-actions]").attr("data-actions").split("<br/>");
+			for(j=0;j<values.length-1;j++)
+			{
+				items={};
+				items["value"]=$.trim(values[j]);
+				items["domains"]=[];
+				actions.push(items);
+			}
+			
+			var resources=[];
+			values=$("#"+rows[i].id+" td[data-resources]").attr("data-resources").split("<br/>");
+			for(j=0;j<values.length-1;j++)
+			{
+				items={};
+				items["value"]=$.trim(values[j]);
+				items["domains"]=[];
+				resources.push(items);
+			}
+			
+			subPermission["resources"]=resources;
+			subPermission["actions"]=actions;
+			subPermission["subjects"]=subjects;
+			subPermission["obligations"]=[];
+			
+			subPermissions.push(subPermission);
+		}
+		
+		var actionDomains=encodeURIComponent($("#actionDomain").val()).replace(/'/g,"%27").replace(/"/g,"%22");
+		var resourceDomains;
+		if($("#resourceDomain").val()!="")
+		{	
+			resourceDomains=encodeURIComponent($("#resourceDomain").val()).replace(/'/g,"%27").replace(/"/g,"%22");
+		}
+		else
+		{
+			resourceDomains=actionDomains;
+		}
+		var json={
+				"name":$("#permissionSetName").val(),
+				"actionDomains":[actionDomains],
+				"subjectDomains":[$("#subjectDomain").val()],
+				"resourceDomains":[resourceDomains],
+				"subPermissions":subPermissions
+		};
+		
+		$
+		.ajax(
+				{
+					url : url,
+					data : JSON
+					.stringify(json),
+					contentType : "application/json",
+					type : "POST",
+					beforeSend : function(
+							xhr) {
+						xhr
+						.setRequestHeader(
+								"Accept",
+						"application/json");
+						xhr
+						.setRequestHeader(
+								"Content-Type",
+						"application/json");
+					},
+					success: function(data,status,xhr)
+					{
+						window.location.href=xhr.getResponseHeader('Location');
+						
+					},
+					error: function (xhr, status, thrownError) {
+						var errorMessage="<li>"+jQuery.parseJSON(xhr.responseText).userMessage+"</li>";
+				         $("#errorList").html(errorMessage);
+				         $('html,body').animate({ scrollTop: 0 }, 'slow', function () {
+				          });
+				         $("#alert").show();
+				      }
+				});
+	    	}
+}
 
 function validateInput()
 {
