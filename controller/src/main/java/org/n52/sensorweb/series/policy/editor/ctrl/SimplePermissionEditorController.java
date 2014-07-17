@@ -28,7 +28,9 @@
 
 package org.n52.sensorweb.series.policy.editor.ctrl;
 
+import java.util.ArrayList;
 import java.util.LinkedHashMap;
+import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -323,11 +325,13 @@ public class SimplePermissionEditorController extends BaseController {
             throw new ResourceNotFoundException("No permission '" + permissionName + "' under permission set '"
                     + permissionSetName + "'");
         }
+
         /*
          * Added because Subject field will need user roles defined in user database
          */
         mav.addObject("users", userService.getConfiguredUsers());
         mav.addObject(permission);
+
         /* for page titles */
         mav.addObject("pageTitle", "Modify Permission");
         mav.addObject("heading", "Modify " + permissionName);
@@ -340,11 +344,45 @@ public class SimplePermissionEditorController extends BaseController {
         FeatureOutput[] featuresOfInterest = parameterServiceProvider.getFeaturesService().getCondensedParameters(query);
         PhenomenonOutput[] phenomenon = parameterServiceProvider.getPhenomenaService().getCondensedParameters(query);
 
+        /* These are the total exhaustive values */
         mav.addObject("offerings", offerings);
         mav.addObject("procedures", procedures);
         mav.addObject("featuresOfInterest", featuresOfInterest);
         mav.addObject("phenomenon", phenomenon);
         mav.addObject("actionValues", ActionValues.getActionValues());
+
+        /* easing the load of the jsps, anyways they also execute on the server only */
+        List<String> selectedProcedures = new ArrayList<String>();
+        List<String> selectedOfferings = new ArrayList<String>();
+        List<String> selectedObservedProperties = new ArrayList<String>();
+        List<String> selectedFeaturesOfInterest = new ArrayList<String>();
+
+        for (TargetValue tv : permission.getResources())
+        {
+            String[] resource = tv.getValue().split("/");
+
+            if (resource[0].equals("procedures"))
+            {
+                selectedProcedures.add(tv.getValue());
+            }
+            else if (resource[0].equals("offerings"))
+            {
+                selectedOfferings.add(tv.getValue());
+            }
+            else if (resource[0].equals("featuresOfInterest"))
+            {
+                selectedFeaturesOfInterest.add(tv.getValue());
+            }
+            else if (resource[0].equals("observedProperties"))
+            {
+                selectedObservedProperties.add(tv.getValue());
+            }
+        }
+
+        mav.addObject("selectedProcedures", selectedProcedures);
+        mav.addObject("selectedOfferings", selectedOfferings);
+        mav.addObject("selectedObservedProperties", selectedObservedProperties);
+        mav.addObject("selectedFeaturesOfInterest", selectedFeaturesOfInterest);
 
         /* For the breadcrumb */
         LinkedHashMap<String, String> breadCrumb = new LinkedHashMap<String, String>();
@@ -360,7 +398,6 @@ public class SimplePermissionEditorController extends BaseController {
 
         return mav;
     }
-
 
     /**
      * @param permissionSet
@@ -388,7 +425,7 @@ public class SimplePermissionEditorController extends BaseController {
         {
             throw new InternalServerException(e.getMessage(), e);
         }
-        response.setHeader("Location", request.getContextPath()+"/editor/edit/"+permissionSet);
+        response.setHeader("Location", request.getContextPath() + "/editor/edit/" + permissionSet);
         return null;
     }
 
@@ -416,7 +453,7 @@ public class SimplePermissionEditorController extends BaseController {
         {
             throw new InternalServerException(e.getMessage(), e);
         }
-        response.setHeader("Location", request.getContextPath()+"/editor/edit/"+permissionSet);
+        response.setHeader("Location", request.getContextPath() + "/editor/edit/" + permissionSet);
         return null;
     }
 

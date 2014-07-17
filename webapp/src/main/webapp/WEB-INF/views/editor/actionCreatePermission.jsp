@@ -8,6 +8,11 @@
 	<select style="height: inherit;" multiple id="selectActions"
 		class="form-control">
 		<c:choose>
+			<c:when test="${permission.getActions().get(0).getValue()=='operations/*'}">
+				<c:forEach items="${actionValues}" var="values">
+					<option selected value="${values.getActionValue()}">${values.getActionValue()}</option>
+				</c:forEach>
+			</c:when>
 			<c:when test="${permission.getActions().size() > 0}">
 				<!-- This means it is the modify option -->
 				<c:set var="found" value="" scope="page" />
