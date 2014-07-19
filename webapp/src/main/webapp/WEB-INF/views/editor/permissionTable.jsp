@@ -6,7 +6,7 @@ td {
 	vertical-align: top;
 }
 </style>
-<table id="permissionTable" style="margin-top: 15px;"
+<table id="permissionTable" style="table-layout: fixed;word-wrap:break-word;margin-top: 15px;"
 	class="table-bordered table-hover order-column">
 	<thead>
 		<tr>

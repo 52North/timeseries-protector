@@ -18,7 +18,7 @@
 
 	<!-- This table will be created programmatically by jsps, just creating now for the sake of templating -->
 	<div class="table-responsive">
-		<table id="permissionSetTable"
+		<table style="table-layout: fixed;word-wrap:break-word;" id="permissionSetTable"
 			class="table-bordered table-hover order-column">
 			<thead>
 				<tr>
