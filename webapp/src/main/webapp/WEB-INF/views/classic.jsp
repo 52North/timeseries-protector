@@ -54,10 +54,11 @@
 </head>
 <body>
 	<ol style="background-color: #DDDCDC" class="breadcrumb navbar-fixed-top">
+		You are here :&nbsp;
 		<c:forEach varStatus="loop" items="${breadCrumb}" var="entry">
 			<c:choose>
 				<c:when test="${loop.index==breadCrumb.size()-1}">
-					<li class="active">You are here :&nbsp;${entry.key}</li>
+					<li class="active">${entry.key}</li>
 				</c:when>
 				<c:otherwise>
 					<li><a href="${entry.value}"> ${entry.key} </a></li>
