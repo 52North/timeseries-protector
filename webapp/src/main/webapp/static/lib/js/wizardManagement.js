@@ -3,7 +3,7 @@
  * Software GmbH
  *
  * This program is free software; you can redistribute it and/or modify it under
- * the terms of the GNU General Public License version 2 as publishedby the Free
+ * the terms of the GNU General Public License version 2 as published by the Free
  * Software Foundation.
  *
  * If the program is linked with libraries which are licensed under one of the
@@ -157,8 +157,6 @@ function pushPermission(buttonId)
 {
 	if(validateFields())
 	{	 
-		if($("#permissionSet").val()!="new")
-		{
 			var url;
 			if(buttonId=="modifyAction")
 			{
@@ -166,7 +164,7 @@ function pushPermission(buttonId)
 			}
 			else if(buttonId=="modifyNewAction")
 			{
-				url=$("#url").val()+"/save";
+				url=$("#url").val()+"save";
 			}	
 			/*
 			 * Prepare the json and launch the ajax attack :D
@@ -299,6 +297,8 @@ function pushPermission(buttonId)
 					"obligations":[]
 			};
 			
+		if($("#permissionSet").val()!="new")
+		{	
 			$.ajax({
 				url : url,
 				data : JSON.stringify(json),
@@ -330,7 +330,12 @@ function pushPermission(buttonId)
 		}
 		else
 		{
-
+			/*save it in the browser storage*/
+			if(Storage!="undefined")
+			{
+				localStorage.setItem($("#permissionName").val(), JSON.stringify(json));
+				window.location.href=$("#url").val();
+			}
 		}
 	}
 }
