@@ -2,55 +2,48 @@
 <%@ taglib uri="http://tiles.apache.org/tags-tiles" prefix="tiles"%>
 <div class="container-fluid">
 
-	<div id="warningContainer" class="container-fluid">
-		<center>
-			<h4>
-				<span id="deleteWarning" class="label label-warning"></span>
-			</h4>
-			<button style="display: none;" id="undoWarning" type="button"
-				class="btn btn-warning">Undo</button>
-		</center>
-	</div>
+	<tiles:insertDefinition name="warningSection"></tiles:insertDefinition>
+
+	<tiles:insertDefinition name="errorSection"></tiles:insertDefinition>
+
 	<form enctype="application/json" autocomplete="on" role="form"
-		id="createPermissionSetForm" action="<c:url value='/editor/save' />"
-		method="POST">
-		<input id="contextUrl" type="hidden" value="${contextUrl}" />
+		id="createPermissionSetForm" method="POST">
+
 		<div class="form-group">
 			<label class="control-label">* Name :</label>
 			<div class="row">
-				<div class="col-xs-8">
-					<c:if test="${permissionSet==null}">
-						<input autofocus style="margin-top: 5px" id="permissionSetName"
-							class="form-control" required value="${permissionSet.getName()}"
-							type="text" name="permissionSetName"
-							placeholder="Permission Set Name" />
-					</c:if>
-					<c:if test="${permissionSet!=null}">
-						<input readOnly style="margin-top: 5px;" id="permissionSetName"
-							class="form-control" required value="${permissionSet.getName()}"
-							type="text" name="permissionSetName"
-							placeholder="Permission Set Name" />
-					</c:if>
+				<div id="permissionSetNameContainer" class="col-xs-8">
+					<input data-required="true" autofocus style="margin-top: 5px"
+						id="permissionSetName" class="form-control"
+						value="${permissionSet.getName()}" type="text"
+						name="permissionSetName" placeholder="Permission Set Name" />
 				</div>
 			</div>
 			<p class="help-block">Permission set name</p>
 		</div>
 
+		<!-- Hidden fields for house keeping tasks -->
+		<input id="contextUrl" type="hidden" value="${contextUrl}" /> <input
+			type="hidden" id="permissionSetIdentifier"
+			value="${permissionSet.getName()}" />
+
 		<div class="form-group">
-			<label class="control-label">* Action Domain :</label> <input
-				style="margin-top: 5px" required id="actionDomain"
-				class="form-control" type="url"
-				value="${permissionSet.getActionDomains().get(0)}"
-				name="actionDomain" placeholder="Action Domain URL" />
+			<label class="control-label">* Action Domain :</label>
+			<div id="actionDomainContainer">
+				<input data-required="true" style="margin-top: 5px"
+					id="actionDomain" class="form-control" type="url"
+					value="${permissionSet.getActionDomains().get(0)}"
+					name="actionDomain" placeholder="Action Domain URL" />
+			</div>
 			<p class="help-block">URL for the Operations</p>
 		</div>
-		
-		<br/>
+
+		<br />
 		<!-- Tiles definition for the advance content -->
 		<tiles:insertDefinition name="advanceSection"></tiles:insertDefinition>
-		
+
 		<br /> <br />
-		
+
 		<c:choose>
 			<c:when test="${permissionSet!=null}">
 				<a id="btnAddPermission"
@@ -75,13 +68,29 @@
 			<tiles:insertDefinition name="permissionTable"></tiles:insertDefinition>
 		</div>
 		<br /> <br />
-		<button title="Save Permission Set" type="submit" class="btn btn-primary">Save</button>
+
+		<c:if test="${context!='modify'}">
+			<button onclick="pushPermissionSet(this.id)" id="newAction"
+				title="Save Permission Set" type="button" class="btn btn-primary">Save</button>
+		</c:if>
+
+		<c:if test="${context=='modify'}">
+			<button onclick="pushPermissionSet(this.id)" id="modifyAction"
+				title="Save Permission Set" type="button" class="btn btn-primary">Save</button>
+
+			<button onclick="pushPermissionSet(this.id)" id="modifyNewAction"
+				title="Save As New Permission Set" type="button"
+				class="btn btn-info">Save As New</button>
+		</c:if>
+
 		<c:forEach varStatus="loop" items="${breadCrumb}" var="entry">
-			<c:choose>	
+			<c:choose>
 				<c:when test="${loop.index==breadCrumb.size()-2}">
-				    <button title="Cancel Permission Set" onclick="window.location.href='${entry.value}'" type="button" class="btn btn-default">Cancel</button>
+					<button title="Cancel Permission Set"
+						onclick="window.location.href='${entry.value}'" type="button"
+						class="btn btn-default">Cancel</button>
 				</c:when>
-			</c:choose>	
+			</c:choose>
 		</c:forEach>
 	</form>
 </div>

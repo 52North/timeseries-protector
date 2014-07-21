@@ -22,11 +22,31 @@
     <definition name="advanceSection" template="/WEB-INF/views/editor/advanceCreatePermissionSet.jsp">
     </definition>
     
+    <!-- Section for showing the UI validation errors -->
+    <definition name="errorSection" template="/WEB-INF/views/editor/errorNotifications.jsp">
+    </definition>
+    
+    <!-- Section for showing the Delete Warnings -->
+    <definition name="warningSection" template="/WEB-INF/views/editor/deleteNotifications.jsp">
+    </definition>
+    
     <!-- Sub Permissions Form -->
 	<definition name="createPermission" extends="common">
         <put-attribute name="body" value="/WEB-INF/views/editor/createPermission.jsp" />
     </definition>
     
+    <definition name="selectProcedures" template="/WEB-INF/views/editor/selectProcedures.jsp">
+    </definition>
+    
+    <definition name="selectOfferings" template="/WEB-INF/views/editor/selectOfferings.jsp">
+    </definition>
+    
+    <definition name="selectFeaturesOfInterest" template="/WEB-INF/views/editor/selectFeaturesOfInterest.jsp">
+    </definition>
+	
+	<definition name="selectObservedProperties" template="/WEB-INF/views/editor/selectObservedProperties.jsp">
+    </definition>
+        
     <!-- Basic Info Section -->
     <definition name="basicScreen" template="/WEB-INF/views/editor/basicCreatePermission.jsp">
     </definition>

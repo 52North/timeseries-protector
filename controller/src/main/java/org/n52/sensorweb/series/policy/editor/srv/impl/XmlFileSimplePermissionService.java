@@ -25,6 +25,7 @@
  * WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
  * PARTICULAR PURPOSE. See the GNU General Public License for more details.
  */
+
 package org.n52.sensorweb.series.policy.editor.srv.impl;
 
 import java.io.File;
@@ -50,7 +51,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.web.context.ServletContextAware;
 
 /**
- *
+ * 
  * @author Henning Bredel <h.bredel@52north.org>
  */
 public class XmlFileSimplePermissionService implements SimplePermissionService, ServletContextAware {
@@ -63,7 +64,7 @@ public class XmlFileSimplePermissionService implements SimplePermissionService, 
 
     private final XmlFileSimplePermissionWriter writer;
 
-	private final SimplePermissionFileProvider provider;
+    private final SimplePermissionFileProvider provider;
 
     public XmlFileSimplePermissionService() {
         simplePermissionValidationService = SimplePermissionValidationService.Factory.createNoValidation();
@@ -75,7 +76,8 @@ public class XmlFileSimplePermissionService implements SimplePermissionService, 
         try {
             provider.setPath(getCheckedConfiguredFile());
             reloadPermissionFile();
-        } catch (IOException e) {
+        }
+        catch (IOException e) {
             throw new ConfigurationError(e);
         }
     }
@@ -113,8 +115,16 @@ public class XmlFileSimplePermissionService implements SimplePermissionService, 
     @Override
     public PermissionSet savePermissionSet(PermissionSet permissionSet) throws PermissionManagementException {
         simplePermissionValidationService.checkData(permissionSet);
-        if (containsPermissionSet(permissionSet.getName()))
-            deletePermissionSet(permissionSet.getName());
+        getPermissionSets().add(permissionSet);
+        savePermissionFile();
+        return getPermissionSet(permissionSet.getName());
+    }
+
+    @Override
+    public PermissionSet editPermissionSet(PermissionSet permissionSet, String existingName) throws PermissionManagementException {
+        simplePermissionValidationService.checkData(permissionSet);
+        if (containsPermissionSet(existingName))
+            deletePermissionSet(existingName);
 
         getPermissionSets().add(permissionSet);
         savePermissionFile();
@@ -138,23 +148,44 @@ public class XmlFileSimplePermissionService implements SimplePermissionService, 
     public void addPermission(String permissionSetName, Permission permission) throws PermissionManagementException {
         PermissionSet permissionSet = getPermissionSet(permissionSetName);
         if (permissionSet == null)
-            throw new ResourceNotFoundException("PermissionSet with name '" + permissionSetName + "' not found.");
+            throw new ResourceNotFoundException("PermissionSet with name <b>'" + permissionSetName
+                    + "' </b> not found.");
 
         simplePermissionValidationService.checkData(permission);
-        if(containsPermission(permissionSet, permission))
+        if (containsPermission(permissionSet, permission))
         {
-        	Iterator<Permission> it=permissionSet.getSubPermissions().iterator();
-        	while(it.hasNext())
-        	{
-        		Permission subPermission = it.next();
-        		if(subPermission.getName().equals(permission.getName()))
-        		{
-        			it.remove();
-        		}
-        	}
+            throw new PermissionManagementException("Sub Permission with name <b>" + permission.getName()
+                    + "</b> already exists");
         }
-         permissionSet.getSubPermissions().add(permission);
+        permissionSet.getSubPermissions().add(permission);
         savePermissionFile();
+    }
+
+    @Override
+    public void editPermission(String permissionSetName, Permission permission, String existingName) throws PermissionManagementException {
+        PermissionSet permissionSet = getPermissionSet(permissionSetName);
+        if (permissionSet == null)
+            throw new ResourceNotFoundException("PermissionSet with name <b>'" + permissionSetName
+                    + "' </b> not found.");
+
+        Permission existingPermission = getPermission(permissionSetName, existingName);
+        simplePermissionValidationService.checkData(permission);
+
+        if (containsPermission(permissionSet, existingPermission))
+        {
+            Iterator<Permission> it = permissionSet.getSubPermissions().iterator();
+            while (it.hasNext())
+            {
+                Permission subPermission = it.next();
+                if (subPermission.getName().equals(existingPermission.getName()))
+                {
+                    it.remove();
+                }
+            }
+        }
+        permissionSet.getSubPermissions().add(permission);
+        savePermissionFile();
+
     }
 
     private boolean containsPermissionSet(String name) {
@@ -179,30 +210,26 @@ public class XmlFileSimplePermissionService implements SimplePermissionService, 
     }
 
     @Override
-    public void editPermission(String permissionSetName, Permission permission) throws PermissionManagementException {
-
-    }
-
-    @Override
     public void deletePermission(String permissionSetName, Permission permission) throws PermissionManagementException {
-  
-    	Iterator<Permission> itp= getPermissionSet(permissionSetName).getSubPermissions().iterator();
-        while(itp.hasNext())
+
+        Iterator<Permission> itp = getPermissionSet(permissionSetName).getSubPermissions().iterator();
+        while (itp.hasNext())
         {
-        	Permission subPermission = itp.next();
-        	if(subPermission.getName().equals(permission.getName()))
-        	{
-        		itp.remove();
-        		break;
-        	}
+            Permission subPermission = itp.next();
+            if (subPermission.getName().equals(permission.getName()))
+            {
+                itp.remove();
+                break;
+            }
         }
         savePermissionFile();
     }
 
     /**
      * Sets a path to the file providing available permissions.
-     *
-     * @param permissionFile the path to a permission file.
+     * 
+     * @param permissionFile
+     *        the path to a permission file.
      * @see #init() to load the content.
      */
     public void setPermissionFile(String permissionFile) {
@@ -217,9 +244,11 @@ public class XmlFileSimplePermissionService implements SimplePermissionService, 
         try {
             writer.save(getPermissionSets(), new File(permissionFile));
             reloadPermissionFile();
-        } catch (FileNotFoundException e) {
+        }
+        catch (FileNotFoundException e) {
             throw new PermissionManagementException("Could not find permission file: '" + permissionFile + "'.", e);
-        } catch (IOException e) {
+        }
+        catch (IOException e) {
             throw new PermissionManagementException("Could not write permission file: '" + permissionFile + "'.", e);
         }
     }
@@ -241,9 +270,9 @@ public class XmlFileSimplePermissionService implements SimplePermissionService, 
 
     @Override
     public Permission getPermission(String permissionSetName, String permissionName) {
-        for(Permission permission: getPermissionSet(permissionSetName).getSubPermissions())
+        for (Permission permission : getPermissionSet(permissionSetName).getSubPermissions())
         {
-            if(permission.getName().equals(permissionName))
+            if (permission.getName().equals(permissionName))
             {
                 return permission;
             }
@@ -251,5 +280,4 @@ public class XmlFileSimplePermissionService implements SimplePermissionService, 
         return null;
     }
 
-
- }
+}

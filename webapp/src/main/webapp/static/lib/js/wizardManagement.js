@@ -38,203 +38,325 @@ $(document).ready(function() {
 	$("#totalOfferingsCount").html($("#selectOfferings option").length);
 	$("#totalFeaturesOfInterestCount").html($("#selectFeaturesOfInterest option").length);
 	$("#totalObservedPropertiesCount").html($("#selectObservedProperties option").length);
-
+	
+	/*
+	 * hide the div on click of close button
+	 * */
+	$("button[class='close']").click(function(event){
+		$("#alert").hide();
+	});
+	
 	/*
 	 * Functionality for displaying the count of selected
 	 * parameters in the badge
 	 * 
 	 * */
 	$("select[multiple]").on("change",function() {
+		
 		$("#"+this.id+"Count").html($("#"+this.id).val().length);
 		
 		if($("#"+this.id+"Container").hasClass("has-error")) {
 		  $("#"+this.id+"Container").removeClass("has-error");
 		  $("#"+this.id+"Validation").remove();
-		  console.log($("#errorList li").length);
 		  if($("#errorList li").length==0)
 		   {
-			  $(".close").click();
+			  $("#alert").hide();
 		   }
-		  
 		}
 	});
-
-	/*
-	 * Functionality for displaying the corresponding screens
-	 * for add permission
-	 * */
-
-	$("#createPermissionForm").submit(function(event){
-		event.preventDefault();
-
-		if(validateOptions())
-		{	 
-			if($("#permissionSet").val()!="new")
+	
+	$("input[data-required='true']").on("change",function(){
+		if($("#"+this.id).val()!="")
+		{
+		 	if($("#"+this.id+"Container").hasClass("has-error")){
+				$("#"+this.id+"Container").removeClass("has-error");
+				$("#"+this.id+"Validation").remove();
+				if($("#errorList li").length==0)
+				 {
+					  $("#alert").hide();
+				 }
+		 	}	
+		}
+	});
+	
+	/*for the resources*/
+	$("#toggleResources").click(function(event){
+		
+		/*we get the opened tab here*/
+		var div=$("div[class='tab-pane active']");
+		
+		/*getting the select options now*/
+		var select=$("#"+div.attr("id")+" select[multiple]");
+		
+		var option=$("#"+select.attr("id")+" option");
+		
+		$.each(option,function(index,e){
+			if(e.selected)
 			{
-				/*
-				 * Prepare the json and launch the ajax attack :D
-				 * */
-				var actions=[];
+				e.selected=false;
+			}
+			else
+			{
+				e.selected=true;
+			}	
+		});
+		$(select).trigger("change");
+	});
+	
+	$("#clearResources").click(function(event){
+			
+			/*we get the opened tab here*/
+			var div=$("div[class='tab-pane active']");
+			
+			/*getting the select options now*/
+			var select=$("#"+div.attr("id")+" select[multiple]");
+			
+			var option=$("#"+select.attr("id")+" option");
+			
+			$.each(option,function(index,e){
+					e.selected=false;
+			});		
+			
+			$("#"+select.attr("id")+"Count").html("0");
+	});
+	
+	/*for the actions*/
+	$("#toggleActions").click(function(event){
+		
+		/*getting the select options now*/
+		
+		var option=$("#selectActions"+" option");
+		
+		$.each(option,function(index,e){
+			if(e.selected)
+			{
+				e.selected=false;
+			}
+			else
+			{
+				e.selected=true;
+			}	
+		});
+	});
+	
+	$("#clearActions").click(function(event){
+		
+		var option=$("#selectActions"+" option");
+		
+		$.each(option,function(index,e){
+				e.selected=false;
+		});
+	});
+});
 
+
+/***********************************End of data binding*********************************************/
+
+
+function pushPermission(buttonId)
+{
+	if(validateFields())
+	{	 
+		if($("#permissionSet").val()!="new")
+		{
+			var url;
+			if(buttonId=="modifyAction")
+			{
+				url=$("#url").val()+$("#permissionIdentifier").val()+"/modify";
+			}
+			else if(buttonId=="modifyNewAction")
+			{
+				url=$("#url").val()+"/save";
+			}	
+			/*
+			 * Prepare the json and launch the ajax attack :D
+			 * */
+			var actions=[];
+			
+			if($("#selectActions option").length==$("#selectActions").val().length)
+			{	
+				items={};
+				items["value"]="operations/*";
+				items["domains"]=[];
+				actions.push(items);
+			}
+			else
+			{
 				for(var i=0;i<$("#selectActions").val().length;i++)
 				{
 					items={};
 					items["value"]="operations/"+$("#selectActions").val()[i];
 					items["domains"]=[];
 					actions.push(items);
-				}	
-
-				var resources=[];
-				if($("#selectProcedures option").length==$("#selectProcedures").val().length)
-				{	
-					items={};
-					items["value"]="procedures/*";
-					items["domains"]=[];
-					resources.push(items);
 				}
-				else
-				{
-					for(var i=0;i<$("#selectProcedures").val().length;i++)
-					{
-						items={};
-						items["value"]="procedures/"+$("#selectProcedures").val()[i];
-						items["domains"]=[];
-						resources.push(items);
-					}
-				}
-
-				if($("#selectOfferings option").length==$("#selectOfferings").val().length)
-				{	
-					items={};
-					items["value"]="offerings/*";
-					items["domains"]=[];
-					resources.push(items);
-				}
-				else
-				{
-					for(var i=0;i<$("#selectOfferings").val().length;i++)
-					{
-						items={};
-						items["value"]="offerings/"+$("#selectOfferings").val()[i];
-						items["domains"]=[];
-						resources.push(items);
-					}
-				}
-
-				if($("#selectFeaturesOfInterest option").length==$("#selectFeaturesOfInterest").val().length)
-				{	
-					items={};
-					items["value"]="featuresOfInterest/*";
-					items["domains"]=[];
-					resources.push(items);
-				}
-				else
-				{
-					for(var i=0;i<$("#selectFeaturesOfInterest").val().length;i++)
-					{
-						items={};
-						items["value"]="featuresOfInterest/"+$("#selectFeaturesOfInterest").val()[i];
-						items["domains"]=[];
-						resources.push(items);
-					}
-				}	
-				if($("#selectObservedProperties option").length==$("#selectObservedProperties").val().length)
-				{	
-					items={};
-					items["value"]="observedProperties/*";
-					items["domains"]=[];
-					resources.push(items);
-				}
-				else
-				{
-					for(var i=0;i<$("#selectObservedProperties").val().length;i++)
-					{
-						items={};
-						items["value"]="observedProperties/"+$("#selectObservedProperties").val()[i];
-						items["domains"]=[];
-						resources.push(items);
-					}
-				}
-
-				if($("#selectActions option").length==$("#selectActions").val().length)
-				{
-					items={};
-					items["value"]="allowedOperations/*";
-					items["domains"]=[];
-					resources.push(items);
-				}
-				else
-				{
-					for(var i=0;i<$("#selectActions").val().length;i++)
-					{
-						items={};
-						items["value"]="allowedOperations/"+$("#selectActions").val()[i];
-						items["domains"]=[];
-						resources.push(items);
-					}
-				}
-
-				var subjects=[];
-				for(var i=0;i<$("#selectSubjects").val().length;i++)
-				{
-					items={};
-					items["value"]=$("#selectSubjects").val()[i];
-					items["domains"]=[];
-					subjects.push(items);
-				}	 
-
-				var json= {
-						"name":	$("#permissionName").val(),
-						"resources":resources,
-						"actions":actions,
-						"subjects":subjects,
-						"obligations":[]
-				};
-
-				$.ajax({
-					url : $(this).attr("action"),
-					data : JSON.stringify(json),
-					contentType : "application/json",
-					type : "POST",
-					beforeSend : function(
-							xhr) {
-						xhr
-						.setRequestHeader(
-								"Accept",
-						"application/json");
-						xhr
-						.setRequestHeader(
-								"Content-Type",
-						"application/json");
-					},
-					success: function(data,status,xhr)
-					{
-						window.location.href=xhr.getResponseHeader('Location');
-					}
-				});
+			}	
+			
+			var resources=[];
+			
+			if($("#selectProcedures option").length==$("#selectProcedures").val().length)
+			{	
+				items={};
+				items["value"]="procedures/*";
+				items["domains"]=[];
+				resources.push(items);
 			}
 			else
 			{
-
+				for(var i=0;i<$("#selectProcedures").val().length;i++)
+				{
+					items={};
+					items["value"]="procedures/"+$("#selectProcedures").val()[i];
+					items["domains"]=[];
+					resources.push(items);
+				}
 			}
+
+			if($("#selectOfferings option").length==$("#selectOfferings").val().length)
+			{	
+				items={};
+				items["value"]="offerings/*";
+				items["domains"]=[];
+				resources.push(items);
+			}
+			else
+			{
+				for(var i=0;i<$("#selectOfferings").val().length;i++)
+				{
+					items={};
+					items["value"]="offerings/"+$("#selectOfferings").val()[i];
+					items["domains"]=[];
+					resources.push(items);
+				}
+			}
+
+			if($("#selectFeaturesOfInterest option").length==$("#selectFeaturesOfInterest").val().length)
+			{	
+				items={};
+				items["value"]="featuresOfInterest/*";
+				items["domains"]=[];
+				resources.push(items);
+			}
+			else
+			{
+				for(var i=0;i<$("#selectFeaturesOfInterest").val().length;i++)
+				{
+					items={};
+					items["value"]="featuresOfInterest/"+$("#selectFeaturesOfInterest").val()[i];
+					items["domains"]=[];
+					resources.push(items);
+				}
+			}	
+			if($("#selectObservedProperties option").length==$("#selectObservedProperties").val().length)
+			{	
+				items={};
+				items["value"]="observedProperties/*";
+				items["domains"]=[];
+				resources.push(items);
+			}
+			else
+			{
+				for(var i=0;i<$("#selectObservedProperties").val().length;i++)
+				{
+					items={};
+					items["value"]="observedProperties/"+$("#selectObservedProperties").val()[i];
+					items["domains"]=[];
+					resources.push(items);
+				}
+			}
+
+			if($("#selectActions option").length==$("#selectActions").val().length)
+			{
+				items={};
+				items["value"]="allowedOperations/*";
+				items["domains"]=[];
+				resources.push(items);
+			}
+			else
+			{
+				for(var i=0;i<$("#selectActions").val().length;i++)
+				{
+					items={};
+					items["value"]="allowedOperations/"+$("#selectActions").val()[i];
+					items["domains"]=[];
+					resources.push(items);
+				}
+			}
+
+			var subjects=[];
+			for(var i=0;i<$("#selectSubjects").val().length;i++)
+			{
+				items={};
+				items["value"]=$("#selectSubjects").val()[i];
+				items["domains"]=[];
+				subjects.push(items);
+			}	 
+
+			var json= {
+					"name":	$("#permissionName").val(),
+					"resources":resources,
+					"actions":actions,
+					"subjects":subjects,
+					"obligations":[]
+			};
+			
+			$.ajax({
+				url : url,
+				data : JSON.stringify(json),
+				contentType : "application/json",
+				type : "POST",
+				beforeSend : function(
+						xhr) {
+					xhr
+					.setRequestHeader(
+							"Accept",
+					"application/json");
+					xhr
+					.setRequestHeader(
+							"Content-Type",
+					"application/json");
+				},
+				success: function(data,status,xhr)
+				{
+					window.location.href=xhr.getResponseHeader('Location');
+				},
+				error: function (xhr, status, thrownError) {
+					var errorMessage="<li>"+jQuery.parseJSON(xhr.responseText).userMessage+"</li>";
+			         $("#errorList").html(errorMessage);
+			         $('html,body').animate({ scrollTop: 0 }, 'slow', function () {
+			          });
+			         $("#alert").show();
+			      }
+			});
 		}
+		else
+		{
 
-	});
-
-});
-
-/***********************************End of data binding*********************************************/
-
+		}
+	}
+}
 /*
  * Function for validation the
  * select input fields before the
  * form is submitted
  * 
  **/
-function validateOptions()
+function validateFields()
 { 
 	var submit=true;
 	var errorHtml="";
+	$.each($("input[data-required='true']"),function(index,selectInput){
+		
+	if($("#"+selectInput.id).val()=="")
+		{
+			if(selectInput.id=="permissionName")
+			{	
+				$("#"+selectInput.id+"Container").addClass("has-error");
+				errorHtml+="<li id='"+selectInput.id+"Validation'> <b> Sub Permission </b> name cannot be empty </li>";
+			}
+			submit=false;
+		}
+	});
+	
 	$.each($("select[multiple]"),function(index,selectInput){
 
 		if($("#"+selectInput.id).val()==null)
@@ -242,32 +364,32 @@ function validateOptions()
 			if(selectInput.id=="selectSubjects")
 			{
 				$("#"+selectInput.id+"Container").addClass("has-error");
-				errorHtml+="<li id='selectSubjectsValidation'> <b> Subjects </b> cannot be empty </li>";
+				errorHtml+="<li id='"+selectInput.id+"Validation'> <b> Subjects </b> cannot be empty </li>";
 			}
 			else if(selectInput.id=="selectActions")
 			{  
 				$("#"+selectInput.id+"Container").addClass("has-error");
-				errorHtml+="<li id='selectActionsValidation'> <b> Actions </b> cannot be empty </li>";
+				errorHtml+="<li id='"+selectInput.id+"Validation'> <b> Actions </b> cannot be empty </li>";
 			}
 			else if(selectInput.id=="selectProcedures")
 			{  
 				$("#"+selectInput.id+"Container").addClass("has-error");
-				errorHtml+="<li id='selectProceduresValidation'> <b>Procedures</b> cannot be empty </li>";
+				errorHtml+="<li id='"+selectInput.id+"Validation'> <b>Procedures</b> cannot be empty </li>";
 			}
 			else if(selectInput.id=="selectOfferings")
 			{  
 				$("#"+selectInput.id+"Container").addClass("has-error");
-				errorHtml+="<li id='selectOfferingsValidation'> <b>Offerings</b> cannot be empty </li>";
+				errorHtml+="<li id='"+selectInput.id+"Validation'> <b>Offerings</b> cannot be empty </li>";
 			}
 			else if(selectInput.id=="selectFeaturesOfInterest")
 			{  
 				$("#"+selectInput.id+"Container").addClass("has-error");
-				errorHtml+="<li id='selectFeaturesOfInterestValidation'> <b>Features of Interest</b> cannot be empty </li>";
+				errorHtml+="<li id='"+selectInput.id+"Validation'> <b>Features of Interest</b> cannot be empty </li>";
 			}
 			else if(selectInput.id=="selectObservedProperties")
 			{  
 				$("#"+selectInput.id+"Container").addClass("has-error");
-				errorHtml+="<li id='selectObservedPropertiesValidation'> <b>Observerd Properties</b> cannot be empty </li>";
+				errorHtml+="<li id='"+selectInput.id+"Validation'> <b>Observerd Properties</b> cannot be empty </li>";
 			}
 			submit=false;
 		}
@@ -289,62 +411,3 @@ function validateOptions()
 	return submit;
 }
 
-function prepareContent()
-{
-	var content="";
-	content +="<tr id='row-"+$("#permissionName")+"'>";
-	content +="<td> <div class='checkbox'><label> <input id='"+$("#permissionName")+ "type='checkbox'> </label></div></td>";
-	content +="<td>"+$("#permissionName") + "</td>";
-	content += "<td>";
-	for(i=0;i<$("#selectSubjects").val().length;i++)
-	{
-		content+=$("#selectSubjects").val()[i];
-		content+="<br/>";
-	}
-	content+="</td>";
-	content+="<td>";
-	for(i=0;i<$("#selectActions").val().length;i++)
-	{
-		content+=$("#selectActions").val()[i];
-		content+="<br/>";
-	}
-	content+="</td>";
-	content+="<td>";
-
-	for(i=0;i<$("#selectOfferings").val().length;i++)
-	{
-		content+="offerings/"+$("#selectOfferings").val()[i];
-		content+="<br/>";
-	}
-
-	for(i=0;i<$("#selectProcedures").val().length;i++)
-	{
-		content+="procedures/"+$("#selectProcedures").val()[i];
-		content+="<br/>";
-	}
-
-	for(i=0;i<$("#selectObservedProperties").val().length;i++)
-	{
-		content+="observedProperties/"+$("#selectObservedProperties").val()[i];
-		content+="<br/>";
-	}
-
-	for(i=0;i<$("#selectFeaturesOfInterest").val().length;i++)
-	{
-		content+="fFeaturesOfInterest/"+$("#selectFeaturesOfInterest").val()[i];
-		content+="<br/>";
-	}
-	for(i=0;i<$("#selectActions").val().length;i++)
-	{
-		content+="allowedOperations/"+$("#selectActions").val()[i];
-		content+="<br/>";
-	}
-	content+="</td>";
-	content+="<td> Not found </td>";
-	content+="<td> <a href='#' id='btn#"+$("#permissionName")+"' ";
-	content+="class='btn btn-default btn-xs' role='button'>MODIFY</a></td>";
-
-
-	return content;
-
-}

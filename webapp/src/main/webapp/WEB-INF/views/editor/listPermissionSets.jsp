@@ -2,16 +2,8 @@
 <%@ taglib uri="http://tiles.apache.org/tags-tiles" prefix="tiles"%>
 <div class="container-fluid">
 
-	<div id="warningContainer" class="container-fluid">
-		<center>
-			<h4>
-				<span id="deleteWarning" class="label label-warning"></span>
-			</h4>
-			<button style="display: none;" id="undoWarning" type="button"
-				class="btn btn-warning">Undo</button>
-		</center>
-	</div>
-
+	<tiles:insertDefinition name="warningSection"></tiles:insertDefinition>
+	
 	<br /> <a title="Add Permission Set"
 		href="<c:url value="/editor/new" />" id="btnAddPermissionSet"
 		class="btn btn-default" role="button"> <span
@@ -26,13 +18,13 @@
 
 	<!-- This table will be created programmatically by jsps, just creating now for the sake of templating -->
 	<div class="table-responsive">
-		<table id="permissionSetTable"
+		<table style="table-layout: fixed;word-wrap:break-word;" id="permissionSetTable"
 			class="table-bordered table-hover order-column">
 			<thead>
 				<tr>
 					<th><input id="selectAllPermissionSet" type="checkbox" />
 						Select All</th>
-					<th>Action</th>	
+					<th>Action</th>
 					<th>Name</th>
 					<th>Subject Domain</th>
 					<th>Resource Domain</th>
@@ -48,9 +40,13 @@
 							</label>
 						</div>
 					</td>
-					<td><a id="btn#${permissionSet.getName()}"
-						href="<c:url value="/editor/edit/${permissionSet.getName()}" />"
-						class="btn btn-default btn-xs" role="button">MODIFY</a></td>
+					<td>
+						 <a 
+							href="<c:url value="/editor/edit/${permissionSet.getName()}" />"
+							class="btn btn-default btn-xs" role="button">MODIFY
+						</a>
+					</td>
+					
 					<td><c:out value="${permissionSet.getName()}"></c:out></td>
 					<c:forEach items="${permissionSet.getSubjectDomains()}"
 						var="subjectDomains">
@@ -72,4 +68,5 @@
 
 <script type="text/javascript"
 	src="<c:url value="/static/lib/js/permissionSetManagement.js" />">
+	
 </script>

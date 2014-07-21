@@ -3,7 +3,7 @@
  * Software GmbH
  *
  * This program is free software; you can redistribute it and/or modify it under
- * the terms of the GNU General Public License version 2 as publishedby the Free
+ * the terms of the GNU General Public License version 2 as published by the Free
  * Software Foundation.
  *
  * If the program is linked with libraries which are licensed under one of the
@@ -35,6 +35,30 @@ $(document)
 			$("#actionDomain").val(decodeURIComponent($("#actionDomain").val().replace(/\+/g," ")));
 			$("#resourceDomain").val(decodeURIComponent($("#resourceDomain").val().replace(/\+/g," ")));
 			
+			/*
+			 * Removing the error class if a user
+			 * has entered the data
+			 * */
+			$("input[data-required='true']").on("change",function(){
+				if($("#"+this.id).val()!="")
+				{
+				 	if($("#"+this.id+"Container").hasClass("has-error")){
+						$("#"+this.id+"Container").removeClass("has-error");
+						$("#"+this.id+"Validation").remove();
+						if($("#errorList li").length==0)
+						 {
+							  $("#alert").hide();
+						 }
+				 	}	
+				}
+			});
+			
+			/*
+			 * hide the div on click of close button
+			 * */
+			$("button[class='close']").click(function(event){
+				$("#alert").hide();
+			});
 			/*
 			 * event binding for toggling the arrow
 			 * */
@@ -165,126 +189,164 @@ $(document)
 					clearTimeout(permissionDeleteTimeoutId);
 				}
 			});
-
-
-			/*
-			 * Attach a click handler to the save button for saving the
-			 * permission set
-			 */
-			$("#createPermissionSetForm")
-			.submit(
-					function(event) {
-
-						event.preventDefault();
-
-						// form action url
-						url = $(this).attr("action");
-
-						// preparing the json data, change the
-						// names for the new form
-						
-						var subPermissions=[];
-						
-						var rows=$("#permissionTable tr");
-						
-						for(var i=1;i<rows.length;i++)
-						{
-							var td=$("#"+rows[i].id+" td");
-							
-							var subPermission={};
-							
-							/** Have to be careful below because the td's have been indexed hardcoded which means
-							 * it should be consistent with the ordering of cells in the permissionTable.jsp
-							 * otherwise it will cause problem
-							 * **/
-							subPermission["name"]=td[2].innerHTML;
-							
-							var subjects=[];
-							var values=td[3].innerHTML.split("<br>");
-							for(var j=0;j<values.length-1;j++)
-							{
-								items={};
-								items["value"]=$.trim(values[j]);
-								items["domains"]=[];
-								subjects.push(items);
-							}
-							
-							var actions=[];
-							values=td[4].innerHTML.split("<br>");
-							for(j=0;j<values.length-1;j++)
-							{
-								items={};
-								items["value"]=$.trim(values[j]);
-								items["domains"]=[];
-								actions.push(items);
-							}
-							
-							var resources=[];
-							values=td[5].innerHTML.split("<br>");
-							for(j=0;j<values.length-1;j++)
-							{
-								items={};
-								items["value"]=$.trim(values[j]);
-								items["domains"]=[];
-								resources.push(items);
-							}
-							
-							subPermission["resources"]=resources;
-							subPermission["actions"]=actions;
-							subPermission["subjects"]=subjects;
-							subPermission["obligations"]=[];
-							
-							subPermissions.push(subPermission);
-						}
-						
-						var actionDomains=encodeURIComponent($("#actionDomain").val()).replace(/'/g,"%27").replace(/"/g,"%22");
-						var resourceDomains;
-						if($("#resourceDomain").val()!="")
-						{	
-							resourceDomains=encodeURIComponent($("#resourceDomain").val()).replace(/'/g,"%27").replace(/"/g,"%22");
-						}
-						else
-						{
-							resourceDomains=actionDomains;
-						}
-						var json={
-								"name":$("#permissionSetName").val(),
-								"actionDomains":[actionDomains],
-								"subjectDomains":[$("#subjectDomain").val()],
-								"resourceDomains":[resourceDomains],
-								"subPermissions":subPermissions
-						};
-						
-						$
-						.ajax(
-								{
-									url : url,
-									data : JSON
-									.stringify(json),
-									contentType : "application/json",
-									type : "POST",
-									beforeSend : function(
-											xhr) {
-										xhr
-										.setRequestHeader(
-												"Accept",
-										"application/json");
-										xhr
-										.setRequestHeader(
-												"Content-Type",
-										"application/json");
-									},
-									success: function(data,status,xhr)
-									{
-										window.location.href=xhr.getResponseHeader('Location');
-										
-									}
-								});
-					});
-
 		});
 
 											/************End of Data binding **************/
+function pushPermissionSet(buttonId)
+{
+	if(validateInput())
+	{	
+		// form action url
+		if(buttonId=="modifyAction")
+		{	
+			url = $("#contextUrl").val()+"/editor/"+$("#permissionSetIdentifier").val()+"/modify";
+		}
+		else if(buttonId=="modifyNewAction" || buttonId=="newAction")
+		{
+			url = $("#contextUrl").val()+"/editor/save";
+		}	
+
+		// preparing the json data, change the
+		// names for the new form
+		
+		var subPermissions=[];
+		
+		var rows=$("#permissionTable tr");
+		/*first row is the header, so ignoring that*/
+		for(var i=1;i<rows.length;i++)
+		{
+			
+			var subPermission={};
+			
+			/** Have to be careful below because the td's have been indexed hardcoded which means
+			 * it should be consistent with the ordering of cells in the permissionTable.jsp
+			 * otherwise it will cause problem
+			 * **/
+			subPermission["name"]=$("#"+rows[i].id+" td[data-name]").attr("data-name");
+			
+			var subjects=[];
+			
+			var values=$("#"+rows[i].id+" td[data-subjects]").attr("data-subjects").split("<br/>");
+			
+			for(var j=0;j<values.length-1;j++)
+			{
+				items={};
+				items["value"]=$.trim(values[j]);
+				items["domains"]=[];
+				subjects.push(items);
+			}
+			
+			var actions=[];
+			values=$("#"+rows[i].id+" td[data-actions]").attr("data-actions").split("<br/>");
+			for(j=0;j<values.length-1;j++)
+			{
+				items={};
+				items["value"]=$.trim(values[j]);
+				items["domains"]=[];
+				actions.push(items);
+			}
+			
+			var resources=[];
+			values=$("#"+rows[i].id+" td[data-resources]").attr("data-resources").split("<br/>");
+			for(j=0;j<values.length-1;j++)
+			{
+				items={};
+				items["value"]=$.trim(values[j]);
+				items["domains"]=[];
+				resources.push(items);
+			}
+			
+			subPermission["resources"]=resources;
+			subPermission["actions"]=actions;
+			subPermission["subjects"]=subjects;
+			subPermission["obligations"]=[];
+			
+			subPermissions.push(subPermission);
+		}
+		
+		var actionDomains=encodeURIComponent($("#actionDomain").val()).replace(/'/g,"%27").replace(/"/g,"%22");
+		var resourceDomains;
+		if($("#resourceDomain").val()!="")
+		{	
+			resourceDomains=encodeURIComponent($("#resourceDomain").val()).replace(/'/g,"%27").replace(/"/g,"%22");
+		}
+		else
+		{
+			resourceDomains=actionDomains;
+		}
+		var json={
+				"name":$("#permissionSetName").val(),
+				"actionDomains":[actionDomains],
+				"subjectDomains":[$("#subjectDomain").val()],
+				"resourceDomains":[resourceDomains],
+				"subPermissions":subPermissions
+		};
+		
+		$
+		.ajax(
+				{
+					url : url,
+					data : JSON
+					.stringify(json),
+					contentType : "application/json",
+					type : "POST",
+					beforeSend : function(
+							xhr) {
+						xhr
+						.setRequestHeader(
+								"Accept",
+						"application/json");
+						xhr
+						.setRequestHeader(
+								"Content-Type",
+						"application/json");
+					},
+					success: function(data,status,xhr)
+					{
+						window.location.href=xhr.getResponseHeader('Location');
+						
+					},
+					error: function (xhr, status, thrownError) {
+						var errorMessage="<li>"+jQuery.parseJSON(xhr.responseText).userMessage+"</li>";
+				         $("#errorList").html(errorMessage);
+				         $('html,body').animate({ scrollTop: 0 }, 'slow', function () {
+				          });
+				         $("#alert").show();
+				      }
+				});
+	    	}
+}
+
+function validateInput()
+{
+	var submit=true;
+	var errorHtml="";
+	$.each($("input[data-required='true']"),function(index,selectInput){	
+		
+		if($("#"+selectInput.id).val()=="")
+		{
+			 if(selectInput.id=="permissionSetName"){
+				 errorHtml+="<li id='"+selectInput.id+"Validation'> <b>Permission set</b> name cannot be empty </li>";
+				 $("#"+selectInput.id+"Container").addClass("has-error");
+				 submit=false;
+			 }
+			 else if(selectInput.id=="actionDomain"){
+				 errorHtml+="<li id='"+selectInput.id+"Validation'> <b>Action Domain</b> cannot be empty </li>";
+				 $("#"+selectInput.id+"Container").addClass("has-error");
+				 submit=false;
+			 }
+		}
+	});
+	if(!submit)
+	{
+		$("#errorList").html(errorHtml);
+		$('html,body').animate({ scrollTop: 0 }, 'slow', function () {
+          });
+		$("#alert").show();
+	}
+	
+	return submit;
+}
 
 //this part here deals with the deletion of the permissions permanently
 function deletePermissions() 
