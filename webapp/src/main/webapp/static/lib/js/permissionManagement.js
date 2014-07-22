@@ -28,7 +28,127 @@
 $(document)
 .ready(
 		function() {
-
+			
+			/*
+			 * Check if data is there in the local storage and if it is the
+			 * new permission set use case which means 
+			 * that there is a sub permission temporarily stored in the
+			 * browser local storage
+			 * */
+			
+			if(Storage!="undefined" && $("#permissionSetIdentifier").val()=="")
+			{
+				var keyCount=0;
+				
+				while(localStorage.key(keyCount)!=null)
+				{
+					
+					$("#info").show("100",function() {
+						$("#infoText").html("Permissions are stored temporarily in browser storage, click on delete or cancel to clear");
+					});
+					
+					var subPermissionObj=jQuery.parseJSON(localStorage.getItem(localStorage.key(keyCount)));
+					
+					var content="";
+					content+="<tr id='row-"+subPermissionObj.name + "'>";
+					
+					/*checkbox*/
+					content+="<td> <div class='checkbox'><label><input type='checkbox' id='"+subPermissionObj.name+"' /> ";
+					content+="</label></div></td>";
+					
+					/*modify button*/
+					content+="<td><button class='btn btn-default btn-xs disabled'>MODIFY</button></td>";
+					
+					/*name*/
+					content+="<td >"+subPermissionObj.name+ "</td>";
+					
+					/*subjects*/
+					content+="<td>";
+					for(var i=0;i<subPermissionObj.subjects.length;i++)
+					{
+						content+=subPermissionObj.subjects[i].value;
+						content+="<br/>";
+					}
+					content+="</td>";
+					
+					/*operations*/
+					content+="<td>";
+					for(var i=0;i<subPermissionObj.actions.length;i++)
+					{
+						content+=subPermissionObj.actions[i].value.split("/")[1];
+						content+="<br/>";
+					}
+					content+="</td>";
+					
+					/*Resources*/
+					content+="<td>";
+					var proceduresFirst=true;
+					var observedPropertiesFirst=true;
+					var offeringsFirst=true;
+					var featuresOfInterestFirst=true;
+					
+					for(var i=0;i<subPermissionObj.resources.length;i++)
+					{
+						if(subPermissionObj.resources[i].value.split("/")[0]=='procedures')
+						{	
+							if(proceduresFirst)
+							{	
+								content+="<label style='font-style: oblique;' class='control-label'>Procedures</label>";
+								content+="<br/>";
+								proceduresFirst=false;
+							}
+							content+=subPermissionObj.resources[i].value.split("/")[1];
+							content+="<br/>";
+						}
+						else if(subPermissionObj.resources[i].value.split("/")[0]=='offerings')
+						{	
+							if(offeringsFirst)
+							{	
+								content+="<label style='font-style: oblique;' class='control-label'>Offerings</label>";
+								content+="<br/>";
+								offeringsFirst=false;
+							}
+							content+=subPermissionObj.resources[i].value.split("/")[1];
+							content+="<br/>";
+						}
+						else if(subPermissionObj.resources[i].value.split("/")[0]=='featuresOfInterest')
+						{	
+							if(featuresOfInterestFirst)
+							{	
+								content+="<label style='font-style: oblique;' class='control-label'>"+
+								"Features Of Interest</label>";
+								content+="<br/>";
+								featuresOfInterestFirst=false;
+							}
+							content+=subPermissionObj.resources[i].value.split("/")[1];
+							content+="<br/>";
+						}
+						else if(subPermissionObj.resources[i].value.split("/")[0]=='observedProperties')
+						{	
+							if(observedPropertiesFirst)
+							{	
+								content+="<label style='font-style: oblique;' class='control-label'>Observed"+
+											"Properties</label>";
+								content+="<br/>";
+								observedPropertiesFirst=false;
+							}
+							content+=subPermissionObj.resources[i].value.split("/")[1];	
+							content+="<br/>";
+						}
+						
+					}
+					content+="</td>";
+					
+					/*Obligations*/
+					content+="<td> Not Found </td>";
+					content+="</tr>";
+					
+					$("#permissionTable").append(content);
+					keyCount++;
+					
+				}	
+			}	
+			
 			/*
 			 * Making sure that the url inputs fields have urls decoded while displaying to the user
 			 * */
@@ -54,10 +174,13 @@ $(document)
 			});
 			
 			/*
-			 * hide the div on click of close button
+			 * hide the parent div on click of close button
 			 * */
 			$("button[class='close']").click(function(event){
-				$("#alert").hide();
+				
+				var parentDiv= $(this).parent("div");
+				$("#"+parentDiv[0].id).hide();
+				
 			});
 			/*
 			 * event binding for toggling the arrow
@@ -189,7 +312,7 @@ $(document)
 					clearTimeout(permissionDeleteTimeoutId);
 				}
 			});
-		});
+});
 
 											/************End of Data binding **************/
 function pushPermissionSet(buttonId)
@@ -211,58 +334,74 @@ function pushPermissionSet(buttonId)
 		
 		var subPermissions=[];
 		
-		var rows=$("#permissionTable tr");
-		/*first row is the header, so ignoring that*/
-		for(var i=1;i<rows.length;i++)
+		var keyCount=0;
+		/*this means fetch sub permissions from local storage*/
+		if(localStorage.key(keyCount)!=null)
 		{
 			
-			var subPermission={};
-			
-			/** Have to be careful below because the td's have been indexed hardcoded which means
-			 * it should be consistent with the ordering of cells in the permissionTable.jsp
-			 * otherwise it will cause problem
-			 * **/
-			subPermission["name"]=$("#"+rows[i].id+" td[data-name]").attr("data-name");
-			
-			var subjects=[];
-			
-			var values=$("#"+rows[i].id+" td[data-subjects]").attr("data-subjects").split("<br/>");
-			
-			for(var j=0;j<values.length-1;j++)
+			while(localStorage.key(keyCount)!=null)
 			{
-				items={};
-				items["value"]=$.trim(values[j]);
-				items["domains"]=[];
-				subjects.push(items);
+				var subPermission={};
+				subPermission=jQuery.parseJSON(localStorage.getItem(localStorage.key(keyCount)));
+				keyCount++;
+				subPermissions.push(subPermission);
 			}
-			
-			var actions=[];
-			values=$("#"+rows[i].id+" td[data-actions]").attr("data-actions").split("<br/>");
-			for(j=0;j<values.length-1;j++)
+		}	
+		else
+		{	
+			var rows=$("#permissionTable tr");
+			/*first row is the header, so ignoring that*/
+			for(var i=1;i<rows.length;i++)
 			{
-				items={};
-				items["value"]=$.trim(values[j]);
-				items["domains"]=[];
-				actions.push(items);
+				
+				var subPermission={};
+				
+				/** Have to be careful below because the td's have been indexed hard coded which means
+				 * it should be consistent with the ordering of cells in the permissionTable.jsp
+				 * otherwise it will cause problem
+				 * **/
+				subPermission["name"]=$("#"+rows[i].id+" td[data-name]").attr("data-name");
+				
+				var subjects=[];
+				
+				var values=$("#"+rows[i].id+" td[data-subjects]").attr("data-subjects").split("<br/>");
+				
+				for(var j=0;j<values.length-1;j++)
+				{
+					items={};
+					items["value"]=$.trim(values[j]);
+					items["domains"]=[];
+					subjects.push(items);
+				}
+				
+				var actions=[];
+				values=$("#"+rows[i].id+" td[data-actions]").attr("data-actions").split("<br/>");
+				for(j=0;j<values.length-1;j++)
+				{
+					items={};
+					items["value"]=$.trim(values[j]);
+					items["domains"]=[];
+					actions.push(items);
+				}
+				
+				var resources=[];
+				values=$("#"+rows[i].id+" td[data-resources]").attr("data-resources").split("<br/>");
+				for(j=0;j<values.length-1;j++)
+				{
+					items={};
+					items["value"]=$.trim(values[j]);
+					items["domains"]=[];
+					resources.push(items);
+				}
+				
+				subPermission["resources"]=resources;
+				subPermission["actions"]=actions;
+				subPermission["subjects"]=subjects;
+				subPermission["obligations"]=[];
+				
+				subPermissions.push(subPermission);
 			}
-			
-			var resources=[];
-			values=$("#"+rows[i].id+" td[data-resources]").attr("data-resources").split("<br/>");
-			for(j=0;j<values.length-1;j++)
-			{
-				items={};
-				items["value"]=$.trim(values[j]);
-				items["domains"]=[];
-				resources.push(items);
-			}
-			
-			subPermission["resources"]=resources;
-			subPermission["actions"]=actions;
-			subPermission["subjects"]=subjects;
-			subPermission["obligations"]=[];
-			
-			subPermissions.push(subPermission);
-		}
+		}	
 		
 		var actionDomains=encodeURIComponent($("#actionDomain").val()).replace(/'/g,"%27").replace(/"/g,"%22");
 		var resourceDomains;
@@ -303,8 +442,8 @@ function pushPermissionSet(buttonId)
 					},
 					success: function(data,status,xhr)
 					{
+						localStorage.clear();
 						window.location.href=xhr.getResponseHeader('Location');
-						
 					},
 					error: function (xhr, status, thrownError) {
 						var errorMessage="<li>"+jQuery.parseJSON(xhr.responseText).userMessage+"</li>";
@@ -351,14 +490,47 @@ function validateInput()
 //this part here deals with the deletion of the permissions permanently
 function deletePermissions() 
 {
-	$.ajax({
-		url : $("#contextUrl").val() + "/editor/delete/" +$("#permissionSetName").val()+"/"+ sessionStorage.permissions,
-		type : "POST",
-		success: function()
+	var permissionsForLocalStorage=sessionStorage.permissions.split(",");
+	
+	/*checking if atleast one of the sub permissions is present
+	 * in the local storage or not
+	 * */
+	if(Storage!="undefined" && localStorage.getItem(permissionsForLocalStorage[0])!=null)
+	{
+		/*
+		 * removing the items which are to be deleted from local storage
+		 * */
+		for(var i=0;i<permissionsForLocalStorage.length;i++)
 		{
-			sessionStorage.clear();
-			window.location.reload(true);
+			localStorage.removeItem(permissionsForLocalStorage[i]);
 		}
-
-	});
+		
+		sessionStorage.clear();
+		window.location.reload(true);
+	}
+	else
+	{	
+		/*
+		 * which means are not stored temporarily and they can be deleted
+		 * */
+		$.ajax({
+				url : $("#contextUrl").val() + "/editor/delete/" +$("#permissionSetName").val()+"/"+ sessionStorage.permissions,
+				type : "POST",
+				success: function()
+				{
+					sessionStorage.clear();
+					window.location.reload(true);
+				}
+			});
+	}	
 }
+
+function cancelNavigate(url)
+{
+	if(Storage!="undefined" && localStorage.length >0)
+	{
+		localStorage.clear();
+		window.location.href=url;
+	}
+}
+

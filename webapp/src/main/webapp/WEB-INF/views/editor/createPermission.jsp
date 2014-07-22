@@ -2,9 +2,9 @@
 <%@ taglib uri="http://tiles.apache.org/tags-tiles" prefix="tiles"%>
 
 <div class="container-fluid">
-	
+
 	<tiles:insertDefinition name="errorSection"></tiles:insertDefinition>
-	
+
 	<form role="form" enctype="application/json" method="POST"
 		id="createPermissionForm">
 
@@ -28,12 +28,18 @@
 
 		<br />
 
-		<c:if test="${context!='modify'}">
-			<button onclick="pushPermission(this.id)" id="newAction"
+		<c:if test="${context!='modify' && permissionSet=='new'}">
+			<button onclick="pushPermission(this.id)" 
 				title="Save Permission Temporarily" type="button"
 				class="btn btn-info">Save Temporarily</button>
 		</c:if>
-
+		
+		<c:if test="${context!='modify' && permissionSet!='new'}">
+			<button onclick="pushPermission(this.id)" id="modifyNewAction"
+				title="Save Permission" type="button"
+				class="btn btn-info">Save</button>
+		</c:if>
+		
 		<c:if test="${context=='modify'}">
 			<button onclick="pushPermission(this.id)" id="modifyAction"
 				title="Save Permission" type="button" class="btn btn-primary">Save</button>
@@ -41,11 +47,10 @@
 			<button onclick="pushPermission(this.id)" id="modifyNewAction"
 				title="Save As New Permission" type="button" class="btn btn-info">Save
 				As New</button>
-
-			<input id="url" type="hidden"
-				value="<c:url value="/editor/${permissionSetName}/" />" />
 		</c:if>
-
+		
+		<input id="url" type="hidden" value="<c:url value="/editor/${permissionSet}/" />" />
+		
 		<!-- Setting the url for cancel button appropriately -->
 		<c:forEach varStatus="loop" items="${breadCrumb}" var="entry">
 			<c:choose>

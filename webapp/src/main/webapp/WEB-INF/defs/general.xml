@@ -30,6 +30,10 @@
     <definition name="warningSection" template="/WEB-INF/views/editor/deleteNotifications.jsp">
     </definition>
     
+    <!-- Section for showing general information -->
+    <definition name="infoSection" template="/WEB-INF/views/editor/infoNotifications.jsp">
+    </definition>
+    
     <!-- Sub Permissions Form -->
 	<definition name="createPermission" extends="common">
         <put-attribute name="body" value="/WEB-INF/views/editor/createPermission.jsp" />

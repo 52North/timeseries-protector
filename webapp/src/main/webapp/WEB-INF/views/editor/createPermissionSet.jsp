@@ -5,7 +5,9 @@
 	<tiles:insertDefinition name="warningSection"></tiles:insertDefinition>
 
 	<tiles:insertDefinition name="errorSection"></tiles:insertDefinition>
-
+	
+	<tiles:insertDefinition name="infoSection"></tiles:insertDefinition>
+	
 	<form enctype="application/json" autocomplete="on" role="form"
 		id="createPermissionSetForm" method="POST">
 
@@ -51,14 +53,14 @@
 					class="btn btn-default" title="Add Permission"> <span
 					class="glyphicon glyphicon-plus"></span>
 				</a> &nbsp;
-		</c:when>
+			</c:when>
 			<c:otherwise>
 				<a id="btnAddPermission"
 					href="<c:url value="/editor/edit/new/newPermission" />"
 					class="btn btn-default" title="Add Permission"> <span
 					class="glyphicon glyphicon-plus"></span>
 				</a> &nbsp;
-		</c:otherwise>
+			</c:otherwise>
 		</c:choose>
 		<button type="button" id="btnDeletePermission" class="btn btn-default"
 			title="Delete Permission">
@@ -87,7 +89,7 @@
 			<c:choose>
 				<c:when test="${loop.index==breadCrumb.size()-2}">
 					<button title="Cancel Permission Set"
-						onclick="window.location.href='${entry.value}'" type="button"
+						onclick="cancelNavigate('${entry.value}');" type="button"
 						class="btn btn-default">Cancel</button>
 				</c:when>
 			</c:choose>
@@ -96,5 +98,4 @@
 </div>
 <script type="text/javascript"
 	src="<c:url value="/static/lib/js/permissionManagement.js" />">
-	
 </script>

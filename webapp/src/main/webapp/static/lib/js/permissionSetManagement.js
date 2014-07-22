@@ -31,7 +31,7 @@ var setDeleteTimeoutId;
 $(document)
 .ready(
 		function() {
-
+			
 			/*
 			 * Making sure that the url inputs fields have urls decoded
 			 * */
