@@ -40,10 +40,12 @@ $(document).ready(function() {
 	$("#totalObservedPropertiesCount").html($("#selectObservedProperties option").length);
 	
 	/*
-	 * hide the div on click of close button
+	 * hide the parent div on click of close button
 	 * */
 	$("button[class='close']").click(function(event){
-		$("#alert").hide();
+		var parentDiv= $(this).parent();
+		
+		$("#"+parentDiv[0].id).hide();
 	});
 	
 	/*

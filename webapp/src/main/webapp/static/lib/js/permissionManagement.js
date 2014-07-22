@@ -30,18 +30,25 @@ $(document)
 		function() {
 			
 			/*
-			 * Check if data is there in the local storage which means 
+			 * Check if data is there in the local storage and if it is the
+			 * new permission set use case which means 
 			 * that there is a sub permission temporarily stored in the
 			 * browser local storage
 			 * */
 			
-			if(Storage!="undefined")
+			if(Storage!="undefined" && $("#permissionSetIdentifier").val()=="")
 			{
 				var keyCount=0;
 				
 				while(localStorage.key(keyCount)!=null)
 				{
+					
+					$("#info").show("100",function() {
+						$("#infoText").html("Permissions are stored temporarily in browser storage, click on delete or cancel to clear");
+					});
+					
 					var subPermissionObj=jQuery.parseJSON(localStorage.getItem(localStorage.key(keyCount)));
+					
 					var content="";
 					content+="<tr id='row-"+subPermissionObj.name + "'>";
 					
@@ -167,10 +174,13 @@ $(document)
 			});
 			
 			/*
-			 * hide the div on click of close button
+			 * hide the parent div on click of close button
 			 * */
 			$("button[class='close']").click(function(event){
-				$("#alert").hide();
+				
+				var parentDiv= $(this).parent("div");
+				$("#"+parentDiv[0].id).hide();
+				
 			});
 			/*
 			 * event binding for toggling the arrow
@@ -515,12 +525,12 @@ function deletePermissions()
 	}	
 }
 
-//clear the local storage when the user decides to cancel
 function cancelNavigate(url)
 {
-	if(Storage!="undefined")
-	{	
+	if(Storage!="undefined" && localStorage.length >0)
+	{
 		localStorage.clear();
+		window.location.href=url;
 	}
-	window.location.href=url;
 }
+
