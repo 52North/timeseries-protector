@@ -530,7 +530,7 @@ function cancelNavigate(url)
 	if(Storage!="undefined" && localStorage.length >0)
 	{
 		localStorage.clear();
-		window.location.href=url;
 	}
+	window.location.href=url;
 }
 
