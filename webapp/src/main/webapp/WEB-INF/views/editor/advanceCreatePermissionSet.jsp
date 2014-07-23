@@ -13,6 +13,7 @@
 				<div class="form-group">
 					<label class="control-label"> Resource Domain :</label> <input
 						style="margin-top: 5px" id="resourceDomain"
+						data-url
 						class="form-control" type="url"
 						value="${permissionSet.getResourceDomains().get(0)}"
 						name="resourceDomain" placeholder="Resource Domain URL" />

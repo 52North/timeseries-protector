@@ -29,6 +29,22 @@ $(document)
 .ready(
 		function() {
 			
+			
+			/*
+			 * Making sure that the url inputs fields have urls decoded while displaying to the user
+			 * */
+			$.each($("input[data-url]"), function(index,e) {
+				   
+				$(e).val(decodeURIComponent($(e).val()));
+
+				});
+			
+			$.each($("span[data-url]"), function(index,e) {
+				   
+				$(e).html(decodeURIComponent($(e).html()));
+
+				});
+			
 			/*
 			 * Check if data is there in the local storage and if it is the
 			 * new permission set use case which means 
@@ -148,12 +164,6 @@ $(document)
 					
 				}	
 			}	
-			
-			/*
-			 * Making sure that the url inputs fields have urls decoded while displaying to the user
-			 * */
-			$("#actionDomain").val(decodeURIComponent($("#actionDomain").val().replace(/\+/g," ")));
-			$("#resourceDomain").val(decodeURIComponent($("#resourceDomain").val().replace(/\+/g," ")));
 			
 			/*
 			 * Removing the error class if a user
@@ -403,11 +413,11 @@ function pushPermissionSet(buttonId)
 			}
 		}	
 		
-		var actionDomains=encodeURIComponent($("#actionDomain").val()).replace(/'/g,"%27").replace(/"/g,"%22");
+		var actionDomains=encodeURIComponent($("#actionDomain").val()).replace(/'/g,"%27");
 		var resourceDomains;
 		if($("#resourceDomain").val()!="")
 		{	
-			resourceDomains=encodeURIComponent($("#resourceDomain").val()).replace(/'/g,"%27").replace(/"/g,"%22");
+			resourceDomains=encodeURIComponent($("#resourceDomain").val()).replace(/'/g,"%27");
 		}
 		else
 		{

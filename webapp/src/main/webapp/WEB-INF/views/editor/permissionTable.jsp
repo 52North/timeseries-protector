@@ -117,7 +117,7 @@ td {
 										<br />
 										<c:set var="start_proc" value="found" />
 									</c:if>
-						   			&nbsp;${fn:substringAfter(resources.getValue(),'procedures/')}
+						   			&nbsp;<span data-url>${fn:substringAfter(resources.getValue(),'procedures/')}</span>
 						   			 <br />
 								</c:when>
 								<c:when
@@ -127,7 +127,7 @@ td {
 										<br />
 										<c:set var="start_off" value="found" />
 									</c:if>
-						   			&nbsp;${fn:substringAfter(resources.getValue(),'offerings/')}
+						   			&nbsp;<span data-url>${fn:substringAfter(resources.getValue(),'offerings/')}</span>
 						   			 <br />
 								</c:when>
 								<c:when
@@ -138,7 +138,7 @@ td {
 										<br />
 										<c:set var="start_foi" value="found" />
 									</c:if>
-						   			&nbsp;${fn:substringAfter(resources.getValue(),'featuresOfInterest/')}
+						   			&nbsp;<span data-url>${fn:substringAfter(resources.getValue(),'featuresOfInterest/')}</span>
 						   			 <br />
 								</c:when>
 								<c:when
@@ -149,7 +149,7 @@ td {
 										<br />
 										<c:set var="start_obp" value="found" />
 									</c:if>
-						   	   		&nbsp;${fn:substringAfter(resources.getValue(),'observedProperties/')}
+						   	   		&nbsp;<span data-url>${fn:substringAfter(resources.getValue(),'observedProperties/')}</span>
 						   	   		 <br />
 								</c:when>
 							</c:choose>
