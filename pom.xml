@@ -430,7 +430,7 @@
                         <exclude>**/*.xml</exclude>
                         <exclude>**/*.jsp</exclude>
                         <exclude>**/*.html</exclude>
-                        <exclude>**/webapp/static/lib/*</exclude>
+                        <exclude>**/webapp/static/lib/**</exclude>
                         <exclude>**/webapp/WEB-INF/web.xml</exclude>
                         <exclude>**/buildNumber.properties</exclude>
                     </excludes>
