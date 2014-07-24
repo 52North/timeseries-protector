@@ -13,7 +13,7 @@
     <url>http://52north.org/communities/sensorweb/</url>
 
     <properties>
-        <webappDirectory>${project.build.directory}/${project.artifactId}</webappDirectory>
+        <webappDirectory>${project.build.directory}/protector-webapp</webappDirectory>
     </properties>
 
     <dependencies>
