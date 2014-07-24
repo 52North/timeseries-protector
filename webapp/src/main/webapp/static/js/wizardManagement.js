@@ -31,6 +31,7 @@ $(document).ready(function() {
 	$.each($("select[multiple]"),function(name,value){
 
 		$("#"+value.id+"Count").html($("#"+this.id+" option[selected]").length);
+		$(value).html(decodeURIComponent($(value).html()));
 	});
 
 	/*for setting the total no. of values for badges on load */
@@ -44,7 +45,6 @@ $(document).ready(function() {
 	 * */
 	$("button[class='close']").click(function(event){
 		var parentDiv= $(this).parent();
-		
 		$("#"+parentDiv[0].id).hide();
 	});
 	
@@ -358,7 +358,7 @@ function validateFields()
 			if(selectInput.id=="permissionName")
 			{	
 				$("#"+selectInput.id+"Container").addClass("has-error");
-				errorHtml+="<li id='"+selectInput.id+"Validation'> <b> Sub Permission </b> name cannot be empty </li>";
+				errorHtml+="<li id='"+selectInput.id+"Validation'> <b> Permission </b> name cannot be empty </li>";
 			}
 			submit=false;
 		}

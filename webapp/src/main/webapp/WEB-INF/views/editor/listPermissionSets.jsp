@@ -54,11 +54,11 @@
 					</c:forEach>
 					<c:forEach items="${permissionSet.getResourceDomains()}"
 						var="resourceDomains">
-						<td id="resourceDomain"><c:out value="${resourceDomains}" /></td>
+						<td data-url><c:out value="${resourceDomains}" /></td>
 					</c:forEach>
 					<c:forEach items="${permissionSet.getActionDomains()}"
 						var="actionDomains">
-						<td id="actionDomain"><c:out value="${actionDomains}" /></td>
+						<td data-url><c:out value="${actionDomains}" /></td>
 					</c:forEach>
 				</tr>
 			</c:forEach>

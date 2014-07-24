@@ -32,8 +32,9 @@
 		<div class="form-group">
 			<label class="control-label">* Action Domain :</label>
 			<div id="actionDomainContainer">
-				<input data-required="true" style="margin-top: 5px"
-					id="actionDomain" class="form-control" type="url"
+				<input data-url
+					data-required="true" style="margin-top: 5px" id="actionDomain"
+					class="form-control" type="url"
 					value="${permissionSet.getActionDomains().get(0)}"
 					name="actionDomain" placeholder="Action Domain URL" />
 			</div>
@@ -62,13 +63,16 @@
 				</a> &nbsp;
 			</c:otherwise>
 		</c:choose>
+
 		<button type="button" id="btnDeletePermission" class="btn btn-default"
 			title="Delete Permission">
 			<span class="glyphicon glyphicon-trash"></span>
 		</button>
+
 		<div class="table-responsive">
 			<tiles:insertDefinition name="permissionTable"></tiles:insertDefinition>
 		</div>
+
 		<br /> <br />
 
 		<c:if test="${context!='modify'}">

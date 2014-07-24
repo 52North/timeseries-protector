@@ -33,10 +33,13 @@ $(document)
 		function() {
 			
 			/*
-			 * Making sure that the url inputs fields have urls decoded
+			 * Making sure that the url are decoded
 			 * */
-			 $("#actionDomain").html(decodeURIComponent($("#actionDomain").html().replace(/\+/g," ")));
-			 $("#resourceDomain").html(decodeURIComponent($("#resourceDomain").html().replace(/\+/g," ")));
+			$.each($("td[data-url]"), function(index,e) {
+				   
+				$(e).html(decodeURIComponent($(e).html()));
+
+				});
 			
 			/*
 			 * Functionality for sorting and searching
