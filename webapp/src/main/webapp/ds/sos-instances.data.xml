@@ -14,7 +14,7 @@
          <adapter>org.n52.server.sos.connector.hydro.SOSwithSoapAdapter</adapter>
          <requestChunk>300</requestChunk>
          <autoZoom>true</autoZoom>
-         <timeout>10000</timeout>
+         <timeout>100000</timeout>
          <llEasting>3.0</llEasting>
          <llNorthing>50.7</llNorthing>
          <urEasting>7.2</urEasting>
