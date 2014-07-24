@@ -3,7 +3,7 @@
 <div class="container-fluid">
 
 	<tiles:insertDefinition name="warningSection"></tiles:insertDefinition>
-	
+
 	<br /> <a title="Add Permission Set"
 		href="<c:url value="/editor/new" />" id="btnAddPermissionSet"
 		class="btn btn-default" role="button"> <span
@@ -41,12 +41,12 @@
 						</div>
 					</td>
 					<td>
-						 <a 
+						 <a
 							href="<c:url value="/editor/edit/${permissionSet.getName()}" />"
 							class="btn btn-default btn-xs" role="button">MODIFY
 						</a>
 					</td>
-					
+
 					<td><c:out value="${permissionSet.getName()}"></c:out></td>
 					<c:forEach items="${permissionSet.getSubjectDomains()}"
 						var="subjectDomains">
@@ -67,6 +67,6 @@
 </div>
 
 <script type="text/javascript"
-	src="<c:url value="/static/lib/js/permissionSetManagement.js" />">
-	
+	src="<c:url value="/static/js/permissionSetManagement.js" />">
+
 </script>

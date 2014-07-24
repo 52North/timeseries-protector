@@ -5,9 +5,9 @@
 	<tiles:insertDefinition name="warningSection"></tiles:insertDefinition>
 
 	<tiles:insertDefinition name="errorSection"></tiles:insertDefinition>
-	
+
 	<tiles:insertDefinition name="infoSection"></tiles:insertDefinition>
-	
+
 	<form enctype="application/json" autocomplete="on" role="form"
 		id="createPermissionSetForm" method="POST">
 
@@ -97,5 +97,5 @@
 	</form>
 </div>
 <script type="text/javascript"
-	src="<c:url value="/static/lib/js/permissionManagement.js" />">
+	src="<c:url value="/static/js/permissionManagement.js" />">
 </script>

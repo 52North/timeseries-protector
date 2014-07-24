@@ -29,17 +29,17 @@
 		<br />
 
 		<c:if test="${context!='modify' && permissionSet=='new'}">
-			<button onclick="pushPermission(this.id)" 
+			<button onclick="pushPermission(this.id)"
 				title="Save Permission Temporarily" type="button"
 				class="btn btn-info">Save Temporarily</button>
 		</c:if>
-		
+
 		<c:if test="${context!='modify' && permissionSet!='new'}">
 			<button onclick="pushPermission(this.id)" id="modifyNewAction"
 				title="Save Permission" type="button"
 				class="btn btn-info">Save</button>
 		</c:if>
-		
+
 		<c:if test="${context=='modify'}">
 			<button onclick="pushPermission(this.id)" id="modifyAction"
 				title="Save Permission" type="button" class="btn btn-primary">Save</button>
@@ -48,9 +48,9 @@
 				title="Save As New Permission" type="button" class="btn btn-info">Save
 				As New</button>
 		</c:if>
-		
+
 		<input id="url" type="hidden" value="<c:url value="/editor/${permissionSet}/" />" />
-		
+
 		<!-- Setting the url for cancel button appropriately -->
 		<c:forEach varStatus="loop" items="${breadCrumb}" var="entry">
 			<c:choose>
@@ -64,6 +64,6 @@
 	</form>
 </div>
 <script type="text/javascript"
-	src="<c:url value="/static/lib/js/wizardManagement.js" />">
-	
+	src="<c:url value="/static/js/wizardManagement.js" />">
+
 </script>
