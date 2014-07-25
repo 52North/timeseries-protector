@@ -484,6 +484,11 @@ function validateInput()
 				 $("#"+selectInput.id+"Container").addClass("has-error");
 				 submit=false;
 			 }
+			 else if(selectInput.id=="subjectDomain"){
+				 errorHtml+="<li id='"+selectInput.id+"Validation'> <b>Subject Domain</b> cannot be empty </li>";
+				 $("#"+selectInput.id+"Container").addClass("has-error");
+				 submit=false;
+			 }
 		}
 	});
 	if(!submit)
