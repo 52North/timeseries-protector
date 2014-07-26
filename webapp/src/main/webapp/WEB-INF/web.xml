@@ -1,11 +1,35 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<web-app  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xmlns="http://java.sun.com/xml/ns/javaee"
-	xmlns:web="http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd"
+<web-app xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns="http://java.sun.com/xml/ns/javaee" xmlns:web="http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd"
 	xsi:schemaLocation="http://java.sun.com/xml/ns/javaee
-	http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd" version="2.5">
+	http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd"
+	version="2.5">
+
 	<display-name>Protecting Timeseries Webapp, built on ${timestamp}</display-name>
 
+	<security-role>
+		<role-name>admin</role-name>
+	</security-role>
+
+	<security-constraint>
+		<display-name>Security constraint for Protector Timeseries Webapp</display-name>
+		<web-resource-collection>
+			<web-resource-name>Admin Only</web-resource-name>
+			<url-pattern>/editor/*</url-pattern>
+		</web-resource-collection>
+		<!-- Only administrators can access this resource -->
+		<auth-constraint>
+			<role-name>admin</role-name>
+		</auth-constraint>
+	</security-constraint>
+	
+	<!-- Using BASIC security -->
+	
+	<login-config>
+		<auth-method>BASIC</auth-method>
+		<realm-name>Secured Area</realm-name>
+	</login-config>
+	
 	<filter>
 		<filter-name>CORS</filter-name>
 		<filter-class>com.thetransactioncompany.cors.CORSFilter</filter-class>
@@ -35,10 +59,10 @@
 	<listener>
 		<listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
 	</listener>
-    <context-param>
-        <param-name>contextConfigLocation</param-name>
-        <param-value>/WEB-INF/application-config.xml</param-value>
-    </context-param>
+	<context-param>
+		<param-name>contextConfigLocation</param-name>
+		<param-value>/WEB-INF/application-config.xml</param-value>
+	</context-param>
 
 	<!-- define timeseries policy editor Web dispatcher -->
 	<servlet>
@@ -72,9 +96,7 @@
 
 	<servlet>
 		<servlet-name>TimerTask</servlet-name>
-		<servlet-class>
-			org.n52.server.TimerTaskServlet
-		</servlet-class>
+		<servlet-class>org.n52.server.TimerTaskServlet</servlet-class>
 		<load-on-startup>2</load-on-startup>
 	</servlet>
 
@@ -87,7 +109,7 @@
 		<param-value>generated</param-value>
 	</context-param>
 	<context-param>
-		<!-- The prefix which shall be set for all zip exports. ISO8601 timestamp
+		<!-- The prefix which shall be set for all zip exports. ISO8601 timestamp 
 			will be used as postfix, e.g. 2011-03-29_dataexport -->
 		<param-name>ZIP_POSTFIX</param-name>
 		<param-value>_dataexport</param-value>
@@ -167,7 +189,7 @@
 		<param-value>${mail.ssl.enable}</param-value>
 	</context-param>
 
-    <welcome-file-list>
-        <welcome-file>index.html</welcome-file>
-    </welcome-file-list>
+	<welcome-file-list>
+		<welcome-file>index.html</welcome-file>
+	</welcome-file-list>
 </web-app>
