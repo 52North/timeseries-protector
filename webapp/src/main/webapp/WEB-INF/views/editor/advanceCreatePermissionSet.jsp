@@ -1,12 +1,4 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
-<style type="text/css">
-code
-{
-	border: 1px solid #ddd !important;
-	background-color: #f8f8f8 !important;
-	border-radius: 3px;
-}	
-</style>
 <div class="panel-group" id="accordion">
 	<div class="panel panel-default">
 		<div class="panel-heading">
@@ -30,20 +22,41 @@ code
 				<div class="form-group">
 					<label class="control-label">* Subject Domain :</label>
 					<div id="subjectDomainContainer">
-						<input data-required='true' style="margin-top: 5px" id="subjectDomain"
-							class="form-control"
+						<select id="subjectDomain" class="form-control">
+						<c:set var="found_subject" value="" />
 							<c:if test="${permissionSet!=null}">
-							value="${permissionSet.getSubjectDomains().get(0)}"
-						</c:if>
+								<option
+									<c:if test="${permissionSet.getSubjectDomains().get(0)=='urn:conterra:names:sdi-suite:policy:attribute:role'}">
+								 		selected
+								 		<c:set var="found_subject" value="found" />
+								 	</c:if>
+									value="urn:conterra:names:sdi-suite:policy:attribute:role">urn:conterra:names:sdi-suite:policy:attribute:role
+								</option>
+								<option
+									<c:if test="${permissionSet.getSubjectDomains().get(0)=='urn:n52:security:subject:role'}">
+								 		selected
+								 		<c:set var="found_subject" value="found" />
+								 	</c:if>
+									value="urn:n52:security:subject:role">urn:n52:security:subject:role
+								</option>
+								<c:if test="${found_subject==''}">
+									<option selected value="${permissionSet.getSubjectDomains().get(0)}"> ${permissionSet.getSubjectDomains().get(0)} </option>
+								</c:if>
+									<option id="customValue" value="other"> Other </option>
+							</c:if>
 							<c:if test="${permissionSet==null}">
-							value="urn:conterra:names:sdi-suite:policy:attribute:role"
-						</c:if>
-							name="subjectDomain" type="url" placeholder="Subject Domain URL" />
+								<option
+									value="urn:conterra:names:sdi-suite:policy:attribute:role">urn:conterra:names:sdi-suite:policy:attribute:role
+								</option>
+								<option value="urn:n52:security:subject:role">urn:n52:security:subject:role
+								</option>
+								<option id="customValue" value="other"> Other </option>
+							</c:if>
+						</select>
+						<input autocomplete="on" placeholder="Custom Value" id="customSubjectDomain" type="text" class="form-control" style="display:none;margin-top:10px;" />
 					</div>
-					<p style="margin-top:10px" class="help-block">
-						You can also use : <code> urn:n52:security:subject:role </code> &nbsp;press <kbd>ctrl+c</kbd>
-						to copy and paste in the above field
-					</p>
+					<p style="margin-top: 10px" class="help-block">Domain for the
+						users which will be restricted</p>
 				</div>
 			</div>
 		</div>

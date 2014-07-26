@@ -322,6 +322,31 @@ $(document)
 					clearTimeout(permissionDeleteTimeoutId);
 				}
 			});
+			
+			/*
+			 * Custom value dropdown widget
+			 * */
+			$("#subjectDomain").on("change",function(event){
+				if($(this).val()=='other'){
+				   $("#customSubjectDomain").show();
+				}
+			});
+			
+			var options_array = new Array();
+			
+			$.each($("#subjectDomain"),function(index,option){
+				options_array.push(option.value);
+			});
+			
+			$("#customSubjectDomain").on("blur",function(event){
+				if($(this).val()!="" && $.inArray($(this).val(),options_array)==-1)		
+				{
+						$("#subjectDomain").prepend("<option value='"+$(this).val()+"'>"+$(this).val()+"</option>");
+						options_array.push($(this).val());
+				}
+				document.getElementById("subjectDomain").selectedIndex=0;
+				$(this).hide();
+			});
 });
 
 											/************End of Data binding **************/
