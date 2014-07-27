@@ -40,7 +40,7 @@
         <property name="parameterServiceProvider" ref="timeseriesServiceProvider" />
         <property name="userService" ref="userService" />
     </bean>
-
+	
     <!-- #######################
          service implementations
          ####################### -->

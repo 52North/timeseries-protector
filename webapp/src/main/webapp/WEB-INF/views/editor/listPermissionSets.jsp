@@ -8,12 +8,18 @@
 		href="<c:url value="/editor/new" />" id="btnAddPermissionSet"
 		class="btn btn-default" role="button"> <span
 		class="glyphicon glyphicon-plus"></span>
-	</a> &nbsp;
+	</a>&nbsp;
+	
 	<button id="btnDeletePermissionSet" class="btn btn-default"
 		title="Delete Permission Set">
 		<span class="glyphicon glyphicon-trash"></span>
-	</button>
-
+	</button>&nbsp;
+	
+	<a title="Download Permissions Xml"
+		href="<c:url value="/download" />" class="btn btn-default" role="button"> 
+		<span class="glyphicon glyphicon-download-alt"></span>
+	</a>
+	
 	<br />
 
 	<!-- This table will be created programmatically by jsps, just creating now for the sake of templating -->
