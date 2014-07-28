@@ -4,6 +4,8 @@
 
 	<tiles:insertDefinition name="warningSection"></tiles:insertDefinition>
 	
+	<tiles:insertDefinition name="errorSection"></tiles:insertDefinition>
+	
 	<br /> <a title="Add Permission Set"
 		href="<c:url value="/editor/new" />" id="btnAddPermissionSet"
 		class="btn btn-default" role="button"> <span
@@ -18,6 +20,11 @@
 	<a title="Download Permissions Xml"
 		href="<c:url value="/download" />" class="btn btn-default" role="button"> 
 		<span class="glyphicon glyphicon-download-alt"></span>
+	</a>
+	
+	<a title="View Permissions Xml"
+		href="<c:url value="#"/>" class="btn btn-default" role="button"> 
+		<span class="glyphicon glyphicon-new-window"></span>
 	</a>
 	
 	<br />

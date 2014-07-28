@@ -3,7 +3,7 @@
  * Software GmbH
  *
  * This program is free software; you can redistribute it and/or modify it under
- * the terms of the GNU General Public License version 2 as published by the Free
+ * the terms of the GNU General Public License version 2 as publishedby the Free
  * Software Foundation.
  *
  * If the program is linked with libraries which are licensed under one of the
@@ -282,6 +282,29 @@ $(document)
 
 							}
 						}
+						else
+						{
+							if($("#deletePermissionValidation").length==0)
+							{
+								var errorMessage="";
+								
+								if(!$("#permissionTable td").hasClass("dataTables_empty"))
+								{
+									errorMessage="Please select atleast <b> 1 permission </b> to delete";
+								}
+								else
+								{
+									errorMessage="There are no <b> permission(s) </b> to delete";
+								}	
+								
+									$("#errorList").prepend("<li id='deletePermissionValidation'>"+errorMessage+"</li>");
+								}
+								
+								$('html,body').animate({ scrollTop: 0 }, 'slow', function () {
+								});
+								
+								$("#alert").show();
+							}	
 					});
 			$("#undoWarning").click(function() {
 
