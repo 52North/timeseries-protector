@@ -31,16 +31,16 @@ var setDeleteTimeoutId;
 $(document)
 .ready(
 		function() {
-			
+
 			/*
 			 * Making sure that the url are decoded
 			 * */
 			$.each($("td[data-url]"), function(index,e) {
-				   
+
 				$(e).html(decodeURIComponent($(e).html()));
 
-				});
-			
+			});
+
 			/*
 			 * Functionality for sorting and searching
 			 * on permission set table
@@ -63,7 +63,7 @@ $(document)
 						.attr("checked", this.checked);
 					});
 
-			$("#permissionSetTable tr td input[type='checkbox']")
+			$("#permissionSetTable tr input[type='checkbox']")
 			.click(
 					function(event) {
 						if ($("#permissionSetTable tr td input[type='checkbox']").length == $("#permissionSetTable tr td input:checked").length) {
@@ -73,6 +73,14 @@ $(document)
 							$("#selectAllPermissionSet").removeAttr(
 							"checked");
 						}
+						if($("#permissionSetTable tr td input:checked").length >0 && $("#btnDeletePermissionSet").hasClass("disabled"))
+						{
+							$("#btnDeletePermissionSet").removeClass("disabled");
+						}
+						else if($("#permissionSetTable tr td input:checked").length ==0)
+						{
+							$("#btnDeletePermissionSet").addClass("disabled");
+						}	
 					});
 
 
@@ -83,7 +91,7 @@ $(document)
 			$("#btnDeletePermissionSet")
 			.click(
 					function(event) {
-						
+
 						/*
 						 * fetching to see how many records are
 						 * to be deleted, which then will be
@@ -91,11 +99,9 @@ $(document)
 						 */
 						var setsToDelete = $("#permissionSetTable label input:checked");
 						if (setsToDelete.length > 0) {
-							
-							$("#alert").hide();
-							
+
 							if (typeof (Storage) !== "undefined") {
-								
+
 								/*
 								 * storing the names in the
 								 * session variable and will be
@@ -124,37 +130,17 @@ $(document)
 
 							}
 						}
-						else
-						{
-							if($("#deletePermissionSetValidation").length==0)
-							{	
-								var errorMessage="";
-								
-								if(!$("#permissionSetTable td").hasClass("dataTables_empty"))
-								{
-									errorMessage="Please select atleast <b> 1 permission set </b> to delete";
-								}
-								else
-								{
-									errorMessage="There are no <b> permission set(s) </b> to delete";
-								}	
-								
-								$("#errorList").prepend("<li id='deletePermissionSetValidation'>"+errorMessage+"</li>");
-							}
-							
-							$("#alert").show();
-						}
-							
+
 					});
-			
+
 			/*
 			 * hide the parent div on click of close button
 			 * */
 			$("button[class='close']").click(function(event){
-				
+
 				var parentDiv= $(this).parent("div");
 				$("#"+parentDiv[0].id).hide();
-				
+
 			});
 
 			$("#undoWarning").click(function() {

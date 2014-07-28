@@ -4,15 +4,13 @@
 
 	<tiles:insertDefinition name="warningSection"></tiles:insertDefinition>
 	
-	<tiles:insertDefinition name="errorSection"></tiles:insertDefinition>
-	
 	<br /> <a title="Add Permission Set"
 		href="<c:url value="/editor/new" />" id="btnAddPermissionSet"
 		class="btn btn-default" role="button"> <span
 		class="glyphicon glyphicon-plus"></span>
 	</a>&nbsp;
 	
-	<button id="btnDeletePermissionSet" class="btn btn-default"
+	<button class="btn btn-default disabled" id="btnDeletePermissionSet"
 		title="Delete Permission Set">
 		<span class="glyphicon glyphicon-trash"></span>
 	</button>&nbsp;

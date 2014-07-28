@@ -162,7 +162,7 @@ $(document)
 					$("#permissionTable").append(content);
 					keyCount++;
 					
-				}	
+				}
 			}	
 			
 			/*
@@ -214,7 +214,7 @@ $(document)
 						.attr("checked", this.checked);
 					});
 
-			$("#permissionTable tr td input[type='checkbox']")
+			$("#permissionTable tr input[type='checkbox']")
 			.click(
 					function(event) {
 						if ($("#permissionTable tr td input[type='checkbox']").length == $("#permissionTable tr td input:checked").length) {
@@ -224,6 +224,14 @@ $(document)
 							$("#selectAllPermission")
 							.removeAttr("checked");
 						}
+						if($("#permissionTable tr td input:checked").length >0 && $("#btnDeletePermission").hasClass("disabled"))
+						{
+							$("#btnDeletePermission").removeClass("disabled");
+						}
+						else if($("#permissionTable tr td input:checked").length ==0)
+						{
+							$("#btnDeletePermission").addClass("disabled");
+						}	
 					});
 			/*
 			 * Functionality for sorting and searching on permission
@@ -253,6 +261,9 @@ $(document)
 						 */
 						var permissionsToDelete = $("#permissionTable label input:checked");
 						if (permissionsToDelete.length > 0) {
+							
+							$("#alert").hide();
+							
 							if (typeof (Storage) !== "undefined") {
 								/*
 								 * storing the names in the
@@ -282,29 +293,7 @@ $(document)
 
 							}
 						}
-						else
-						{
-							if($("#deletePermissionValidation").length==0)
-							{
-								var errorMessage="";
-								
-								if(!$("#permissionTable td").hasClass("dataTables_empty"))
-								{
-									errorMessage="Please select atleast <b> 1 permission </b> to delete";
-								}
-								else
-								{
-									errorMessage="There are no <b> permission(s) </b> to delete";
-								}	
-								
-									$("#errorList").prepend("<li id='deletePermissionValidation'>"+errorMessage+"</li>");
-								}
-								
-								$('html,body').animate({ scrollTop: 0 }, 'slow', function () {
-								});
-								
-								$("#alert").show();
-							}	
+
 					});
 			$("#undoWarning").click(function() {
 
@@ -541,7 +530,11 @@ function validateInput()
 	});
 	if(!submit)
 	{
-		$("#errorList").html(errorHtml);
+		if($("#errorList li").length==0)
+			$("#errorList").html(errorHtml);
+		else
+			$("#errorList").prepend(errorHtml);
+		
 		$('html,body').animate({ scrollTop: 0 }, 'slow', function () {
           });
 		$("#alert").show();

@@ -64,7 +64,7 @@
 			</c:otherwise>
 		</c:choose>
 
-		<button type="button" id="btnDeletePermission" class="btn btn-default"
+		<button class="btn btn-default disabled" type="button" id="btnDeletePermission" 
 			title="Delete Permission">
 			<span class="glyphicon glyphicon-trash"></span>
 		</button>
