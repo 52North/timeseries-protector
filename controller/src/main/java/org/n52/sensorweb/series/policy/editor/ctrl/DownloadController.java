@@ -53,7 +53,7 @@ public class DownloadController extends BaseController implements ServletContext
     /**
      * Path of the file to be downloaded, relative to application's directory
      */
-    private String filePath = "/WEB-INF/classes/permissions.xml";
+    private String permissionsXmlPath = "/WEB-INF/classes/permissions.xml";
 
     private ServletContext sc;
 
@@ -63,18 +63,16 @@ public class DownloadController extends BaseController implements ServletContext
     @RequestMapping(method = RequestMethod.GET)
     public void doDownload(HttpServletResponse response) throws IOException {
 
-        File downloadFile = new File(filePath);
+        File downloadFile = new File(permissionsXmlPath);
         FileInputStream inputStream = new FileInputStream(downloadFile);
 
         // get MIME type of the file
-        String mimeType = sc.getMimeType(filePath);
+        String mimeType = sc.getMimeType(permissionsXmlPath);
         if (mimeType == null) {
             // set to binary type if MIME mapping not found
             mimeType = "application/octet-stream";
         }
         
-        System.out.println("MIME type: " + mimeType);
-
         // set content attributes for the response
         response.setContentType(mimeType);
         response.setContentLength((int) downloadFile.length());
@@ -104,8 +102,12 @@ public class DownloadController extends BaseController implements ServletContext
     @Override
     public void setServletContext(ServletContext sc) {
         this.sc = sc;
-        filePath = sc.getRealPath(filePath);
+        permissionsXmlPath = sc.getRealPath(permissionsXmlPath);
 
+    }
+
+    public void setPermissionsXmlPath(String permissionsXmlPath) {
+        this.permissionsXmlPath = permissionsXmlPath;
     }
 
 }

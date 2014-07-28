@@ -17,5 +17,6 @@
 		<mvc:annotation-driven />
 		
 		<bean class="org.n52.sensorweb.series.policy.editor.ctrl.DownloadController">
+			<property name="permissionsXmlPath" value="/WEB-INF/classes/permissions.xml"></property>
 		</bean>
 </beans>  
