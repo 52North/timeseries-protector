@@ -31,7 +31,7 @@ if(!(Modernizr.json && Modernizr.localstorage && Modernizr.sessionstorage && Mod
 	&& Modernizr.input.autofocus && Modernizr.input.multiple
 	))
 {
-		window.location.href=window.location.href+"warn/browser";
+		window.location.href=$("#contextUrl").val()+"warn/browser";
 }
 
 $(document)
@@ -378,11 +378,11 @@ function pushPermissionSet(buttonId)
 		// form action url
 		if(buttonId=="modifyAction")
 		{	
-			url = $("#contextUrl").val()+"/editor/"+$("#permissionSetIdentifier").val()+"/modify";
+			url = $("#contextUrl").val()+"editor/"+$("#permissionSetIdentifier").val()+"/modify";
 		}
 		else if(buttonId=="modifyNewAction" || buttonId=="newAction")
 		{
-			url = $("#contextUrl").val()+"/editor/save";
+			url = $("#contextUrl").val()+"editor/save";
 		}	
 
 		// preparing the json data, change the
@@ -579,7 +579,7 @@ function deletePermissions()
 		 * which means are not stored temporarily and they can be deleted
 		 * */
 		$.ajax({
-				url : $("#contextUrl").val() + "/editor/delete/" +$("#permissionSetName").val()+"/"+ sessionStorage.permissions,
+				url : $("#contextUrl").val() + "editor/delete/" +$("#permissionSetName").val()+"/"+ sessionStorage.permissions,
 				type : "POST",
 				success: function()
 				{

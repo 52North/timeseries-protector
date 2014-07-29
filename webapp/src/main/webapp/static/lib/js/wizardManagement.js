@@ -26,14 +26,6 @@
  * PARTICULAR PURPOSE. See the GNU General Public License for more details.
  */
 
-//checking for features supported by browser
-if(!(Modernizr.json && Modernizr.localstorage && Modernizr.sessionstorage && Modernizr.input.placeholder
-	&& Modernizr.input.autofocus && Modernizr.input.multiple
-	))
-{
-		window.location.href=window.location.href+"warn/browser";
-}
-
 $(document).ready(function() {
 
 	/*for setting the values for badges on load */

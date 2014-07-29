@@ -72,7 +72,6 @@ public class DownloadController extends BaseController implements ServletContext
             // set to binary type if MIME mapping not found
             mimeType = "application/octet-stream";
         }
-        
         // set content attributes for the response
         response.setContentType(mimeType);
         response.setContentLength((int) downloadFile.length());
@@ -98,12 +97,37 @@ public class DownloadController extends BaseController implements ServletContext
         outStream.close();
 
     }
+    
+    @RequestMapping(value="/view",method = RequestMethod.GET)
+    public void viewPermissionsXml(HttpServletResponse response) throws IOException {
+        
+        File downloadFile = new File(permissionsXmlPath);
+        
+        FileInputStream inputStream = new FileInputStream(downloadFile);
+        
+        response.setContentType("text/html");
+        response.setCharacterEncoding("UTF-8");
+        
+        // get output stream of the response
+        OutputStream outStream = response.getOutputStream();
+        
+        byte[] buffer = new byte[BUFFER_SIZE];
+        int bytesRead = -1;
+
+        // write bytes read from the input stream into the output stream
+        while ( (bytesRead = inputStream.read(buffer)) != -1) {
+            outStream.write(buffer, 0, bytesRead);
+        }
+
+        inputStream.close();
+        outStream.close();
+    }
 
     @Override
     public void setServletContext(ServletContext sc) {
         this.sc = sc;
         permissionsXmlPath = sc.getRealPath(permissionsXmlPath);
-
+        
     }
 
     public void setPermissionsXmlPath(String permissionsXmlPath) {

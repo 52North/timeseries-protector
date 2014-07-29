@@ -25,18 +25,6 @@
 <script type="text/javascript"
 	src="<c:url value="/static/lib/js/docs.min.js" />"></script>
 
-<!-- Workaround for multiple modals for Bootstrap  -->
-<%-- <link rel="stylesheet"
-	href="<c:url value="/static/lib/css/bootstrap-modal-bs3patch.css" />"
-	type="text/css" />
-<script type="text/javascript"
-	src="<c:url value="/static/lib/js/bootstrap-modalmanager.js" />"></script>
-<script type="text/javascript"
-	src="<c:url value="/static/lib/js/bootstrap-modal.js" />"></script>
-<link rel="stylesheet"
-	href="<c:url value="/static/lib/css/bootstrap-modal.css" />"
-	type="text/css" /> --%>
-
 <!-- Files for Data Tables used for sorting and searching -->
 <script type="text/javascript"
 	src="//cdn.datatables.net/1.10.0/js/jquery.dataTables.js"></script>
@@ -49,9 +37,12 @@
 	href="<c:url value="/static/lib/css/dataTables.bootstrap.css" />"
 	type="text/css" />
 
+<!-- Modernizr -->
 <script type="text/javascript"
 	src="<c:url value="/static/lib/js/modernizr.js" />">
 </script>
+
+
 
 <title>${pageTitle}</title>
 </head>

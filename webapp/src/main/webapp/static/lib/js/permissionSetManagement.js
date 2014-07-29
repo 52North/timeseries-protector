@@ -141,6 +141,24 @@ $(document)
 						}
 
 					});
+			
+			$("#viewXml").click(function(event){
+				
+				var url=$("#contextUrl").val()+"download/view";
+				
+				$.ajax({
+					url: url,
+					method: "GET",
+					success: function(response){
+						
+						$("#xmlContent").text(response);
+						$("#xmlContent").each(function(i, block) {
+						    hljs.highlightBlock(block);
+						  });
+						$("#viewPermissionsXmlModal").modal("show");
+					}
+				});
+			});
 
 			/*
 			 * hide the parent div on click of close button
