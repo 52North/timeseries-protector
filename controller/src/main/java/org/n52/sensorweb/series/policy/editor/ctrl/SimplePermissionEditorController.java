@@ -76,7 +76,15 @@ public class SimplePermissionEditorController extends BaseController {
     private TimeseriesService parameterServiceProvider;
 
     private UserService userService;
-
+    
+    @RequestMapping(value = "/warn/{issue}", method = RequestMethod.GET)
+    public ModelAndView browserWarning(@PathVariable String issue )
+    {
+        ModelAndView mav = new ModelAndView("updateBrowser");
+        mav.addObject(issue);
+        return mav;
+    }
+    
     /**
      * @return permissionSets to be displayed
      */

@@ -18,6 +18,9 @@
         <put-attribute name="body" value="/WEB-INF/views/editor/createPermissionSet.jsp" />
     </definition>
     
+    <definition name="updateBrowser" template="/WEB-INF/views/editor/updateBrowser.jsp">
+    </definition>
+    
     <!-- Advance Sections in Create Permission Set Form -->
     <definition name="advanceSection" template="/WEB-INF/views/editor/advanceCreatePermissionSet.jsp">
     </definition>

@@ -27,6 +27,15 @@
  */
 var setDeleteTimeoutId;
 
+//checking for features supported by browser
+if(!(Modernizr.json && Modernizr.localstorage && Modernizr.sessionstorage && Modernizr.input.placeholder
+	&& Modernizr.input.autofocus && Modernizr.input.multiple
+	))
+{
+		window.location.href=window.location.href+"warn/browser";
+}
+	
+
 //attaching event handlers on load of the document
 $(document)
 .ready(

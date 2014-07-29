@@ -12,7 +12,7 @@
 <!--  Jquery -->
 <script type="text/javascript"
 	src="<c:url value="/static/lib/js/jquery-1.8.2.min.js" />">
-	</script>
+</script>
 
 <!-- Bootstrap core files  -->
 <link rel="stylesheet"
@@ -49,6 +49,9 @@
 	href="<c:url value="/static/lib/css/dataTables.bootstrap.css" />"
 	type="text/css" />
 
+<script type="text/javascript"
+	src="<c:url value="/static/lib/js/modernizr.js" />">
+</script>
 
 <title>${pageTitle}</title>
 </head>
