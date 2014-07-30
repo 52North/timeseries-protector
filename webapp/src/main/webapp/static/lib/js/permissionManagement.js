@@ -27,7 +27,8 @@
  */
 //checking for features supported by browser
 
-if(!(Modernizr.json && Modernizr.localstorage && Modernizr.sessionstorage && Modernizr.input.placeholder
+if(!(Modernizr.json && Modernizr.localstorage && Modernizr.sessionstorage && 
+	Modernizr.dataset && Modernizr.input.placeholder
 	&& Modernizr.input.autofocus && Modernizr.input.multiple
 	))
 {
