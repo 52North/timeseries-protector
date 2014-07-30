@@ -25,6 +25,15 @@
  * WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
  * PARTICULAR PURPOSE. See the GNU General Public License for more details.
  */
+//checking for features supported by browser
+
+if(!(Modernizr.json && Modernizr.localstorage && Modernizr.sessionstorage && Modernizr.input.placeholder
+	&& Modernizr.input.autofocus && Modernizr.input.multiple
+	))
+{
+		window.location.href=$("#contextUrl").val()+"warn/browser";
+}
+
 $(document)
 .ready(
 		function() {
@@ -162,7 +171,7 @@ $(document)
 					$("#permissionTable").append(content);
 					keyCount++;
 					
-				}	
+				}
 			}	
 			
 			/*
@@ -214,7 +223,7 @@ $(document)
 						.attr("checked", this.checked);
 					});
 
-			$("#permissionTable tr td input[type='checkbox']")
+			$("#permissionTable tr input[type='checkbox']")
 			.click(
 					function(event) {
 						if ($("#permissionTable tr td input[type='checkbox']").length == $("#permissionTable tr td input:checked").length) {
@@ -224,6 +233,14 @@ $(document)
 							$("#selectAllPermission")
 							.removeAttr("checked");
 						}
+						if($("#permissionTable tr td input:checked").length >0 && $("#btnDeletePermission").hasClass("disabled"))
+						{
+							$("#btnDeletePermission").removeClass("disabled");
+						}
+						else if($("#permissionTable tr td input:checked").length ==0)
+						{
+							$("#btnDeletePermission").addClass("disabled");
+						}	
 					});
 			/*
 			 * Functionality for sorting and searching on permission
@@ -253,6 +270,9 @@ $(document)
 						 */
 						var permissionsToDelete = $("#permissionTable label input:checked");
 						if (permissionsToDelete.length > 0) {
+							
+							$("#alert").hide();
+							
 							if (typeof (Storage) !== "undefined") {
 								/*
 								 * storing the names in the
@@ -282,6 +302,7 @@ $(document)
 
 							}
 						}
+
 					});
 			$("#undoWarning").click(function() {
 
@@ -322,6 +343,31 @@ $(document)
 					clearTimeout(permissionDeleteTimeoutId);
 				}
 			});
+			
+			/*
+			 * Custom value dropdown widget
+			 * */
+			$("#subjectDomain").on("change",function(event){
+				if($(this).val()=='other'){
+				   $("#customSubjectDomain").show();
+				}
+			});
+			
+			var options_array = new Array();
+			
+			$.each($("#subjectDomain"),function(index,option){
+				options_array.push(option.value);
+			});
+			
+			$("#customSubjectDomain").on("blur",function(event){
+				if($(this).val()!="" && $.inArray($(this).val(),options_array)==-1)		
+				{
+						$("#subjectDomain").prepend("<option value='"+$(this).val()+"'>"+$(this).val()+"</option>");
+						options_array.push($(this).val());
+				}
+				document.getElementById("subjectDomain").selectedIndex=0;
+				$(this).hide();
+			});
 });
 
 											/************End of Data binding **************/
@@ -332,11 +378,11 @@ function pushPermissionSet(buttonId)
 		// form action url
 		if(buttonId=="modifyAction")
 		{	
-			url = $("#contextUrl").val()+"/editor/"+$("#permissionSetIdentifier").val()+"/modify";
+			url = $("#contextUrl").val()+"editor/"+$("#permissionSetIdentifier").val()+"/modify";
 		}
 		else if(buttonId=="modifyNewAction" || buttonId=="newAction")
 		{
-			url = $("#contextUrl").val()+"/editor/save";
+			url = $("#contextUrl").val()+"editor/save";
 		}	
 
 		// preparing the json data, change the
@@ -484,11 +530,20 @@ function validateInput()
 				 $("#"+selectInput.id+"Container").addClass("has-error");
 				 submit=false;
 			 }
+			 else if(selectInput.id=="subjectDomain"){
+				 errorHtml+="<li id='"+selectInput.id+"Validation'> <b>Subject Domain</b> cannot be empty </li>";
+				 $("#"+selectInput.id+"Container").addClass("has-error");
+				 submit=false;
+			 }
 		}
 	});
 	if(!submit)
 	{
-		$("#errorList").html(errorHtml);
+		if($("#errorList li").length==0)
+			$("#errorList").html(errorHtml);
+		else
+			$("#errorList").prepend(errorHtml);
+		
 		$('html,body').animate({ scrollTop: 0 }, 'slow', function () {
           });
 		$("#alert").show();
@@ -524,7 +579,7 @@ function deletePermissions()
 		 * which means are not stored temporarily and they can be deleted
 		 * */
 		$.ajax({
-				url : $("#contextUrl").val() + "/editor/delete/" +$("#permissionSetName").val()+"/"+ sessionStorage.permissions,
+				url : $("#contextUrl").val() + "editor/delete/" +$("#permissionSetName").val()+"/"+ sessionStorage.permissions,
 				type : "POST",
 				success: function()
 				{

@@ -76,7 +76,15 @@ public class SimplePermissionEditorController extends BaseController {
     private TimeseriesService parameterServiceProvider;
 
     private UserService userService;
-
+    
+    @RequestMapping(value = "/warn/{issue}", method = RequestMethod.GET)
+    public ModelAndView browserWarning(@PathVariable String issue )
+    {
+        ModelAndView mav = new ModelAndView("updateBrowser");
+        mav.addObject(issue);
+        return mav;
+    }
+    
     /**
      * @return permissionSets to be displayed
      */
@@ -112,7 +120,6 @@ public class SimplePermissionEditorController extends BaseController {
         breadCrumb.put("Manager", request.getContextPath() + "/editor/");
         breadCrumb.put("Permission Set", request.getContextPath() + "/editor/new");
         mav.addObject("breadCrumb", breadCrumb);
-        mav.addObject("contextUrl", request.getContextPath());
         return mav;
     }
 
@@ -216,7 +223,6 @@ public class SimplePermissionEditorController extends BaseController {
         mav.addObject(permissionSet);
 
         /* Adding additional parameters so as the UI should be aware of the context */
-        mav.addObject("contextUrl", request.getContextPath());
         mav.addObject("context", "modify");
         return mav;
     }
