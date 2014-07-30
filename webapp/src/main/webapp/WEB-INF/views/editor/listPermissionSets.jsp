@@ -12,8 +12,6 @@
 	
 	<tiles:insertDefinition name="viewPermissionsXml"></tiles:insertDefinition>
 	
-	<tiles:insertDefinition name="warningSection"></tiles:insertDefinition>
-
 	<br /> <a title="Add Permission Set"
 		href="<c:url value="/editor/new" />" id="btnAddPermissionSet"
 		class="btn btn-default" role="button"> <span
@@ -83,6 +81,5 @@
 </div>
 
 <script type="text/javascript"
-	src="<c:url value="/static/js/permissionSetManagement.js" />">
-
+	
 </script>
