@@ -6,7 +6,11 @@
 	version="2.5">
 
 	<display-name>Protecting Timeseries Webapp, built on ${timestamp}</display-name>
-
+	
+	<session-config>
+    	<tracking-mode>COOKIE</tracking-mode>
+	</session-config>	
+	
 	<security-role>
 		<role-name>admin</role-name>
 	</security-role>
@@ -22,14 +26,14 @@
 			<role-name>admin</role-name>
 		</auth-constraint>
 	</security-constraint>
-	
+
 	<!-- Using BASIC security -->
-	
+
 	<login-config>
 		<auth-method>BASIC</auth-method>
 		<realm-name>Secured Area</realm-name>
 	</login-config>
-	
+
 	<filter>
 		<filter-name>CORS</filter-name>
 		<filter-class>com.thetransactioncompany.cors.CORSFilter</filter-class>
@@ -78,7 +82,7 @@
 		<servlet-name>editor</servlet-name>
 		<url-pattern>/editor/*</url-pattern>
 	</servlet-mapping>
-	
+
 	<!-- Defining the download controller -->
 	<servlet>
 		<servlet-name>download</servlet-name>
@@ -93,7 +97,7 @@
 		<servlet-name>download</servlet-name>
 		<url-pattern>/download/*</url-pattern>
 	</servlet-mapping>
-	
+
 	<!-- define Timeseries API Web dispatcher -->
 	<servlet>
 		<servlet-name>api</servlet-name>
