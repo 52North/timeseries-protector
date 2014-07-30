@@ -25,7 +25,11 @@
 		<span class="glyphicon glyphicon-trash"></span>
 	</button>&nbsp;
 	
-	<button id="viewXml" title="View Permissions Xml"
+	<button 
+		<c:if test="${permissionSets.size()==0}">
+			disabled
+		</c:if>
+		id="viewXml" title="View Permissions Xml"
 		class="btn btn-default" role="button"> 
 		<span class="glyphicon glyphicon-new-window"></span>
 	</button>
