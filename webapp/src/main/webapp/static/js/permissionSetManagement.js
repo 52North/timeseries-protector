@@ -27,20 +27,29 @@
  */
 var setDeleteTimeoutId;
 
+//checking for features supported by browser
+if(!(Modernizr.json && Modernizr.localstorage && Modernizr.sessionstorage && Modernizr.input.placeholder
+	&& Modernizr.input.autofocus && Modernizr.input.multiple
+	))
+{
+		window.location.href=window.location.href+"warn/browser";
+}
+	
+
 //attaching event handlers on load of the document
 $(document)
 .ready(
 		function() {
-			
+
 			/*
 			 * Making sure that the url are decoded
 			 * */
 			$.each($("td[data-url]"), function(index,e) {
-				   
+
 				$(e).html(decodeURIComponent($(e).html()));
 
-				});
-			
+			});
+
 			/*
 			 * Functionality for sorting and searching
 			 * on permission set table
@@ -63,7 +72,7 @@ $(document)
 						.attr("checked", this.checked);
 					});
 
-			$("#permissionSetTable tr td input[type='checkbox']")
+			$("#permissionSetTable tr input[type='checkbox']")
 			.click(
 					function(event) {
 						if ($("#permissionSetTable tr td input[type='checkbox']").length == $("#permissionSetTable tr td input:checked").length) {
@@ -73,6 +82,14 @@ $(document)
 							$("#selectAllPermissionSet").removeAttr(
 							"checked");
 						}
+						if($("#permissionSetTable tr td input:checked").length >0 && $("#btnDeletePermissionSet").hasClass("disabled"))
+						{
+							$("#btnDeletePermissionSet").removeClass("disabled");
+						}
+						else if($("#permissionSetTable tr td input:checked").length ==0)
+						{
+							$("#btnDeletePermissionSet").addClass("disabled");
+						}	
 					});
 
 
@@ -83,6 +100,7 @@ $(document)
 			$("#btnDeletePermissionSet")
 			.click(
 					function(event) {
+
 						/*
 						 * fetching to see how many records are
 						 * to be deleted, which then will be
@@ -90,7 +108,9 @@ $(document)
 						 */
 						var setsToDelete = $("#permissionSetTable label input:checked");
 						if (setsToDelete.length > 0) {
+
 							if (typeof (Storage) !== "undefined") {
+
 								/*
 								 * storing the names in the
 								 * session variable and will be
@@ -119,7 +139,36 @@ $(document)
 
 							}
 						}
+
 					});
+			
+			$("#viewXml").click(function(event){
+				
+				var url=$("#contextUrl").val()+"download/view";
+				
+				$.ajax({
+					url: url,
+					method: "GET",
+					success: function(response){
+						
+						$("#xmlContent").text(response);
+						$("#xmlContent").each(function(i, block) {
+						    hljs.highlightBlock(block);
+						  });
+						$("#viewPermissionsXmlModal").modal("show");
+					}
+				});
+			});
+
+			/*
+			 * hide the parent div on click of close button
+			 * */
+			$("button[class='close']").click(function(event){
+
+				var parentDiv= $(this).parent("div");
+				$("#"+parentDiv[0].id).hide();
+
+			});
 
 			$("#undoWarning").click(function() {
 

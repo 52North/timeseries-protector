@@ -1,21 +1,37 @@
+
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib uri="http://tiles.apache.org/tags-tiles" prefix="tiles"%>
-<div class="container-fluid">
 
+<link rel="stylesheet"
+	href="<c:url value="/static/lib/css/googlecode.css" />" type="text/css" />
+<script type="text/javascript"
+	src="<c:url value="/static/lib/js/highlight.pack.js" />">
+</script>
+	
+<div class="container-fluid">
+	
+	<tiles:insertDefinition name="viewPermissionsXml"></tiles:insertDefinition>
+	
 	<tiles:insertDefinition name="warningSection"></tiles:insertDefinition>
 
 	<br /> <a title="Add Permission Set"
 		href="<c:url value="/editor/new" />" id="btnAddPermissionSet"
 		class="btn btn-default" role="button"> <span
 		class="glyphicon glyphicon-plus"></span>
-	</a> &nbsp;
-	<button id="btnDeletePermissionSet" class="btn btn-default"
+	</a>&nbsp;
+	
+	<button class="btn btn-default disabled" id="btnDeletePermissionSet"
 		title="Delete Permission Set">
 		<span class="glyphicon glyphicon-trash"></span>
+	</button>&nbsp;
+	
+	<button id="viewXml" title="View Permissions Xml"
+		class="btn btn-default" role="button"> 
+		<span class="glyphicon glyphicon-new-window"></span>
 	</button>
-
+	
 	<br />
-
+	<input type="hidden" id="contextUrl" value="<c:url value="/"/>">
 	<!-- This table will be created programmatically by jsps, just creating now for the sake of templating -->
 	<div class="table-responsive">
 		<table style="table-layout: fixed;word-wrap:break-word;" id="permissionSetTable"

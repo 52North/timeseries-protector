@@ -25,9 +25,8 @@
 		</div>
 
 		<!-- Hidden fields for house keeping tasks -->
-		<input id="contextUrl" type="hidden" value="${contextUrl}" /> <input
-			type="hidden" id="permissionSetIdentifier"
-			value="${permissionSet.getName()}" />
+		<input id="contextUrl" type="hidden" value="<c:url value="/"/>" /> 
+		<input type="hidden" id="permissionSetIdentifier" value="${permissionSet.getName()}" />
 
 		<div class="form-group">
 			<label class="control-label">* Action Domain :</label>
@@ -64,7 +63,7 @@
 			</c:otherwise>
 		</c:choose>
 
-		<button type="button" id="btnDeletePermission" class="btn btn-default"
+		<button class="btn btn-default disabled" type="button" id="btnDeletePermission" 
 			title="Delete Permission">
 			<span class="glyphicon glyphicon-trash"></span>
 		</button>

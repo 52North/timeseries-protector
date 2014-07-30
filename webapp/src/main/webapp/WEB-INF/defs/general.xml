@@ -8,6 +8,9 @@
         <put-attribute name="footer" value="/WEB-INF/views/footer.jsp" />
     </definition>
 	
+	<definition name="viewPermissionsXml" template="/WEB-INF/views/editor/viewPermissionsXml.jsp">
+    </definition>
+    
 	<!-- Table of Permission Sets -->
     <definition name="listPermissionSets" extends="common">
         <put-attribute name="body" value="/WEB-INF/views/editor/listPermissionSets.jsp" />
@@ -16,6 +19,9 @@
 	<!-- Permission Set Form -->
     <definition name="createPermissionSet" extends="common">
         <put-attribute name="body" value="/WEB-INF/views/editor/createPermissionSet.jsp" />
+    </definition>
+    
+    <definition name="updateBrowser" template="/WEB-INF/views/editor/updateBrowser.jsp">
     </definition>
     
     <!-- Advance Sections in Create Permission Set Form -->
