@@ -10,9 +10,19 @@
 
 	<form enctype="application/json" autocomplete="on" role="form"
 		id="createPermissionSetForm" method="POST">
-
 		<div class="form-group">
-			<label class="control-label">* Name :</label>
+			<div class="row">
+				<div class="col-xs-8">
+					<label class="control-label">* Name :</label>
+				</div>
+				<div class="col-xs-4 text-right">
+					<span style="cursor: pointer;" data-container="body"
+						data-toggle="popover" data-placement="left"
+						data-content="Permission set name has to be unique"
+						class="glyphicon glyphicon-question-sign"> 
+					</span>
+				</div>
+			</div>
 			<div class="row">
 				<div id="permissionSetNameContainer" class="col-xs-8">
 					<input data-required="true" autofocus style="margin-top: 5px"
@@ -25,15 +35,28 @@
 		</div>
 
 		<!-- Hidden fields for house keeping tasks -->
-		<input id="contextUrl" type="hidden" value="<c:url value="/"/>" /> 
-		<input type="hidden" id="permissionSetIdentifier" value="${permissionSet.getName()}" />
+		<input id="contextUrl" type="hidden" value="<c:url value="/"/>" /> <input
+			type="hidden" id="permissionSetIdentifier"
+			value="${permissionSet.getName()}" />
 
 		<div class="form-group">
-			<label class="control-label">* Action Domain :</label>
+			<div class="row">
+				<div class="col-xs-8">
+					<label class="control-label">* Action Domain :</label>
+				</div>
+				<div class="col-xs-4 text-right">
+					<span style="cursor: pointer;" data-container="body"
+						data-toggle="popover" data-placement="left"
+						data-content="Action Domain is the URI which specifies the end point for the 
+						operations to be restricted by the permissions which are part of this permission
+						set. Action Domain and Resource Domain can have the same values"
+						class="glyphicon glyphicon-question-sign"> 
+					</span>
+				</div>
+			 </div>
 			<div id="actionDomainContainer">
-				<input data-url
-					data-required="true" style="margin-top: 5px" id="actionDomain"
-					class="form-control" type="url"
+				<input data-url data-required="true" style="margin-top: 5px"
+					id="actionDomain" class="form-control" type="url"
 					value="${permissionSet.getActionDomains().get(0)}"
 					name="actionDomain" placeholder="Action Domain URL" />
 			</div>
@@ -63,8 +86,8 @@
 			</c:otherwise>
 		</c:choose>
 
-		<button class="btn btn-default disabled" type="button" id="btnDeletePermission" 
-			title="Delete Permission">
+		<button class="btn btn-default disabled" type="button"
+			id="btnDeletePermission" title="Delete Permission">
 			<span class="glyphicon glyphicon-trash"></span>
 		</button>
 

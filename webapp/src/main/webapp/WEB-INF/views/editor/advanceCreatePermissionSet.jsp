@@ -20,10 +20,22 @@
 				</div>
 
 				<div class="form-group">
-					<label class="control-label">* Subject Domain :</label>
+					<div class="row">
+						<div class="col-xs-8">
+							<label class="control-label">* Subject Domain :</label>
+						</div>
+						<div class="col-xs-4 text-right">
+							<span style="cursor: pointer;" data-container="body"
+								data-toggle="popover" data-placement="left"
+								data-content="The Domain which consists of various user roles(subjects) pre defined which are
+								used while creating permissions"
+								class="glyphicon glyphicon-question-sign"> 
+							</span>
+						</div>
+					</div>
 					<div id="subjectDomainContainer">
 						<select id="subjectDomain" class="form-control">
-						<c:set var="found_subject" value="" />
+							<c:set var="found_subject" value="" />
 							<c:if test="${permissionSet!=null}">
 								<option
 									<c:if test="${permissionSet.getSubjectDomains().get(0)=='urn:conterra:names:sdi-suite:policy:attribute:role'}">
@@ -40,9 +52,11 @@
 									value="urn:n52:security:subject:role">urn:n52:security:subject:role
 								</option>
 								<c:if test="${found_subject==''}">
-									<option selected value="${permissionSet.getSubjectDomains().get(0)}"> ${permissionSet.getSubjectDomains().get(0)} </option>
+									<option selected
+										value="${permissionSet.getSubjectDomains().get(0)}">
+										${permissionSet.getSubjectDomains().get(0)}</option>
 								</c:if>
-									<option id="customValue" value="other"> Other </option>
+								<option id="customValue" value="other">Other</option>
 							</c:if>
 							<c:if test="${permissionSet==null}">
 								<option
@@ -50,10 +64,11 @@
 								</option>
 								<option value="urn:n52:security:subject:role">urn:n52:security:subject:role
 								</option>
-								<option id="customValue" value="other"> Other </option>
+								<option id="customValue" value="other">Other</option>
 							</c:if>
-						</select>
-						<input autocomplete="on" placeholder="Custom Value" id="customSubjectDomain" type="text" class="form-control" style="display:none;margin-top:10px;" />
+						</select> <input autocomplete="on" placeholder="Custom Value"
+							id="customSubjectDomain" type="text" class="form-control"
+							style="display: none; margin-top: 10px;" />
 					</div>
 					<p style="margin-top: 10px" class="help-block">Domain for the
 						users which will be restricted</p>

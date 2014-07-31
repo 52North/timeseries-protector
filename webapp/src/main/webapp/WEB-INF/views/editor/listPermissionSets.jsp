@@ -33,7 +33,6 @@
 		class="btn btn-default" role="button"> 
 		<span class="glyphicon glyphicon-new-window"></span>
 	</button>
-	
 	<br />
 	<input type="hidden" id="contextUrl" value="<c:url value="/"/>">
 	<!-- This table will be created programmatically by jsps, just creating now for the sake of templating -->
