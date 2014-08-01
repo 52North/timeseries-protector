@@ -419,3 +419,33 @@ function validateFields()
 	return submit;
 }
 
+function selectAppropriateActions(buttonId)
+{
+	if(buttonId=="readActions")
+	{
+		$.each($("option[data-type]"),function(i,e){
+			if($(e).attr("data-type")=="Read")
+			{
+				e.selected=true;
+			}
+			else
+			{
+				e.selected=false;
+			}	
+		});
+	}
+	else if(buttonId=="updateActions")
+	{
+		$.each($("option[data-type]"),function(i,e){
+			if($(e).attr("data-type")=="Update")
+			{
+				e.selected=true;
+			}
+			else
+			{
+				e.selected=false;
+			}	
+		});
+	}	
+}
+
