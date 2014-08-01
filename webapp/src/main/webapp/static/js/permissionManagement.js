@@ -27,7 +27,8 @@
  */
 //checking for features supported by browser
 
-if(!(Modernizr.json && Modernizr.localstorage && Modernizr.sessionstorage && Modernizr.input.placeholder
+if(!(Modernizr.json && Modernizr.localstorage && Modernizr.sessionstorage && 
+	Modernizr.dataset && Modernizr.input.placeholder
 	&& Modernizr.input.autofocus && Modernizr.input.multiple
 	))
 {
@@ -269,7 +270,7 @@ $(document)
 						 * stored in the session
 						 */
 						var permissionsToDelete = $("#permissionTable label input:checked");
-						if (permissionsToDelete.length > 0) {
+						if (permissionsToDelete.length > 1) {
 							
 							$("#alert").hide();
 							
@@ -302,7 +303,14 @@ $(document)
 
 							}
 						}
-
+						else if (permissionsToDelete.length == 1)
+						{
+							$("#errorList").html("<li id='deletePermissionValidation'> Atleast <b>1 permission</b> is required for a " +
+										"permission set");
+							$('html,body').animate({ scrollTop: 0 }, 'slow', function () {
+					          });
+							$("#alert").show();
+						}	
 					});
 			$("#undoWarning").click(function() {
 
@@ -539,11 +547,7 @@ function validateInput()
 	});
 	if(!submit)
 	{
-		if($("#errorList li").length==0)
-			$("#errorList").html(errorHtml);
-		else
-			$("#errorList").prepend(errorHtml);
-		
+		$("#errorList").html(errorHtml);
 		$('html,body').animate({ scrollTop: 0 }, 'slow', function () {
           });
 		$("#alert").show();

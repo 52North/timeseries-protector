@@ -1,10 +1,21 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
 <%@ taglib uri="http://tiles.apache.org/tags-tiles" prefix="tiles"%>
+<div class="row">
+	<div class="col-xs-8">
+		<label class="control-label">* Resources :</label>
+	</div>
+	<div class="col-xs-4 text-right">
+		<span style="cursor: pointer" data-container="body" data-toggle="popover"
+			data-placement="left"
+			data-content="The use of these resources is restricted for the role name(s) which have been selected by
+			only allowing them the action(s) which have been selected above
+			, you can select multiple values as well"
+			class="glyphicon glyphicon-question-sign">
+		</span>
+	</div>
+</div>
 
-
-<label class="control-label">* Resources</label>
-<br />
 <ul class="nav nav-tabs">
 	<!-- IMPORTANT!!  Do not change the id of the badges as the javascript will break -->
 	<li class="active"><a href="#procedures" data-toggle="tab">Procedures

@@ -1,8 +1,19 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
 
-<label class="control-label">* Actions</label>
-<br />
+<div class="row">
+	<div class="col-xs-8">
+		<label class="control-label">* Actions :</label>
+	</div>
+	<div class="col-xs-4 text-right">
+		<span style="cursor: pointer" data-container="body" data-toggle="popover"
+			data-placement="left"
+			data-content="Actions specify the capabilities which the above selected role names(s) will be granted
+			, you can select multiple values as well"
+			class="glyphicon glyphicon-question-sign">
+		</span>
+	</div>
+</div>
 <div style="resize: vertical; overflow: auto;"
 	id="selectActionsContainer">
 	<select style="height: inherit;" multiple id="selectActions"
