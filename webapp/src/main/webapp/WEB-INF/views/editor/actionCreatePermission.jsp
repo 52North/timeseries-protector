@@ -8,8 +8,8 @@
 	<div class="col-xs-4 text-right">
 		<span style="cursor: pointer" data-container="body" data-toggle="popover"
 			data-placement="left"
-			data-content="Actions specify the capabilities which the above selected role names(s) will be granted
-			, you can select multiple values as well"
+			data-content="Actions specify the capabilities which will be granted to the above selected role(s),
+			 you can select multiple values as well"
 			class="glyphicon glyphicon-question-sign">
 		</span>
 	</div>
@@ -21,7 +21,7 @@
 		<c:choose>
 			<c:when test="${permission.getActions().get(0).getValue()=='operations/*'}">
 				<c:forEach items="${actionValues}" var="values">
-					<option selected value="${values.getActionValue()}">${values.getActionValue()}</option>
+					<option data-type="${values.getType()}" selected value="${values.getActionValue()}">${values.getActionValue()}</option>
 				</c:forEach>
 			</c:when>
 			<c:when test="${permission.getActions().size() > 0}">
@@ -31,19 +31,19 @@
 					<c:forEach items="${permission.getActions()}" var="targetValue">
 						<c:if
 							test='${fn:substringAfter(targetValue.getValue(),"/")==values.getActionValue()}'>
-							<option selected value="${values.getActionValue()}">${values.getActionValue()}</option>
+							<option data-type="${values.getType()}" selected value="${values.getActionValue()}">${values.getActionValue()}</option>
 							<c:set var="found" value="found" scope="page" />
 						</c:if>
 					</c:forEach>
 					<c:if test="${found==''}">
-						<option value="${values.getActionValue()}">${values.getActionValue()}</option>
+						<option data-type="${values.getType()}" value="${values.getActionValue()}">${values.getActionValue()}</option>
 					</c:if>
 					<c:set var="found" value="" scope="page" />
 				</c:forEach>
 			</c:when>
 			<c:otherwise>
 				<c:forEach items="${actionValues}" var="values">
-					<option value="${values.getActionValue()}">${values.getActionValue()}</option>
+					<option data-type="${values.getType()}" value="${values.getActionValue()}">${values.getActionValue()}</option>
 				</c:forEach>
 			</c:otherwise>
 		</c:choose>
@@ -51,8 +51,9 @@
 </div>
 <br />
 
+<button id="readActions" onclick="selectAppropriateActions(this.id);" type="button" class="btn btn-info btn-xs">Read</button>
+<button id="updateActions" onclick="selectAppropriateActions(this.id);" type="button" class="btn btn-info btn-xs">Update</button>
 <button id="toggleActions" type="button" class="btn btn-danger btn-xs">Toggle</button>
-
 <button id="clearActions" type="button" class="btn btn-default btn-xs">Clear</button>
 
 <hr />
