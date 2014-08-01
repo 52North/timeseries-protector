@@ -27,7 +27,7 @@
 						<div class="col-xs-4 text-right">
 							<span style="cursor: pointer;" data-container="body"
 								data-toggle="popover" data-placement="left"
-								data-content="The Domain which consists of various user roles(subjects) pre defined which are
+								data-content="The Domain which consists of various user subjects(roles) pre defined which are
 								used while creating permissions"
 								class="glyphicon glyphicon-question-sign"> 
 							</span>

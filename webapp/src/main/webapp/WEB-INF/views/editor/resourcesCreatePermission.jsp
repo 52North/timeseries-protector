@@ -8,9 +8,8 @@
 	<div class="col-xs-4 text-right">
 		<span style="cursor: pointer" data-container="body" data-toggle="popover"
 			data-placement="left"
-			data-content="The use of these resources is restricted for the role name(s) which have been selected by
-			only allowing them the action(s) which have been selected above
-			, you can select multiple values as well"
+			data-content="The use of these resources is restricted for the selected subject(s) by
+			only allowing them the selected action(s),you can select multiple values as well"
 			class="glyphicon glyphicon-question-sign">
 		</span>
 	</div>

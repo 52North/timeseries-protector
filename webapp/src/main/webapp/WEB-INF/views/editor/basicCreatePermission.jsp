@@ -9,7 +9,7 @@
 			<span style="cursor: pointer;" data-container="body"
 				data-toggle="popover" data-placement="left"
 				data-content="Permission name has to be unique i.e. no two permissions which are part 
-				of the same permission set can have same names"
+				of the same permission set can have the same names"
 				class="glyphicon glyphicon-question-sign">
 			</span>
 		</div>

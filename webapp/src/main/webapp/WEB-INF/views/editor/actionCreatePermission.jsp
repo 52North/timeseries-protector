@@ -8,8 +8,8 @@
 	<div class="col-xs-4 text-right">
 		<span style="cursor: pointer" data-container="body" data-toggle="popover"
 			data-placement="left"
-			data-content="Actions specify the capabilities which will be granted to the above selected role(s),
-			 you can select multiple values as well"
+			data-content="Actions specify the capabilities which will be granted to the above selected subject(s),
+			 you can select multiple values as well. For convenience actions are divided into Read set and Update set"
 			class="glyphicon glyphicon-question-sign">
 		</span>
 	</div>
