@@ -42,25 +42,28 @@ import java.util.List;
  */
 public enum ActionValues {
 
-	GET_CAPABILITIES("GetCapabilities"),
-	GET_FEATURES_OF_INTEREST("GetFeaturesOfInterest"),
-	GET_FEATURES_OF_INTEREST_TIME("GetFeaturesOfInterestTime"),
-	GET_RESULT("GetResult"),
-	GET_OBSERVATION("GetObservation"),
-	DESCRIBE_SENSOR("DescribeSensor"),
-	DESCRIBE_FEATURE_TYPE("DescribeFeatureType"),
-	INSERT_SENSOR("InsertSensor"),
-	DELETE_SENSOR("DeleteSensor"),
-	UPDATE_SENSOR_DESCRIPTION("UpdateSensorDescription");
+	GET_CAPABILITIES("GetCapabilities","Read"),
+	GET_FEATURES_OF_INTEREST("GetFeaturesOfInterest","Read"),
+	GET_FEATURES_OF_INTEREST_TIME("GetFeaturesOfInterestTime","Read"),
+	GET_RESULT("GetResult","Read"),
+	GET_OBSERVATION("GetObservation","Read"),
+	DESCRIBE_SENSOR("DescribeSensor","Read"),
+	DESCRIBE_FEATURE_TYPE("DescribeFeatureType","Read"),
+	INSERT_SENSOR("InsertSensor","Update"),
+	DELETE_SENSOR("DeleteSensor","Update"),
+	UPDATE_SENSOR_DESCRIPTION("UpdateSensorDescription","Update");
 	
 	private String actionValue;
+	private String type;
 	
-	ActionValues(String actionValue)
+	ActionValues(String actionValue,String type)
 	{
 		this.setActionValue(actionValue);
+		this.setType(type);
 	}
 
-	public String getActionValue() {
+	public String getActionValue() 
+	{
 		return actionValue;
 	}
 	
@@ -69,8 +72,19 @@ public enum ActionValues {
 		return new ArrayList<ActionValues>(Arrays.asList(ActionValues.values()));
 	}
 
-	public void setActionValue(String actionValue) {
+	public void setActionValue(String actionValue) 
+	{
 		this.actionValue = actionValue;
 	}
+
+    public String getType() 
+    {
+        return type;
+    }
+
+    public void setType(String type) 
+    {
+        this.type = type;
+    }
 	
 }
