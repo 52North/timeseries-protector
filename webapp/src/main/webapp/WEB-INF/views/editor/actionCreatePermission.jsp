@@ -49,11 +49,10 @@
 		</c:choose>
 	</select>
 </div>
-<br />
+<p class="help-block">Press Ctrl for selecting more than one value</p>
 
 <button id="readActions" onclick="selectAppropriateActions(this.id);" type="button" class="btn btn-info btn-xs">Read</button>
 <button id="updateActions" onclick="selectAppropriateActions(this.id);" type="button" class="btn btn-info btn-xs">Update</button>
 <button id="toggleActions" type="button" class="btn btn-danger btn-xs">Toggle</button>
 <button id="clearActions" type="button" class="btn btn-default btn-xs">Clear</button>
-
 <hr />
