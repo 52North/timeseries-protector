@@ -13,62 +13,64 @@
         http://www.springframework.org/schema/mvc/spring-mvc-3.2.xsd">
 
 	<mvc:annotation-driven />
-	
-    <import resource="timeseries-api_v1_beans.xml"/>
 
-    <bean id="timeseriesServiceProvider" class="org.n52.sensorweb.series.policy.editor.ctrl.TimeseriesService">
-        <property name="phenomenonaService" ref="phenomenonParameterService" />
-        <property name="procedureService" ref="procedureParameterService" />
-        <property name="categoryService" ref="categoryParameterService" />
-        <property name="offeringService" ref="offeringParameterService" />
-        <property name="timeseriesDataService" ref="timeseriesService" />
-        <property name="servicesService" ref="serviceParameterService" />
-        <property name="featureService" ref="featureParameterService" />
-        <property name="stationService" ref="stationParameterService" />
-        <property name="contingMetadataService" ref="metadataService" />
-        <property name="timeseriesService" ref="timeseriesService" />
-        <property name="searchService" ref="searchService" />
-    </bean>
+	<import resource="timeseries-api_v1_beans.xml" />
 
-    <!-- #######################
-           editor controller
-         ####################### -->
-	
-    <bean class="org.n52.sensorweb.series.policy.editor.ctrl.SimplePermissionEditorController">
-        <property name="simplePermissionService" ref="simplePermissionService" />
-        <property name="enforcementPointService" ref="enforcementPointService" />
-        <property name="parameterServiceProvider" ref="timeseriesServiceProvider" />
-        <property name="userService" ref="userService" />
-    </bean>
-	
-    <!-- #######################
-         service implementations
-         ####################### -->
+	<bean id="timeseriesServiceProvider"
+		class="org.n52.sensorweb.series.policy.editor.ctrl.TimeseriesService">
+		<property name="phenomenonaService" ref="phenomenonParameterService" />
+		<property name="procedureService" ref="procedureParameterService" />
+		<property name="categoryService" ref="categoryParameterService" />
+		<property name="offeringService" ref="offeringParameterService" />
+		<property name="timeseriesDataService" ref="timeseriesService" />
+		<property name="servicesService" ref="serviceParameterService" />
+		<property name="featureService" ref="featureParameterService" />
+		<property name="stationService" ref="stationParameterService" />
+		<property name="contingMetadataService" ref="metadataService" />
+		<property name="timeseriesService" ref="timeseriesService" />
+		<property name="searchService" ref="searchService" />
+	</bean>
 
-    <bean id="simplePermissionService" class="org.n52.sensorweb.series.policy.editor.srv.impl.XmlFileSimplePermissionService" init-method="init">
-        <property name="permissionFile" value="/WEB-INF/classes/permissions.xml" />
-    </bean>
+	<!-- ####################### editor controller ####################### -->
 
-    <bean id="enforcementPointService" class="org.n52.sensorweb.series.policy.editor.srv.impl.PreconfiguredEnforcementPointService" >
-        <property name="epServices">
-            <util:map>
-                <entry key="epSOS_1" value="http://wss.url/context_1/" />
-                <entry key="epSOS_2" value="http://wss.url/context_2/" />
-            </util:map>
-        </property>
-    </bean>
+	<bean
+		class="org.n52.sensorweb.series.policy.editor.ctrl.SimplePermissionEditorController">
+		<property name="simplePermissionService" ref="simplePermissionService" />
+		<property name="enforcementPointService" ref="enforcementPointService" />
+		<property name="parameterServiceProvider" ref="timeseriesServiceProvider" />
+		<property name="userService" ref="userService" />
+	</bean>
 
-    <bean id="userService" class="org.n52.sensorweb.series.policy.editor.srv.impl.PreconfiguredUserService">
-        <property name="configuredUsers">
-            <util:list>
-                <!-- list the users/roles to give permissions to -->
-                <value>t-sos</value>
-                <value>data-provider</value>
-                <value>sensorManager</value>
-                <value>guest</value>
-            </util:list>
-        </property>
-    </bean>
-	
-	
+	<!-- ####################### service implementations ####################### -->
+
+	<bean id="simplePermissionService"
+		class="org.n52.sensorweb.series.policy.editor.srv.impl.XmlFileSimplePermissionService"
+		init-method="init">
+		<property name="permissionFile" value="/WEB-INF/classes/permissions.xml" />
+	</bean>
+
+	<bean id="enforcementPointService"
+		class="org.n52.sensorweb.series.policy.editor.srv.impl.PreconfiguredEnforcementPointService">
+		<property name="epServices">
+			<util:map>
+				<entry key="http%3A%2F%2Fpegelonline.wsv.de%2Fwebservices%2Fgis%2Fgdi-sos" value="srv_1a5bde0a6d702f193f7be463402ec12f" />
+				<entry key="http%3A%2F%2Fsos.irceline.be%2Fsos" value="srv_6d9ccea8d609ecb74d4a512922bb7cee" />
+			</util:map>
+		</property>
+	</bean>
+
+	<bean id="userService"
+		class="org.n52.sensorweb.series.policy.editor.srv.impl.PreconfiguredUserService">
+		<property name="configuredUsers">
+			<util:list>
+				<!-- list the users/roles to give permissions to -->
+				<value>t-sos</value>
+				<value>data-provider</value>
+				<value>sensorManager</value>
+				<value>guest</value>
+			</util:list>
+		</property>
+	</bean>
+
+
 </beans>

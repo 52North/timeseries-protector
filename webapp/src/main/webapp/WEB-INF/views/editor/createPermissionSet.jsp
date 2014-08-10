@@ -19,8 +19,7 @@
 					<span style="cursor: pointer;" data-container="body"
 						data-toggle="popover" data-placement="left"
 						data-content="Permission set name has to be unique"
-						class="glyphicon glyphicon-question-sign"> 
-					</span>
+						class="glyphicon glyphicon-question-sign"> </span>
 				</div>
 			</div>
 			<div class="row">
@@ -35,9 +34,11 @@
 		</div>
 
 		<!-- Hidden fields for house keeping tasks -->
-		<input id="contextUrl" type="hidden" value="<c:url value="/"/>" /> <input
+		<input id="contextUrl" type="hidden" value="<c:url value="/"/>" /> 
+		<input
 			type="hidden" id="permissionSetIdentifier"
 			value="${permissionSet.getName()}" />
+		<input type="hidden" id="actionDomainTracker" />	
 
 		<div class="form-group">
 			<div class="row">
@@ -49,16 +50,24 @@
 						data-toggle="popover" data-placement="left"
 						data-content="Action Domain is the URI which specifies the end point for the 
 						operations to be restricted by the permissions which are part of this permission
-						set. Action Domain and Resource Domain can have the same values"
-						class="glyphicon glyphicon-question-sign"> 
-					</span>
+						set. Action Domain and Resource Domain can have the same values. Changing the value
+						will lead to deletion of permissions due to inconsistency"
+						class="glyphicon glyphicon-question-sign"> </span>
 				</div>
-			 </div>
+			</div>
 			<div id="actionDomainContainer">
-				<input data-url data-required="true" style="margin-top: 5px"
-					id="actionDomain" class="form-control" type="url"
-					value="${permissionSet.getActionDomains().get(0)}"
-					name="actionDomain" placeholder="Action Domain URL" />
+				<select 
+					onchange="prepareSetUp();" data-required="true" style="margin-top: 5px"
+					id="actionDomain" class="form-control" name="actionDomain">
+					<c:forEach items="${preConfiguredEnforcementPoints}" var="pcep">
+						<c:if test="${pcep.key==permissionSet.getActionDomains().get(0)}">	
+							<option data-url selected value="${pcep.key}">${pcep.key}</option>
+						</c:if>
+						<c:if test="${pcep.key!=permissionSet.getActionDomains().get(0)}">	
+							<option data-url value="${pcep.key}">${pcep.key}</option>
+						</c:if>
+					</c:forEach>
+				</select>
 			</div>
 			<p class="help-block">URL for the Operations</p>
 		</div>
@@ -71,18 +80,22 @@
 
 		<c:choose>
 			<c:when test="${permissionSet!=null}">
-				<a id="btnAddPermission"
-					href="<c:url value="/editor/edit/${permissionSet.getName()}/newPermission" />"
+				<button id="btnAddPermission"
+					data-href="<c:url value="/editor/edit/${permissionSet.getName()}/newPermission" />"
+					type="button"
+					onclick="navigateForPermission();"
 					class="btn btn-default" title="Add Permission"> <span
 					class="glyphicon glyphicon-plus"></span>
-				</a> &nbsp;
+				</button> &nbsp;
 			</c:when>
 			<c:otherwise>
-				<a id="btnAddPermission"
-					href="<c:url value="/editor/edit/new/newPermission" />"
+				<button id="btnAddPermission"
+					data-href="<c:url value="/editor/edit/new/newPermission" />"
+					type="button"
+					onclick="navigateForPermission();"
 					class="btn btn-default" title="Add Permission"> <span
 					class="glyphicon glyphicon-plus"></span>
-				</a> &nbsp;
+				</button> &nbsp;
 			</c:otherwise>
 		</c:choose>
 
