@@ -45,6 +45,7 @@ public class PreconfiguredUserService implements UserService {
 
     private List<String> configuredUsers = new ArrayList<String>();
 
+    @Override
     public List<String> getConfiguredUsers() {
         return configuredUsers;
     }

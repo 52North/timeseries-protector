@@ -1,10 +1,28 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!-- TODO create a client login for admins (RESTful?) to configure file via 
+<!-- TODO create a client login for admins (RESTful?) to configure file via
 	web interface -->
 <!-- Some of these properties are not implemented yet! -->
 <instances>
-    
+
     <instance>
+         <itemName>52°North GEOWOW SOS v4.0.0 with Hydrology Profile</itemName>
+         <url>http://geowow.dev.52north.org/52n-sos-grdc-webapp/service/soap</url>
+         <version>2.0.0</version>
+         <waterML>false</waterML>
+         <supportsFirstLatest>false</supportsFirstLatest>
+         <metadataHandler>org.n52.server.sos.connector.hydro.HydroMetadataHandler</metadataHandler>
+         <adapter>org.n52.server.sos.connector.hydro.SOSwithSoapAdapter</adapter>
+         <requestChunk>300</requestChunk>
+         <autoZoom>true</autoZoom>
+         <timeout>100000</timeout>
+         <llEasting>3.0</llEasting>
+         <llNorthing>50.7</llNorthing>
+         <urEasting>7.2</urEasting>
+         <urNorthing>53.8</urNorthing>
+         <defaultZoom>11</defaultZoom>
+     </instance>
+
+<!--    <instance>
         <itemName>PEGELONLINE</itemName>
         <url>http://pegelonline.wsv.de/webservices/gis/gdi-sos</url>
         <version>1.0.0</version>
@@ -53,8 +71,8 @@
         <urEasting>6.5</urEasting>
         <urNorthing>51.6</urNorthing>
         <defaultZoom>11</defaultZoom>
-    </instance>
-    
+    </instance>-->
+
 <!-- 	<instance> -->
 <!-- 		<itemName>CSIR</itemName> -->
 <!-- 		<url>http://ict4eo.meraka.csir.co.za/AMD_SOS/sos</url> -->
@@ -105,7 +123,7 @@
 <!--         <requestChunk>200</requestChunk> -->
 <!--         <autoZoom>true</autoZoom> -->
 <!--     </instance> -->
-    
+
 <!-- 	<instance> -->
 <!-- 		<itemName>GRDC (Kisters SOS)</itemName> -->
 <!-- 		<url>http://kiwis.kisters.de/KiWIS/KiWIS?datasource=3</url> -->
@@ -122,7 +140,7 @@
 <!-- 		<autoZoom>true</autoZoom> -->
 <!-- 		<protectedService>false</protectedService> -->
 <!-- 	</instance> -->
-	
+
 <!-- 	<instance> -->
 <!-- 		<itemName>GRDC-SOS_GEOWOW</itemName> -->
 <!-- 		<url>http://geowow.dev.52north.org/52n-sos-grdc-webapp/sos/soap</url> -->
@@ -140,7 +158,7 @@
 <!-- 		<autoZoom>true</autoZoom> -->
 <!-- 		<protectedService>true</protectedService> -->
 <!-- 	</instance> -->
-	
+
 <!-- 	<instance> -->
 <!--         <itemName>ECMWF-SOS</itemName> -->
 <!--         <url>http://incubator.ecmwf.int/52n-sos-webapp/sos/soap</url> -->
@@ -157,7 +175,7 @@
 <!--         <autoZoom>true</autoZoom> -->
 <!--         <protectedService>true</protectedService> -->
 <!--     </instance> -->
-    
+
 <!--     <instance> -->
 <!--         <itemName>EEA-SOS</itemName> -->
 <!--         <url>http://ags.dev.52north.org:6080/arcgis/rest/services/EEA/AirQualitySos/MapServer/exts/52nArcGisSos/</url> -->
@@ -193,7 +211,7 @@
 <!--         <autoZoom>true</autoZoom> -->
 <!--         <protectedService>true</protectedService> -->
 <!--     </instance> -->
-	
+
 <!-- 	<instance> -->
 <!-- 		<itemName>BfG SOS</itemName> -->
 <!-- 		<url>http://geoportal.bafg.de/wiski-sos/sos</url> -->
@@ -210,7 +228,7 @@
 <!-- 		<urNorthing>90</urNorthing> -->
 <!-- 		<defaultZoom>13</defaultZoom> -->
 <!-- 	</instance> -->
- 
+
 <!--     <instance> -->
 <!--         <itemName>SOS-Q</itemName> -->
 <!--         <url>http://geoviqua.dev.52north.org/SOS-Q/sos/pox</url> -->
@@ -227,12 +245,12 @@
 <!--         <urNorthing>56.0</urNorthing> -->
 <!--         <defaultZoom>13</defaultZoom> -->
 <!--     </instance> -->
-	
-<!-- 
+
+<!--
 
 	CURRENTLY NOT SUPPORTED (not yet supported or not supported anymore)
-	
-	
+
+
     <instance>
         <itemName>Ozon (envirocloud.de)</itemName>
         <url>http://www.envirocloud.se/Ozon/api/sos/soap</url>
@@ -250,7 +268,7 @@
         <autoZoom>true</autoZoom>
         <protectedService>true</protectedService>
     </instance>
-	
+
     <instance>
         <itemName>Syke_Snow</itemName>
         <url>http://paikkatieto.ymparisto.fi/arcgis/rest/services/InSitu/SYKE_SnowCoursesInSitu/MapServer/exts/SOSExtension/</url>
@@ -265,8 +283,8 @@
         <urNorthing>70.0</urNorthing>
         <defaultZoom>13</defaultZoom>
         <requestChunk>500</requestChunk>
-    </instance> 
-	
+    </instance>
+
 	<instance>
 		<itemName>AQE 2.0</itemName>
 		<url>http://giv-uw.uni-muenster.de:8080/AQE/sos</url>
@@ -283,6 +301,6 @@
 		<requestChunk>200</requestChunk>
 		<autoZoom>true</autoZoom>
 	</instance>
-	
--->
+
+    -->
 </instances>

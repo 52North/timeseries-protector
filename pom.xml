@@ -391,7 +391,6 @@
                     <compilerArgument>-Xlint:all</compilerArgument>
                     <showWarnings>true</showWarnings>
                     <showDeprecation>true</showDeprecation>
-                    <executable>C:\Program Files\Java\jdk1.7.0_55\bin\javac.exe</executable>
                     <fork>true</fork>
                 </configuration>
             </plugin>
@@ -431,7 +430,7 @@
                         <exclude>**/*.xml</exclude>
                         <exclude>**/*.jsp</exclude>
                         <exclude>**/*.html</exclude>
-                        <exclude>**/webapp/static/lib/*</exclude>
+                        <exclude>**/webapp/static/lib/**</exclude>
                         <exclude>**/webapp/WEB-INF/web.xml</exclude>
                         <exclude>**/buildNumber.properties</exclude>
                     </excludes>

@@ -136,5 +136,5 @@
 	</form>
 </div>
 <script type="text/javascript"
-	src="<c:url value="/static/lib/js/permissionManagement.js" />">
+	src="<c:url value="/static/js/permissionManagement.js" />">
 </script>
