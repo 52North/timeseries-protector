@@ -55,7 +55,7 @@ $(document)
 				});
 			
 			$.each($("span[data-url]"), function(index,e) {
-					$(e).html(decodeURIComponent($(e).html()));
+					$(e).text(decodeURIComponent($(e).text()));
 				});
 			
 			/*

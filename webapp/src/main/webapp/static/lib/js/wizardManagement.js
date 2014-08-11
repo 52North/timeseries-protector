@@ -36,10 +36,10 @@ $(document).ready(function() {
 	});
 
 	/*for setting the total no. of values for badges on load */
-	$("#totalProceduresCount").html($("#selectProcedures option").length);
-	$("#totalOfferingsCount").html($("#selectOfferings option").length);
-	$("#totalFeaturesOfInterestCount").html($("#selectFeaturesOfInterest option").length);
-	$("#totalObservedPropertiesCount").html($("#selectObservedProperties option").length);
+	$("#totalProceduresCount").text($("#selectProcedures option").length);
+	$("#totalOfferingsCount").text($("#selectOfferings option").length);
+	$("#totalFeaturesOfInterestCount").text($("#selectFeaturesOfInterest option").length);
+	$("#totalObservedPropertiesCount").text($("#selectObservedProperties option").length);
 	
 	/*
 	 * force the state of the page to temporary storage since 
@@ -69,7 +69,7 @@ $(document).ready(function() {
 	 * */
 	$("select[multiple]").on("change",function() {
 		
-		$("#"+this.id+"Count").html($("#"+this.id).val().length);
+		$("#"+this.id+"Count").text($("#"+this.id).val().length);
 		
 		if($("#"+this.id+"Container").hasClass("has-error")) {
 		  $("#"+this.id+"Container").removeClass("has-error");
@@ -219,7 +219,7 @@ function pushPermission(buttonId)
 				for(var i=0;i<$("#selectProcedures").val().length;i++)
 				{
 					items={};
-					items["value"]="procedures/"+$("#selectProcedures").val()[i];
+					items["value"]="procedures/"+encodeURIComponent($("#selectProcedures").val()[i]);
 					items["domains"]=[];
 					resources.push(items);
 				}
@@ -237,7 +237,7 @@ function pushPermission(buttonId)
 				for(var i=0;i<$("#selectOfferings").val().length;i++)
 				{
 					items={};
-					items["value"]="offerings/"+$("#selectOfferings").val()[i];
+					items["value"]="offerings/"+encodeURIComponent($("#selectOfferings").val()[i]);
 					items["domains"]=[];
 					resources.push(items);
 				}
@@ -255,7 +255,7 @@ function pushPermission(buttonId)
 				for(var i=0;i<$("#selectFeaturesOfInterest").val().length;i++)
 				{
 					items={};
-					items["value"]="featuresOfInterest/"+$("#selectFeaturesOfInterest").val()[i];
+					items["value"]="featuresOfInterest/"+encodeURIComponent($("#selectFeaturesOfInterest").val()[i]);
 					items["domains"]=[];
 					resources.push(items);
 				}
@@ -272,7 +272,7 @@ function pushPermission(buttonId)
 				for(var i=0;i<$("#selectObservedProperties").val().length;i++)
 				{
 					items={};
-					items["value"]="observedProperties/"+$("#selectObservedProperties").val()[i];
+					items["value"]="observedProperties/"+encodeURIComponent($("#selectObservedProperties").val()[i]);
 					items["domains"]=[];
 					resources.push(items);
 				}
