@@ -34,11 +34,11 @@
 		</div>
 
 		<!-- Hidden fields for house keeping tasks -->
-		<input id="contextUrl" type="hidden" value="<c:url value="/"/>" /> 
+		<input id="contextUrl" type="hidden" value="<c:url value="/"/>" />
 		<input
 			type="hidden" id="permissionSetIdentifier"
 			value="${permissionSet.getName()}" />
-		<input type="hidden" id="actionDomainTracker" />	
+		<input type="hidden" id="actionDomainTracker" />
 
 		<div class="form-group">
 			<div class="row">
@@ -48,7 +48,7 @@
 				<div class="col-xs-4 text-right">
 					<span style="cursor: pointer;" data-container="body"
 						data-toggle="popover" data-placement="left"
-						data-content="Action Domain is the URI which specifies the end point for the 
+						data-content="Action Domain is the URI which specifies the end point for the
 						operations to be restricted by the permissions which are part of this permission
 						set. Action Domain and Resource Domain can have the same values. Changing the value
 						will lead to deletion of permissions due to inconsistency"
@@ -56,15 +56,21 @@
 				</div>
 			</div>
 			<div id="actionDomainContainer">
-				<select 
+				<select
 					onchange="prepareSetUp();" data-required="true" style="margin-top: 5px"
 					id="actionDomain" class="form-control" name="actionDomain">
 					<c:forEach items="${preConfiguredEnforcementPoints}" var="pcep">
-						<c:if test="${pcep.key==permissionSet.getActionDomains().get(0)}">	
-							<option data-url selected value="${pcep.key}">${pcep.key}</option>
+						<c:if test="${pcep.value.enforcementPointUrl==permissionSet.getActionDomains().get(0)}">
+                            <option data-url selected value="${pcep.value.enforcementPointUrl}"
+                                    title="Protected Service: ${pcep.value.protectedServiceUrl}">
+                                        ${pcep.value.enforcementPointUrl}
+                            </option>
 						</c:if>
-						<c:if test="${pcep.key!=permissionSet.getActionDomains().get(0)}">	
-							<option data-url value="${pcep.key}">${pcep.key}</option>
+						<c:if test="${pcep.value.enforcementPointUrl!=permissionSet.getActionDomains().get(0)}">
+							<option data-url value="${pcep.value.enforcementPointUrl}"
+                                    title="Protected Service: ${pcep.value.protectedServiceUrl}">
+                                        ${pcep.value.enforcementPointUrl}
+                            </option>
 						</c:if>
 					</c:forEach>
 				</select>
@@ -73,8 +79,8 @@
 		</div>
 
 		<br />
-		<!-- Tiles definition for the advance content -->
-		<tiles:insertDefinition name="advanceSection"></tiles:insertDefinition>
+		<!-- Tiles definition for the advanced content -->
+		<tiles:insertDefinition name="advancedSection"></tiles:insertDefinition>
 
 		<br /> <br />
 

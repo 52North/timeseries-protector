@@ -41,7 +41,7 @@ import org.n52.sensorweb.series.policy.editor.srv.EnforcementPointService;
  */
 public class PreconfiguredEnforcementPointService implements EnforcementPointService {
 
-    Map<String, String> epServices = new HashMap<String, String>();
+    private Map<String, EnforcementPoint> epServices = new HashMap<String, EnforcementPoint>();
 
     @Override
     public List<EnforcementPoint> getEnforcementPoints() {
@@ -53,11 +53,11 @@ public class PreconfiguredEnforcementPointService implements EnforcementPointSer
         return eps;
     }
 
-    public Map<String, String> getEpServices() {
+    public Map<String, EnforcementPoint> getEpServices() {
         return epServices;
     }
 
-    public void setEpServices(Map<String, String> epServices) {
+    public void setEpServices(Map<String, EnforcementPoint> epServices) {
         this.epServices = epServices;
     }
 
