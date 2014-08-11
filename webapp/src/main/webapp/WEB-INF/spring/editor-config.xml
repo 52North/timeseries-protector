@@ -54,7 +54,7 @@
 		<property name="epServices">
 			<util:map>
 				<entry key="http%3A%2F%2Fpegelonline.wsv.de%2Fwebservices%2Fgis%2Fgdi-sos" value="srv_1a5bde0a6d702f193f7be463402ec12f" />
-				<entry key="http%3A%2F%2Fsos.irceline.be%2Fsos" value="srv_6d9ccea8d609ecb74d4a512922bb7cee" />
+				<entry key="http%3A%2F%2Fgeowow.dev.52north.org%2F52n-sos-grdc-webapp%2Fservice%2Fsoap" value="srv_24d74bc0283b6f332a90cdcaded63ccd" />
 			</util:map>
 		</property>
 	</bean>
