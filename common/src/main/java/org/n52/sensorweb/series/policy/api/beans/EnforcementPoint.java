@@ -25,13 +25,10 @@
  * WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
  * PARTICULAR PURPOSE. See the GNU General Public License for more details.
  */
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 
 package org.n52.sensorweb.series.policy.api.beans;
+
+import java.util.Objects;
 
 /**
  *
@@ -39,9 +36,21 @@ package org.n52.sensorweb.series.policy.api.beans;
  */
 public class EnforcementPoint {
 
+    private String id = "NA";
+
     private String type = "SOS EP";
 
-    private String url = "http://my.default.url";
+    private String enforcementPointUrl = "http://my.default.url";
+
+    private String protectedServiceUrl = "http://my.default.url";
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
 
     public String getType() {
         return type;
@@ -51,14 +60,41 @@ public class EnforcementPoint {
         this.type = type;
     }
 
-    public String getUrl() {
-        return url;
+    public String getEnforcementPointUrl() {
+        return enforcementPointUrl;
     }
 
-    public void setUrl(String url) {
-        this.url = url;
+    public void setEnforcementPointUrl(String enforcementPointUrl) {
+        this.enforcementPointUrl = enforcementPointUrl;
     }
 
+    public String getProtectedServiceUrl() {
+        return protectedServiceUrl;
+    }
 
+    public void setProtectedServiceUrl(String protectedServiceUrl) {
+        this.protectedServiceUrl = protectedServiceUrl;
+    }
 
+    @Override
+    public int hashCode() {
+        int hash = 5;
+        hash = 41 * hash + Objects.hashCode(this.id);
+        hash = 41 * hash + Objects.hashCode(this.type);
+        hash = 41 * hash + Objects.hashCode(this.enforcementPointUrl);
+        hash = 41 * hash + Objects.hashCode(this.protectedServiceUrl);
+        return hash;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (obj == null) {
+            return false;
+        }
+        if (getClass() != obj.getClass()) {
+            return false;
+        }
+        final EnforcementPoint other = (EnforcementPoint) obj;
+        return true;
+    }
 }
