@@ -12,7 +12,9 @@
 		<input id="permissionSet" type="hidden" value="${permissionSet}" /> <input
 			id="permissionIdentifier" value="${permission.getName()}"
 			name="existingName" type="hidden">
-
+		<input id="url" type="hidden" value="<c:url value="/editor/${permissionSet}/" />" />
+		<input id="contextUrl" type="hidden" value="<c:url value="/" />" />
+		
 		<div id="basicScreen">
 			<tiles:insertDefinition name="basicScreen"></tiles:insertDefinition>
 		</div>
@@ -31,18 +33,21 @@
 		<c:if test="${context!='modify' && permissionSet=='new'}">
 			<button onclick="pushPermission(this.id)"
 				title="Save Permission Temporarily" type="button"
+				name="saveButton"
 				class="btn btn-info">Save Temporarily</button>
 		</c:if>
 
 		<c:if test="${context!='modify' && permissionSet!='new'}">
 			<button onclick="pushPermission(this.id)" id="modifyNewAction"
 				title="Save Permission" type="button"
+				name="saveButton"
 				class="btn btn-info">Save</button>
 		</c:if>
 
 		<c:if test="${context=='modify'}">
 			<button onclick="pushPermission(this.id)" id="modifyAction"
-				title="Save Permission" type="button" class="btn btn-primary">Save</button>
+				name="saveButton" title="Save Permission" type="button" class="btn btn-primary">Save
+			</button>
 
 			<button onclick="pushPermission(this.id)" id="modifyNewAction"
 				title="Save As New Permission" type="button" class="btn btn-info">Save

@@ -58,8 +58,11 @@ $(document)
 			$("#permissionSetTable").dataTable({
 				"paging":   false,
 				"order": [ 2, 'asc' ],
+				"oLanguage": {
+					"sEmptyTable":"No permission sets available",
+					},
 				"columnDefs": [
-				               { "orderable": false, "targets": 0 }
+				               { "orderable": false, "targets": [0,1] }
 				               ]
 			});
 
@@ -134,7 +137,7 @@ $(document)
 								$("#deleteWarning")
 								.html(
 										setsToDelete.length
-										+ " set(s) moved to trash ");
+										+ "permission set(s) deleted ");
 								$("#undoWarning").show();
 								setDeleteTimeoutId = setTimeout(function(){deleteSets();},10000);
 

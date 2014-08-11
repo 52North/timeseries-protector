@@ -81,10 +81,10 @@
 		<p class="help-block">Press Ctrl for selecting more than one value</p>
 	</div>
 
-	<button id="toggleResources" type="button"
+	<button title="Toggle Selected Resources" id="toggleResources" type="button"
 		class="btn btn-danger btn-xs">Toggle</button>
 
-	<button id="clearResources" type="button"
+	<button title="Clear Selected Resources" id="clearResources" type="button"
 		class="btn btn-default btn-xs">Clear</button>
 </div>
 <br />

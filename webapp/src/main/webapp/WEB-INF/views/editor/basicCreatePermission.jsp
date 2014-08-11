@@ -48,5 +48,5 @@
 		</c:forEach>
 	</select>
 </div>
-<br />
+<p class="help-block">Press Ctrl for selecting more than one value</p>
 <hr />

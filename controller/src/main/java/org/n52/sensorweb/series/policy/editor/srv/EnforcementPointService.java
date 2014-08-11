@@ -34,6 +34,7 @@
 package org.n52.sensorweb.series.policy.editor.srv;
 
 import java.util.List;
+
 import org.n52.sensorweb.series.policy.api.beans.EnforcementPoint;
 
 /**
@@ -41,10 +42,6 @@ import org.n52.sensorweb.series.policy.api.beans.EnforcementPoint;
  * @author Henning Bredel <h.bredel@52north.org>
  */
 public interface EnforcementPointService {
-
-
-    // TODO Jan D.: is there a restful endpoint to get available enforcement points?
-
 
     public List<EnforcementPoint> getEnforcementPoints();
 

@@ -35,24 +35,27 @@ if(!(Modernizr.json && Modernizr.localstorage && Modernizr.sessionstorage &&
 		window.location.href=$("#contextUrl").val()+"warn/browser";
 }
 
+var changeSelectedIndex=false;
+
+var windowUnloadWarning=true;
+
 $(document)
 .ready(
 		function() {
 			
-			
 			/*
 			 * Making sure that the url inputs fields have urls decoded while displaying to the user
 			 * */
+			$.each($("option[data-url]"), function(index,e) {
+					$(e).text(decodeURIComponent($(e).text()));
+				});
+			
 			$.each($("input[data-url]"), function(index,e) {
-				   
-				$(e).val(decodeURIComponent($(e).val()));
-
+					$(e).val(decodeURIComponent($(e).val()));
 				});
 			
 			$.each($("span[data-url]"), function(index,e) {
-				   
-				$(e).html(decodeURIComponent($(e).html()));
-
+					$(e).html(decodeURIComponent($(e).html()));
 				});
 			
 			/*
@@ -62,107 +65,109 @@ $(document)
 			 * browser local storage
 			 * */
 			
-			if(Storage!="undefined" && $("#permissionSetIdentifier").val()=="")
+			if(Storage!="undefined" && ( $("#permissionSetIdentifier").val()=="" || localStorage.getItem("temporaryState")))
 			{
 				var keyCount=0;
 				
-				while(localStorage.key(keyCount)!=null)
-				{
-					
-					$("#info").show("100",function() {
-						$("#infoText").html("Permissions are stored temporarily in browser storage, click on delete or cancel to clear");
-					});
-					
-					var subPermissionObj=jQuery.parseJSON(localStorage.getItem(localStorage.key(keyCount)));
-					
-					var content="";
-					content+="<tr id='row-"+subPermissionObj.name + "'>";
-					
-					/*checkbox*/
-					content+="<td> <div class='checkbox'><label><input type='checkbox' id='"+subPermissionObj.name+"' /> ";
-					content+="</label></div></td>";
-					
-					/*modify button*/
-					content+="<td><button class='btn btn-default btn-xs disabled'>MODIFY</button></td>";
-					
-					/*name*/
-					content+="<td >"+subPermissionObj.name+ "</td>";
-					
-					/*subjects*/
-					content+="<td>";
-					for(var i=0;i<subPermissionObj.subjects.length;i++)
+				while(keyCount<localStorage.length)
+				{	
+					if(localStorage.key(keyCount).split("_")[0]=='permissionName')
 					{
-						content+=subPermissionObj.subjects[i].value;
-						content+="<br/>";
-					}
-					content+="</td>";
-					
-					/*operations*/
-					content+="<td>";
-					for(var i=0;i<subPermissionObj.actions.length;i++)
-					{
-						content+=subPermissionObj.actions[i].value.split("/")[1];
-						content+="<br/>";
-					}
-					content+="</td>";
-					
-					/*Resources*/
-					content+="<td>";
-					var proceduresFirst=true;
-					var observedPropertiesFirst=true;
-					var offeringsFirst=true;
-					var featuresOfInterestFirst=true;
-					
-					for(var i=0;i<subPermissionObj.resources.length;i++)
-					{
-						if(subPermissionObj.resources[i].value.split("/")[0]=='procedures')
-						{	
-							if(proceduresFirst)
-							{	
-								content+="<label style='font-style: oblique;' class='control-label'>Procedures</label>";
-								content+="<br/>";
-								proceduresFirst=false;
-							}
-							content+=subPermissionObj.resources[i].value.split("/")[1];
-							content+="<br/>";
-						}
-						else if(subPermissionObj.resources[i].value.split("/")[0]=='offerings')
-						{	
-							if(offeringsFirst)
-							{	
-								content+="<label style='font-style: oblique;' class='control-label'>Offerings</label>";
-								content+="<br/>";
-								offeringsFirst=false;
-							}
-							content+=subPermissionObj.resources[i].value.split("/")[1];
-							content+="<br/>";
-						}
-						else if(subPermissionObj.resources[i].value.split("/")[0]=='featuresOfInterest')
-						{	
-							if(featuresOfInterestFirst)
-							{	
-								content+="<label style='font-style: oblique;' class='control-label'>"+
-								"Features Of Interest</label>";
-								content+="<br/>";
-								featuresOfInterestFirst=false;
-							}
-							content+=subPermissionObj.resources[i].value.split("/")[1];
-							content+="<br/>";
-						}
-						else if(subPermissionObj.resources[i].value.split("/")[0]=='observedProperties')
-						{	
-							if(observedPropertiesFirst)
-							{	
-								content+="<label style='font-style: oblique;' class='control-label'>Observed"+
-											"Properties</label>";
-								content+="<br/>";
-								observedPropertiesFirst=false;
-							}
-							content+=subPermissionObj.resources[i].value.split("/")[1];	
-							content+="<br/>";
-						}
 						
-					}
+						$("#info").show("100",function() {
+							$("#infoText").html("Permissions are stored temporarily in browser storage, click on delete or cancel to clear");
+						});
+						
+						var subPermissionObj=jQuery.parseJSON(localStorage.getItem(localStorage.key(keyCount)));
+						
+						var content="";
+						content+="<tr id='row-"+subPermissionObj.name + "'>";
+						
+						/*checkbox*/
+						content+="<td> <div class='checkbox'><label><input type='checkbox' id='"+subPermissionObj.name+"' /> ";
+						content+="</label></div></td>";
+						
+						/*modify button*/
+						content+="<td><button class='btn btn-default btn-xs disabled'>MODIFY</button></td>";
+						
+						/*name*/
+						content+="<td >"+subPermissionObj.name+ "</td>";
+						
+						/*subjects*/
+						content+="<td>";
+						for(var i=0;i<subPermissionObj.subjects.length;i++)
+						{
+							content+=subPermissionObj.subjects[i].value;
+							content+="<br/>";
+						}
+						content+="</td>";
+						
+						/*operations*/
+						content+="<td>";
+						for(var i=0;i<subPermissionObj.actions.length;i++)
+						{
+							content+=subPermissionObj.actions[i].value.split("/")[1];
+							content+="<br/>";
+						}
+						content+="</td>";
+						
+						/*Resources*/
+						content+="<td>";
+						var proceduresFirst=true;
+						var observedPropertiesFirst=true;
+						var offeringsFirst=true;
+						var featuresOfInterestFirst=true;
+						
+						for(var i=0;i<subPermissionObj.resources.length;i++)
+						{
+							if(subPermissionObj.resources[i].value.split("/")[0]=='procedures')
+							{	
+								if(proceduresFirst)
+								{	
+									content+="<label style='font-style: oblique;' class='control-label'>Procedures</label>";
+									content+="<br/>";
+									proceduresFirst=false;
+								}
+								content+=subPermissionObj.resources[i].value.split("/")[1];
+								content+="<br/>";
+							}
+							else if(subPermissionObj.resources[i].value.split("/")[0]=='offerings')
+							{	
+								if(offeringsFirst)
+								{	
+									content+="<label style='font-style: oblique;' class='control-label'>Offerings</label>";
+									content+="<br/>";
+									offeringsFirst=false;
+								}
+								content+=subPermissionObj.resources[i].value.split("/")[1];
+								content+="<br/>";
+							}
+							else if(subPermissionObj.resources[i].value.split("/")[0]=='featuresOfInterest')
+							{	
+								if(featuresOfInterestFirst)
+								{	
+									content+="<label style='font-style: oblique;' class='control-label'>"+
+									"Features Of Interest</label>";
+									content+="<br/>";
+									featuresOfInterestFirst=false;
+								}
+								content+=subPermissionObj.resources[i].value.split("/")[1];
+								content+="<br/>";
+							}
+							else if(subPermissionObj.resources[i].value.split("/")[0]=='observedProperties')
+							{	
+								if(observedPropertiesFirst)
+								{	
+									content+="<label style='font-style: oblique;' class='control-label'>Observed"+
+												"Properties</label>";
+									content+="<br/>";
+									observedPropertiesFirst=false;
+								}
+								content+=subPermissionObj.resources[i].value.split("/")[1];	
+								content+="<br/>";
+							}
+							
+						}
 					content+="</td>";
 					
 					/*Obligations*/
@@ -170,10 +175,22 @@ $(document)
 					content+="</tr>";
 					
 					$("#permissionTable").append(content);
-					keyCount++;
-					
 				}
+				
+				keyCount++;	
+			  }
+			}
+			if(localStorage.getItem("actionDomain")!=null)
+			{
+				document.getElementById("actionDomain").selectedIndex=localStorage.getItem("actionDomain");
+				$("#resourceDomain").val("");
 			}	
+			if(localStorage.getItem("permissionSetName")!=null)
+			{
+				$("#permissionSetName").val(localStorage.getItem("permissionSetName"));
+			}
+			
+			$("#actionDomainTracker").val(document.getElementById("actionDomain").selectedIndex);
 			
 			/*
 			 * Removing the error class if a user
@@ -250,13 +267,29 @@ $(document)
 			$("#permissionTable").dataTable({
 				"paging" : false,
 				"processing": true,
+				"oLanguage": {
+					"sEmptyTable":"No permissions available",
+					},
 				"order" : [ 2, 'asc' ],
 				"columnDefs" : [ {
 					"orderable" : false,
-					"targets" : 0
+					"targets" : [0,1]
 				} ]
 			});
 			
+		 //After the data tables are initialized
+		  if(localStorage.getItem("permissions")!=null)
+			{
+				var permissionsForLocalStorage=localStorage.permissions.split(",");
+				
+				var table=$("#permissionTable").DataTable();
+				
+				//removing the html and not changing the permissions xml instead
+				for (var i = 0; i < permissionsForLocalStorage.length; i++) 
+				{
+					table.row($("[id='row-" + permissionsForLocalStorage[i]+"']")).remove().draw();
+				}
+			}
 			/*
 			 * Functionality for deleting the sub permissions
 			 * temporarily or permanently
@@ -270,7 +303,7 @@ $(document)
 						 * stored in the session
 						 */
 						var permissionsToDelete = $("#permissionTable label input:checked");
-						if (permissionsToDelete.length > 1) {
+						if (permissionsToDelete.length >0) {
 							
 							$("#alert").hide();
 							
@@ -282,8 +315,9 @@ $(document)
 								 * or refreshed
 								 */
 								var permissionsToStore = new Array();
+								
 								for (var i = 0; i < permissionsToDelete.length; i++) {
-									permissionsToStore[i] = permissionsToDelete[i].id;
+									permissionsToStore.push(permissionsToDelete[i].id);
 									/*
 									 * adding the hiding support
 									 * for multiple rows
@@ -291,67 +325,43 @@ $(document)
 									$("[id='row-" + permissionsToStore[i]+"']")
 									.hide("500");
 								}
-								sessionStorage.permissions = permissionsToStore;
+								localStorage.permissions = permissionsToStore;
 								// need to separate the undo
 								// from label
 								$("#deleteWarning")
 								.html(
 										permissionsToDelete.length
-										+ " permission(s) moved to trash ");
+										+ " permission(s) deleted ");
 								$("#undoWarning").show();
 								permissionDeleteTimeoutId = setTimeout(function(){deletePermissions();},10000);
 
 							}
 						}
-						else if (permissionsToDelete.length == 1)
-						{
-							$("#errorList").html("<li id='deletePermissionValidation'> Atleast <b>1 permission</b> is required for a " +
-										"permission set");
-							$('html,body').animate({ scrollTop: 0 }, 'slow', function () {
-					          });
-							$("#alert").show();
-						}	
 					});
 			$("#undoWarning").click(function() {
 
 				clearTimeout(permissionDeleteTimeoutId);
-
-				var ids = sessionStorage.permissions.split(",");
-
+				
+				var ids = localStorage.permissions.split(",");
+				
 				for (var i = 0; i < ids.length; i++) {
 					$("[id='row-" + ids[i]+"']").show("500");
 				}
-
-				sessionStorage.clear();
-
+				
+				localStorage.removeItem("permissions");
+				
 				$("#deleteWarning").html("");
+				
 				$(this).hide();
+				
+				//checking whether the change in action domain is in place
+				if(changeSelectedIndex)
+				{
+					document.getElementById("actionDomain").selectedIndex=$("#actionDomainTracker").val();
+					changeSelectedIndex=false;
+				}	
 			});
 
-			/* before loading unload event is fired warn the user if
-					 	there are items to be deleted
-			 */
-			$(window).on('beforeunload', function() {
-				if (sessionStorage.length != 0) 
-				{
-					clearTimeout(permissionDeleteTimeoutId);
-					permissionDeleteTimeoutId=setTimeout(function(){deletePermissions();},10000);
-					return "You have items which will be deleted";
-				}
-			});
-			/*
-			 * If there were and the user confirmed the loading
-			 * all the items will be deleted from the session storage
-			 * and from the permission xml file
-			 * */
-			$(window).on('load', function() {
-				if (sessionStorage.length != 0) 
-				{
-					deletePermissions();
-					clearTimeout(permissionDeleteTimeoutId);
-				}
-			});
-			
 			/*
 			 * Custom value dropdown widget
 			 * */
@@ -375,7 +385,14 @@ $(document)
 				}
 				document.getElementById("subjectDomain").selectedIndex=0;
 				$(this).hide();
-			});
+		});
+	
+	   $(window).on('beforeunload', function(eventObject) {
+			    if (windowUnloadWarning) 
+			    {
+			        localStorage.clear();
+			    }
+		});	
 });
 
 											/************End of Data binding **************/
@@ -400,16 +417,19 @@ function pushPermissionSet(buttonId)
 		
 		var keyCount=0;
 		/*this means fetch sub permissions from local storage*/
-		if(localStorage.key(keyCount)!=null)
+		if($("#permissionSetIdentifier").val()=="" || localStorage.getItem("temporaryState"))
 		{
-			
-			while(localStorage.key(keyCount)!=null)
-			{
-				var subPermission={};
-				subPermission=jQuery.parseJSON(localStorage.getItem(localStorage.key(keyCount)));
+			while(keyCount<localStorage.length)
+			{	
+				if(localStorage.key(keyCount).split("_")[0]=='permissionName')
+				{
+					var subPermission={};
+					subPermission=jQuery.parseJSON(localStorage.getItem(localStorage.key(keyCount)));
+					keyCount++;
+					subPermissions.push(subPermission);
+				}
 				keyCount++;
-				subPermissions.push(subPermission);
-			}
+			}	
 		}	
 		else
 		{	
@@ -467,7 +487,7 @@ function pushPermissionSet(buttonId)
 			}
 		}	
 		
-		var actionDomains=encodeURIComponent($("#actionDomain").val()).replace(/'/g,"%27");
+		var actionDomains=$("#actionDomain").val();
 		var resourceDomains;
 		if($("#resourceDomain").val()!="")
 		{	
@@ -507,6 +527,7 @@ function pushPermissionSet(buttonId)
 					success: function(data,status,xhr)
 					{
 						localStorage.clear();
+						windowUnloadWarning=false;
 						window.location.href=xhr.getResponseHeader('Location');
 					},
 					error: function (xhr, status, thrownError) {
@@ -525,7 +546,6 @@ function validateInput()
 	var submit=true;
 	var errorHtml="";
 	$.each($("input[data-required='true']"),function(index,selectInput){	
-		
 		if($("#"+selectInput.id).val()=="")
 		{
 			 if(selectInput.id=="permissionSetName"){
@@ -533,18 +553,13 @@ function validateInput()
 				 $("#"+selectInput.id+"Container").addClass("has-error");
 				 submit=false;
 			 }
-			 else if(selectInput.id=="actionDomain"){
-				 errorHtml+="<li id='"+selectInput.id+"Validation'> <b>Action Domain</b> cannot be empty </li>";
-				 $("#"+selectInput.id+"Container").addClass("has-error");
-				 submit=false;
-			 }
-			 else if(selectInput.id=="subjectDomain"){
-				 errorHtml+="<li id='"+selectInput.id+"Validation'> <b>Subject Domain</b> cannot be empty </li>";
-				 $("#"+selectInput.id+"Container").addClass("has-error");
-				 submit=false;
-			 }
 		}
 	});
+	if($("#permissionTable tr td").hasClass("dataTables_empty"))
+	{
+		errorHtml+="<li id='noPermissionValidation'> <b>Permission set</b> cannot be saved without any permission </li>";
+		submit=false;
+	}	
 	if(!submit)
 	{
 		$("#errorList").html(errorHtml);
@@ -559,39 +574,105 @@ function validateInput()
 //this part here deals with the deletion of the permissions permanently
 function deletePermissions() 
 {
-	var permissionsForLocalStorage=sessionStorage.permissions.split(",");
+	var permissionsForLocalStorage=localStorage.permissions.split(",");
+	
+	var table=$("#permissionTable").DataTable();
+	
+	if(changeSelectedIndex)
+	{
+		$("#actionDomainTracker").val(document.getElementById("actionDomain").selectedIndex);
+		$("#resourceDomain").val("");
+		changeSelectedIndex=false;
+	}	
 	
 	/*checking if atleast one of the sub permissions is present
 	 * in the local storage or not
 	 * */
-	if(Storage!="undefined" && localStorage.getItem(permissionsForLocalStorage[0])!=null)
+	if(Storage!="undefined" && $("#permissionSetIdentifier").val()=="")
 	{
 		/*
 		 * removing the items which are to be deleted from local storage
 		 * */
 		for(var i=0;i<permissionsForLocalStorage.length;i++)
 		{
-			localStorage.removeItem(permissionsForLocalStorage[i]);
+			var keyCount=0;
+			while(keyCount<localStorage.length)
+			{	
+				if(localStorage.key(keyCount).split("_")[0]=='permissionName')	
+				{	
+					var object=$.parseJSON(localStorage.getItem(localStorage.key(keyCount)));
+					
+					if(object.name==permissionsForLocalStorage[i])
+					{	
+						localStorage.removeItem(localStorage.key(keyCount));
+						table.row($("[id='row-" + permissionsForLocalStorage[i]+"']")).remove().draw();
+					}	
+				}
+				keyCount++;
+			}	
 		}
-		
-		sessionStorage.clear();
-		window.location.reload(true);
 	}
 	else
+	{
+		//removing the html and not changing the permissions xml instead
+		for (var i = 0; i < permissionsForLocalStorage.length; i++) 
+		{
+			table.row($("[id='row-" + permissionsForLocalStorage[i]+"']")).remove().draw();
+		}
+	}
+	
+	$("#warningContainer").hide();
+	
+	$("#deleteWarning").html("");
+	
+}
+
+function prepareSetUp()
+{
+	if(!$("#permissionTable tr td").hasClass("dataTables_empty"))
+		{
+			//confirm from the user and delete the permissions
+			if(window.confirm("Changing the action domain would lead to deletion of permissions. " +
+					"Do you want to proceed ?"))
+			{
+				changeSelectedIndex=true;
+				
+				$.each($("#permissionTable tr td input[type='checkbox']"),function(i,input){
+						$(input).attr("checked","checked");
+					});
+				
+				$("#btnDeletePermission").trigger("click");
+			}
+			else
+			{
+				document.getElementById("actionDomain").selectedIndex=$("#actionDomainTracker").val();
+			}	
+		}
+		else
+		{
+			$("#actionDomainTracker").val(document.getElementById("actionDomain").selectedIndex);
+		}	
+}
+
+function navigateForPermission()
+{
+	//storing values so that they are there on reload
+	if($("#permissionSetName").val()!="")
 	{	
-		/*
-		 * which means are not stored temporarily and they can be deleted
-		 * */
-		$.ajax({
-				url : $("#contextUrl").val() + "editor/delete/" +$("#permissionSetName").val()+"/"+ sessionStorage.permissions,
-				type : "POST",
-				success: function()
-				{
-					sessionStorage.clear();
-					window.location.reload(true);
-				}
-			});
-	}	
+		localStorage.permissionSetName=$("#permissionSetName").val();
+	}
+	
+	localStorage.actionDomain=document.getElementById("actionDomain").selectedIndex;
+		
+	var href=$("#btnAddPermission").attr("data-href");
+	
+	windowUnloadWarning=false;
+	
+	if(changeSelectedIndex)
+	{	
+		localStorage.temporaryState=true;
+	}
+	window.location.href=href+"?service="+$("#actionDomain").val();
 }
 
 function cancelNavigate(url)
@@ -600,6 +681,9 @@ function cancelNavigate(url)
 	{
 		localStorage.clear();
 	}
+	
+	windowUnloadWarning=false;
+	
 	window.location.href=url;
 }
 

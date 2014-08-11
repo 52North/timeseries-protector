@@ -42,6 +42,19 @@ $(document).ready(function() {
 	$("#totalObservedPropertiesCount").html($("#selectObservedProperties option").length);
 	
 	/*
+	 * force the state of the page to temporary storage since 
+	 * change of action domain was done
+	 */
+	if(localStorage.getItem("temporaryState")!=null)
+	{
+		var button=$("button[name='saveButton']");
+		button.attr("title","Save Permission Temporarily");
+		button.text("Save Temporarily");
+		$("#url").val($("#contextUrl").val()+"editor/edit/"+$("#permissionSet").val());
+		$("#permissionSet").val("new");
+	}	
+	
+	/*
 	 * hide the parent div on click of close button
 	 * */
 	$("button[class='close']").click(function(event){
@@ -333,10 +346,32 @@ function pushPermission(buttonId)
 		}
 		else
 		{
+			/*validating local storage*/
+			var keyCount=0;
+			
+			while(keyCount< localStorage.length)
+			{
+				if(localStorage.key(keyCount).split("_")[0]=="permissionName")
+				{
+				   var existingPermissionName=$.parseJSON(localStorage.getItem(localStorage.key(keyCount))).name;
+				   
+				   if(existingPermissionName==$("#permissionName").val())
+					{
+					   var errorMessage="<li> The permission name <b>"+$("#permissionName").val()+" </b> already exists</li>";
+				         $("#errorList").html(errorMessage);
+				         $('html,body').animate({ scrollTop: 0 }, 'slow', function () {
+				          });
+				         $("#alert").show();
+				         
+				         return;
+					}   
+				}
+				keyCount++;
+			}	
 			/*save it in the browser storage*/
 			if(Storage!="undefined")
 			{
-				localStorage.setItem($("#permissionName").val(), JSON.stringify(json));
+				localStorage.setItem("permissionName_"+localStorage.length, JSON.stringify(json));
 				window.location.href=$("#url").val();
 			}
 		}

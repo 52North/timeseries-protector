@@ -28,9 +28,12 @@
 
 package org.n52.sensorweb.series.policy.editor.ctrl;
 
+import java.net.URLEncoder;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -44,12 +47,14 @@ import org.n52.security.service.pdp.simplepermission.Permission;
 import org.n52.security.service.pdp.simplepermission.PermissionSet;
 import org.n52.security.service.pdp.simplepermission.TargetValue;
 import org.n52.sensorweb.series.policy.api.PermissionManagementException;
+import org.n52.sensorweb.series.policy.api.beans.EnforcementPoint;
 import org.n52.sensorweb.series.policy.api.beans.PermissionOutput;
 import org.n52.sensorweb.series.policy.api.beans.PermissionSetOutput;
 import org.n52.sensorweb.series.policy.editor.srv.EnforcementPointService;
 import org.n52.sensorweb.series.policy.editor.srv.SimplePermissionService;
 import org.n52.sensorweb.series.policy.editor.srv.UserService;
 import org.n52.sensorweb.series.policy.editor.srv.impl.ActionValues;
+import org.n52.sensorweb.series.policy.editor.srv.impl.PreconfiguredEnforcementPointService;
 import org.n52.web.BaseController;
 import org.n52.web.InternalServerException;
 import org.n52.web.ResourceNotFoundException;
@@ -58,10 +63,11 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
 /**
- * 
+ *
  * @author Henning Bredel <h.bredel@52north.org>
  * @author Dushyant Sabharwal <d.sabharwal@52north.org>
  */
@@ -71,12 +77,12 @@ public class SimplePermissionEditorController extends BaseController {
 
     private SimplePermissionService simplePermissionService;
 
-    private EnforcementPointService enforcementPointService;
+    private PreconfiguredEnforcementPointService enforcementPointService;
 
     private TimeseriesService parameterServiceProvider;
 
     private UserService userService;
-    
+
     @RequestMapping(value = "/warn/{issue}", method = RequestMethod.GET)
     public ModelAndView browserWarning(@PathVariable String issue )
     {
@@ -84,7 +90,7 @@ public class SimplePermissionEditorController extends BaseController {
         mav.addObject(issue);
         return mav;
     }
-    
+
     /**
      * @return permissionSets to be displayed
      */
@@ -120,6 +126,8 @@ public class SimplePermissionEditorController extends BaseController {
         breadCrumb.put("Manager", request.getContextPath() + "/editor/");
         breadCrumb.put("Permission Set", request.getContextPath() + "/editor/new");
         mav.addObject("breadCrumb", breadCrumb);
+
+        mav.addObject("preConfiguredEnforcementPoints",enforcementPointService.getEpServices());
         return mav;
     }
 
@@ -130,8 +138,7 @@ public class SimplePermissionEditorController extends BaseController {
      */
     @RequestMapping(value = "/save", method = RequestMethod.POST, consumes = "application/json")
     public ModelAndView savePermissionSet(@RequestBody(required = true) PermissionSetOutput permissionSet,
-                                          HttpServletResponse response
-                                          ,
+                                          HttpServletResponse response,
                                           HttpServletRequest request) {
         try {
             PermissionSet result = simplePermissionService.getPermissionSet(permissionSet.getName());
@@ -156,7 +163,7 @@ public class SimplePermissionEditorController extends BaseController {
      * @return
      */
     @RequestMapping(value = "/{permissionSetName}/modify", method = RequestMethod.POST, consumes = "application/json")
-    public ModelAndView saveEditedPermissionSet(@PathVariable String permissionSetName,
+    public void saveEditedPermissionSet(@PathVariable String permissionSetName,
                                                 @RequestBody(required = true) PermissionSetOutput permissionSet,
                                                 HttpServletResponse response,
                                                 HttpServletRequest request) {
@@ -167,7 +174,6 @@ public class SimplePermissionEditorController extends BaseController {
             throw new InternalServerException(e.getMessage(), e);
         }
         response.setHeader("Location", request.getContextPath() + "/editor/");
-        return null;
     }
 
     /**
@@ -220,18 +226,17 @@ public class SimplePermissionEditorController extends BaseController {
         breadCrumb.put("Manager", request.getContextPath() + "/editor/");
         breadCrumb.put("Permission Set", request.getContextPath() + "/editor/edit/" + permissionSetName);
         mav.addObject("breadCrumb", breadCrumb);
+
         mav.addObject(permissionSet);
+        mav.addObject("preConfiguredEnforcementPoints",enforcementPointService.getEpServices());
 
         /* Adding additional parameters so as the UI should be aware of the context */
         mav.addObject("context", "modify");
         return mav;
     }
 
-    /**
-     * @return
-     */
     @RequestMapping(value = "/edit/{permissionSet}/newPermission", method = RequestMethod.GET)
-    public ModelAndView createPermission(@PathVariable String permissionSet, HttpServletRequest request)
+    public ModelAndView createPermission(@PathVariable String permissionSet,@RequestParam(value="service",required=true) String resourceFilter,HttpServletRequest request)
     {
         ModelAndView mav = new ModelAndView("createPermission");
 
@@ -259,7 +264,9 @@ public class SimplePermissionEditorController extends BaseController {
 
         /* preparing the timeseries parameters */
 
-        IoParameters query = IoParameters.createDefaults();
+        Map<String,String> queryParameters = new HashMap<String,String>();
+        queryParameters.put("service", getEnforcementPoint(resourceFilter).getId());
+        IoParameters query = IoParameters.createFromQuery(queryParameters);
 
         OfferingOutput[] offerings = parameterServiceProvider.getOfferingsService().getCondensedParameters(query);
         ProcedureOutput[] procedures = parameterServiceProvider.getProceduresService().getCondensedParameters(query);
@@ -275,6 +282,14 @@ public class SimplePermissionEditorController extends BaseController {
         /* Addded to see whether the user is attempting to save a permission for non-existent permission set */
         mav.addObject("permissionSet", permissionSet);
         return mav;
+    }
+
+    private EnforcementPoint getEnforcementPoint(String filter) {
+        Map<String, EnforcementPoint> eps = enforcementPointService.getEpServices();
+        if ( !eps.containsKey(filter)) {
+            return new EnforcementPoint();
+        }
+        return eps.get(filter);
     }
 
     /**
@@ -343,7 +358,10 @@ public class SimplePermissionEditorController extends BaseController {
         mav.addObject("heading", "Modify " + permissionName);
 
         /* preparing the timeseries parameters */
-        IoParameters query = IoParameters.createDefaults();
+        Map<String,String> queryParameters = new HashMap<String,String>();
+        EnforcementPoint enforcementPoint = getEnforcementPoint(permissionSet.getActionDomains().get(0));
+        queryParameters.put("service",enforcementPoint.getId());
+        IoParameters query = IoParameters.createFromQuery(queryParameters);
 
         OfferingOutput[] offerings = parameterServiceProvider.getOfferingsService().getCondensedParameters(query);
         ProcedureOutput[] procedures = parameterServiceProvider.getProceduresService().getCondensedParameters(query);
@@ -487,11 +505,11 @@ public class SimplePermissionEditorController extends BaseController {
         this.simplePermissionService = simplePermissionService;
     }
 
-    public EnforcementPointService getEnforcementPointService() {
+    public PreconfiguredEnforcementPointService getEnforcementPointService() {
         return enforcementPointService;
     }
 
-    public void setEnforcementPointService(EnforcementPointService enforcementPointService) {
+    public void setEnforcementPointService(PreconfiguredEnforcementPointService enforcementPointService) {
         this.enforcementPointService = enforcementPointService;
     }
 
