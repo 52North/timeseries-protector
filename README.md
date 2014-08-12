@@ -14,7 +14,10 @@ To change the combination browse the project directory and edit the users.xml in
 The application comes with some default user roles which are initialized in <code> editor-config.xml </code>. This file can be found in WEB-INF/spring/ directory. The property which can be configured for user roles is <code>configuredUsers</code>
 
 #### Configuring Enforcement Points
-Currently the application does not comes with the facility to incorporate enforcement points <i> on the fly </i> provided by the user. Enforcement point mapping has to be done manually by the user with the sos instances which are stated in the <code> sos-data-instances.xml </code>
+Currently the application does not comes with the facility to incorporate enforcement points <i> on the fly </i> (atleast in this version) provided by the user. Enforcement point mapping has to be done manually by the user with the sos instances which are stated in the <code> sos-data-instances.xml </code>. This mapping is done in the <code>editor-config.xml</code>
+
+#### Browser Dependencies
+For the application to work successfully on the client side it is highly suggested that modern day browsers which support HTML5 <code> localStorage, sessionStorage, data-attributes, input types and attributes </code> should be used otherwise the user won't be able to use the application
 
 ### Contacts
 
