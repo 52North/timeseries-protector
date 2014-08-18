@@ -86,5 +86,5 @@
 </div>
 
 <script type="text/javascript"
-	src="<c:url value="/static/lib/js/permissionSetManagement.js" />">
+	src="<c:url value="/static/lib/js/permissionSetManagement.min.js" />">
 </script>
