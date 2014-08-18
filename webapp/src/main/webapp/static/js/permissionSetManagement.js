@@ -59,7 +59,7 @@ $(document)
 				"paging":   false,
 				"order": [ 2, 'asc' ],
 				"oLanguage": {
-					"sEmptyTable":"No permission sets available",
+					"sEmptyTable":"No permission sets available"
 					},
 				"columnDefs": [
 				               { "orderable": false, "targets": [0,1] }

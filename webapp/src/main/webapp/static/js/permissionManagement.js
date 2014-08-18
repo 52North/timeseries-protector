@@ -268,7 +268,7 @@ $(document)
 				"paging" : false,
 				"processing": true,
 				"oLanguage": {
-					"sEmptyTable":"No permissions available",
+					"sEmptyTable":"No permissions available"
 					},
 				"order" : [ 2, 'asc' ],
 				"columnDefs" : [ {

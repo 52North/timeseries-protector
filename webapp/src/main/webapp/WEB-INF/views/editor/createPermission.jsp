@@ -69,6 +69,6 @@
 	</form>
 </div>
 <script type="text/javascript"
-	src="<c:url value="/static/js/wizardManagement.js" />">
+	src="<c:url value="/static/js/wizardManagement.min.js" />">
 
 </script>
