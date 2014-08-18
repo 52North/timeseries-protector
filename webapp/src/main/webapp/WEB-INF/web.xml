@@ -5,12 +5,12 @@
 	http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd"
 	version="2.5">
 
-	<display-name>Protecting Timeseries Webapp, built on ${timestamp}</display-name>
-	
+	<display-name>Protecting Timeseries Webapp, Version ${version} (${git.commit.id.abbrev}@${git.branch})</display-name>
+
 	<session-config>
     	<tracking-mode>COOKIE</tracking-mode>
-	</session-config>	
-	
+	</session-config>
+
 	<security-role>
 		<role-name>admin</role-name>
 	</security-role>
@@ -128,7 +128,7 @@
 		<param-value>generated</param-value>
 	</context-param>
 	<context-param>
-		<!-- The prefix which shall be set for all zip exports. ISO8601 timestamp 
+		<!-- The prefix which shall be set for all zip exports. ISO8601 timestamp
 			will be used as postfix, e.g. 2011-03-29_dataexport -->
 		<param-name>ZIP_POSTFIX</param-name>
 		<param-value>_dataexport</param-value>
