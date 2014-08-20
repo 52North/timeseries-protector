@@ -14,7 +14,7 @@
 			name="existingName" type="hidden">
 		<input id="url" type="hidden" value="<c:url value="/editor/${permissionSet}/" />" />
 		<input id="contextUrl" type="hidden" value="<c:url value="/" />" />
-		
+
 		<div id="basicScreen">
 			<tiles:insertDefinition name="basicScreen"></tiles:insertDefinition>
 		</div>
@@ -69,6 +69,6 @@
 	</form>
 </div>
 <script type="text/javascript"
-	src="<c:url value="/static/js/wizardManagement.min.js" />">
+	src="<c:url value="/static/js/wizardManagement.js" />">
 
 </script>
