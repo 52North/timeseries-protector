@@ -11,7 +11,12 @@
     	<tracking-mode>COOKIE</tracking-mode>
 	</session-config>
 
-	<security-role>
+<!--
+
+    UNCOMMENT IF YOU WANT TO RESTRICT USER ACCESS ACCORDING TO
+    USERS CONFIGURED IN ${tomcat_install}/conf/tomcat-users.xml
+
+    <security-role>
 		<role-name>admin</role-name>
 	</security-role>
 
@@ -21,18 +26,18 @@
 			<web-resource-name>Admin Only</web-resource-name>
 			<url-pattern>/editor/*</url-pattern>
 		</web-resource-collection>
-		<!-- Only administrators can access this resource -->
 		<auth-constraint>
 			<role-name>admin</role-name>
 		</auth-constraint>
 	</security-constraint>
-
-	<!-- Using BASIC security -->
-
 	<login-config>
 		<auth-method>BASIC</auth-method>
 		<realm-name>Secured Area</realm-name>
 	</login-config>
+
+-->
+
+
 
 	<filter>
 		<filter-name>CORS</filter-name>
