@@ -3,8 +3,6 @@ Copyright 2013 52°North Initiative for Geospatial Open Source Software GmbH
 Licensed under GNU General Public License, v2.0
 
 This project includes:
-  52n simplepermission under GNU GENERAL PUBLIC LICENSE Version 2, June 1991
-  52N xml-simplepermission under GNU GENERAL PUBLIC LICENSE Version 2, June 1991
   52North OX-Framework SML under GNU General Public License, v2.0
   52North OxFramework Common under GNU General Public License, v2.0
   52North OxFramework OWS under GNU General Public License, v2.0
@@ -21,6 +19,7 @@ This project includes:
   Apache FOP under The Apache Software License, Version 2.0
   Apache XML Graphics Commons under The Apache Software License, Version 2.0
   API interfaces under Lesser General Public License (LGPL)
+  Autotag - Core runtime under The Apache Software License, Version 2.0
   Avalon Framework API under The Apache Software License, Version 2.0
   Avalon Framework Implementation under The Apache Software License, Version 2.0
   Batik animation engine under The Apache Software License, Version 2.0
@@ -39,16 +38,16 @@ This project includes:
   Batik utility library under The Apache Software License, Version 2.0
   Batik XML utility library under The Apache Software License, Version 2.0
   Bean Validation API under Apache License, Version 2.0
-  Bootstrap CSS under The MIT License
-  Codec under The Apache Software License, Version 2.0
+  Commons BeanUtils under The Apache Software License, Version 2.0
   Commons Codec under The Apache Software License, Version 2.0
+  Commons Digester under The Apache Software License, Version 2.0
   Commons Lang under The Apache Software License, Version 2.0
   Commons Logging under The Apache Software License, Version 2.0
   Commons Pool under The Apache Software License, Version 2.0
   Connector for an ArcGIS SOS extension. under GNU General Public License, v2.0
   core under GNU GENERAL PUBLIC LICENSE Version 2, June 1991
   CORS Filter under The Apache Software License, Version 2.0
-  Data Tables under the MIT License
+  decision-simplepermission under GNU GENERAL PUBLIC LICENSE Version 2, June 1991
   EPSG Authority Service using HSQL database under Lesser General Public License (LGPL) or EPSG database distribution license or BSD License for HSQL
   FindBugs-jsr305 under The Apache Software License, Version 2.0
   gimv under The Apache Software License, Version 2.0
@@ -68,7 +67,6 @@ This project includes:
   jackson-module-jsonSchema under The Apache Software License, Version 2.0 or GNU Lesser General Public License, Version 2.1
   Java Excel API under GNU Lesser General Public License
   Java Property Utility under The Apache Software License, Version 2.0
-  Java Servlet API under CDDL + GPLv2 with classpath exception
   JBoss Logging 3 under GNU Lesser General Public License, version 2.1
   JCL 1.1.1 implemented over SLF4J under MIT License
   jcommon under GNU Lesser General Public Licence
@@ -120,6 +118,7 @@ This project includes:
   Sensor Web Timeseries API - IO under GNU General Public License, Version 2.0
   Sensor Web Timeseries API - REST Binding under GNU General Public License, Version 2.0
   Sensor Web Timeseries API - SPI under GNU General Public License, Version 2.0
+  servlet-api under CDDL 1.1 or GPL2 w/ CPE
   Shared SOS Components under GNU General Public License, v2.0
   SLF4J API Module under MIT License
   SOS Hydrology Profil Connector under GNU General Public License, v2.0
@@ -130,26 +129,30 @@ This project includes:
   Spring Context under The Apache Software License, Version 2.0
   Spring Core under The Apache Software License, Version 2.0
   Spring Expression Language (SpEL) under The Apache Software License, Version 2.0
-  Spring JDBC under The Apache Software License, Version 2.0
   Spring Object/XML Marshalling under The Apache Software License, Version 2.0
-  Spring Transaction under The Apache Software License, Version 2.0
   Spring Web under The Apache Software License, Version 2.0
   Spring Web MVC under The Apache Software License, Version 2.0
-  spring-security-acl under The Apache Software License, Version 2.0
-  spring-security-config under The Apache Software License, Version 2.0
-  spring-security-core under The Apache Software License, Version 2.0
-  spring-security-taglibs under The Apache Software License, Version 2.0
-  spring-security-web under The Apache Software License, Version 2.0
   StAX API under The Apache Software License, Version 2.0
+  Tiles - API under The Apache Software License, Version 2.0
+  Tiles - Core Library under The Apache Software License, Version 2.0
+  Tiles - JSP support under The Apache Software License, Version 2.0
+  Tiles - Servlet support under The Apache Software License, Version 2.0
+  Tiles - Template Technologies Support under The Apache Software License, Version 2.0
+  Tiles request - API under The Apache Software License, Version 2.0
+  Tiles Request - JSP support under The Apache Software License, Version 2.0
+  Tiles request - Servlet support under The Apache Software License, Version 2.0
   vecmath under GNU General Public License (GPL), version 2, with the CLASSPATH exception
   W3C SOAP specification recommondation (v1.2 part 1) under GNU GENERAL PUBLIC LICENSE Version 2, June 1991
   W3C WS-Addressing specification schemas (v1.0) under GNU GENERAL PUBLIC LICENSE Version 2, June 1991
   W3C xlink schema (spec. v1.1.0) under GNU GENERAL PUBLIC LICENSE Version 2, June 1991
   xalan under The Apache Software License, Version 2.0
+  Xalan Java under The Apache Software License, Version 2.0
+  Xalan Java Serializer under The Apache Software License, Version 2.0
   Xerces2 Java Parser under The Apache Software License, Version 2.0
   XML Commons External Components XML APIs under The Apache Software License, Version 2.0
   XML Commons External Components XML APIs Extensions under The Apache Software License, Version 2.0
   xml-schema under GNU GENERAL PUBLIC LICENSE Version 2, June 1991
+  xml-simplepermission under GNU GENERAL PUBLIC LICENSE Version 2, June 1991
   XmlBeans under The Apache Software License, Version 2.0
   XmlBeansXPath under The Apache Software License, Version 2.0
 

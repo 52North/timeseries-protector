@@ -7,30 +7,30 @@
 <script type="text/javascript"
 	src="<c:url value="/static/lib/js/highlight.pack.js" />">
 </script>
-	
+
 <div class="container-fluid">
-	
+
 	<tiles:insertDefinition name="viewPermissionsXml"></tiles:insertDefinition>
-	
+
 	<tiles:insertDefinition name="warningSection"></tiles:insertDefinition>
-	
+
 	<br /> <a title="Add Permission Set"
 		href="<c:url value="/editor/new" />" id="btnAddPermissionSet"
 		class="btn btn-default" role="button"> <span
 		class="glyphicon glyphicon-plus"></span>
 	</a>&nbsp;
-	
+
 	<button class="btn btn-default disabled" id="btnDeletePermissionSet"
 		title="Delete Permission Set">
 		<span class="glyphicon glyphicon-trash"></span>
 	</button>&nbsp;
-	
-	<button 
+
+	<button
 		<c:if test="${permissionSets.size()==0}">
 			disabled
 		</c:if>
 		id="viewXml" title="View Permissions Xml"
-		class="btn btn-default" role="button"> 
+		class="btn btn-default" role="button">
 		<span class="glyphicon glyphicon-new-window"></span>
 	</button>
 	<br />
@@ -60,12 +60,12 @@
 						</div>
 					</td>
 					<td>
-						 <a 
+						 <a
 							href="<c:url value="/editor/edit/${permissionSet.getName()}" />"
 							class="btn btn-default btn-xs" role="button">MODIFY
 						</a>
 					</td>
-					
+
 					<td><c:out value="${permissionSet.getName()}"></c:out></td>
 					<c:forEach items="${permissionSet.getSubjectDomains()}"
 						var="subjectDomains">
@@ -85,6 +85,5 @@
 	</div>
 </div>
 
-<script type="text/javascript"
-	src="<c:url value="/static/lib/js/permissionSetManagement.min.js" />">
+<script type="text/javascript" src="<c:url value="/static/js/permissionSetManagement.js" />" >
 </script>

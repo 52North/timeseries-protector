@@ -14,7 +14,7 @@
 			name="existingName" type="hidden">
 		<input id="url" type="hidden" value="<c:url value="/editor/${permissionSet}/" />" />
 		<input id="contextUrl" type="hidden" value="<c:url value="/" />" />
-		
+
 		<div id="basicScreen">
 			<tiles:insertDefinition name="basicScreen"></tiles:insertDefinition>
 		</div>
@@ -31,19 +31,19 @@
 		<br />
 
 		<c:if test="${context!='modify' && permissionSet=='new'}">
-			<button onclick="pushPermission(this.id)" 
+			<button onclick="pushPermission(this.id)"
 				title="Save Permission Temporarily" type="button"
 				name="saveButton"
 				class="btn btn-info">Save Temporarily</button>
 		</c:if>
-		
+
 		<c:if test="${context!='modify' && permissionSet!='new'}">
 			<button onclick="pushPermission(this.id)" id="modifyNewAction"
 				title="Save Permission" type="button"
 				name="saveButton"
 				class="btn btn-info">Save</button>
 		</c:if>
-		
+
 		<c:if test="${context=='modify'}">
 			<button onclick="pushPermission(this.id)" id="modifyAction"
 				name="saveButton" title="Save Permission" type="button" class="btn btn-primary">Save
@@ -53,7 +53,9 @@
 				title="Save As New Permission" type="button" class="btn btn-info">Save
 				As New</button>
 		</c:if>
-		
+
+		<input id="url" type="hidden" value="<c:url value="/editor/${permissionSet}/" />" />
+
 		<!-- Setting the url for cancel button appropriately -->
 		<c:forEach varStatus="loop" items="${breadCrumb}" var="entry">
 			<c:choose>
@@ -66,7 +68,5 @@
 		</c:forEach>
 	</form>
 </div>
-<script type="text/javascript"
-	src="<c:url value="/static/lib/js/wizardManagement.min.js" />">
-	
+<script type="text/javascript" src="<c:url value="/static/js/wizardManagement.js" />" >
 </script>

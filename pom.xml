@@ -10,7 +10,7 @@
 
     <groupId>org.n52.sensorweb.series</groupId>
     <artifactId>timeseries-protector</artifactId>
-    <version>0.0.1-SNAPSHOT</version>
+    <version>1.0.0-rc.1</version>
     <name>52°North Timeseries Protector</name>
     <description>Tool to manage security policies for timeseries</description>
     <inceptionYear>2014</inceptionYear>
@@ -341,22 +341,34 @@
             <!-- ==================================================== -->
 
             <plugin>
-                <groupId>org.codehaus.mojo</groupId>
-                <artifactId>buildnumber-maven-plugin</artifactId>
-                <version>1.2</version>
-                <configuration>
-                    <doCheck>false</doCheck>
-                    <doUpdate>false</doUpdate>
-                    <timestampFormat>{0,date,yyyy-MM-dd HH:mm:ss}</timestampFormat>
-                    <revisionOnScmFailure>0</revisionOnScmFailure>
-                    <getRevisionOnlyOnce>true</getRevisionOnlyOnce>
-                </configuration>
+                <groupId>pl.project13.maven</groupId>
+                <artifactId>git-commit-id-plugin</artifactId>
+                <version>2.1.10</version>
                 <executions>
                     <execution>
-                        <phase>validate</phase>
+                        <id>git-commit-id</id>
                         <goals>
-                            <goal>create</goal>
+                            <goal>revision</goal>
                         </goals>
+                        <phase>validate</phase>
+                        <configuration>
+                            <dateFormat>yyyy-MM-dd HH:mm:ssZ</dateFormat>
+                            <!-- Only changing prefix since properties conflicts with jgit above
+                            <prefix>git-commit-id</prefix>-->
+                            <!-- We're using a pom in this example
+                            <skipPoms>false</skipPoms>-->
+                            <gitDescribe>
+                                <!-- Faster to get just branch if skip = true -->
+                                <skip>false</skip>
+                            </gitDescribe>
+
+                            <abbrevLength>7</abbrevLength>
+                            <!--
+                            <generateGitPropertiesFile>true</generateGitPropertiesFile>
+                            <generateGitPropertiesFilename>src/main/resources/git.properties</generateGitPropertiesFilename>
+                            -->
+                            <timestampFormat>{0,date,yyyy-MM-dd HH:mm:ss}</timestampFormat>
+                        </configuration>
                     </execution>
                 </executions>
             </plugin>
@@ -391,7 +403,6 @@
                     <compilerArgument>-Xlint:all</compilerArgument>
                     <showWarnings>true</showWarnings>
                     <showDeprecation>true</showDeprecation>
-                    <executable>C:\Program Files\Java\jdk1.7.0_55\bin\javac.exe</executable>
                     <fork>true</fork>
                 </configuration>
             </plugin>
@@ -431,7 +442,7 @@
                         <exclude>**/*.xml</exclude>
                         <exclude>**/*.jsp</exclude>
                         <exclude>**/*.html</exclude>
-                        <exclude>**/webapp/static/lib/*</exclude>
+                        <exclude>**/webapp/static/lib/**</exclude>
                         <exclude>**/webapp/WEB-INF/web.xml</exclude>
                         <exclude>**/buildNumber.properties</exclude>
                     </excludes>
