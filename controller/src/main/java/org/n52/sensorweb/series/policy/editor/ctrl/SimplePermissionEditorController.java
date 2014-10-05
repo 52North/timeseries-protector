@@ -28,6 +28,7 @@
 
 package org.n52.sensorweb.series.policy.editor.ctrl;
 
+import java.net.URLDecoder;
 import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -50,7 +51,6 @@ import org.n52.sensorweb.series.policy.api.PermissionManagementException;
 import org.n52.sensorweb.series.policy.api.beans.EnforcementPoint;
 import org.n52.sensorweb.series.policy.api.beans.PermissionOutput;
 import org.n52.sensorweb.series.policy.api.beans.PermissionSetOutput;
-import org.n52.sensorweb.series.policy.editor.srv.EnforcementPointService;
 import org.n52.sensorweb.series.policy.editor.srv.SimplePermissionService;
 import org.n52.sensorweb.series.policy.editor.srv.UserService;
 import org.n52.sensorweb.series.policy.editor.srv.impl.ActionValues;
@@ -375,31 +375,36 @@ public class SimplePermissionEditorController extends BaseController {
         mav.addObject("phenomenon", phenomenon);
         mav.addObject("actionValues", ActionValues.getActionValues());
 
-        /* easing the load of the jsps, anyways they also execute on the server only */
+        /* easing the load of the jsps, anyways they also execute on the server*/
         List<String> selectedProcedures = new ArrayList<String>();
         List<String> selectedOfferings = new ArrayList<String>();
         List<String> selectedObservedProperties = new ArrayList<String>();
         List<String> selectedFeaturesOfInterest = new ArrayList<String>();
 
+        /*adding a url decoder because the resource parameters are saved
+          encoded in permissions.xml, earlier decoding was happening using javascript
+          but since jsps compare the strings so decoding has to done before jsp tags
+          are rendered
+        */
         for (TargetValue tv : permission.getResources())
         {
             String[] resource = tv.getValue().split("/");
 
             if (resource[0].equals("procedures"))
             {
-                selectedProcedures.add(tv.getValue());
+                selectedProcedures.add(URLDecoder.decode(tv.getValue()));
             }
             else if (resource[0].equals("offerings"))
             {
-                selectedOfferings.add(tv.getValue());
+                selectedOfferings.add(URLDecoder.decode(tv.getValue()));
             }
             else if (resource[0].equals("featuresOfInterest"))
             {
-                selectedFeaturesOfInterest.add(tv.getValue());
+                selectedFeaturesOfInterest.add(URLDecoder.decode(tv.getValue()));
             }
             else if (resource[0].equals("observedProperties"))
             {
-                selectedObservedProperties.add(tv.getValue());
+                selectedObservedProperties.add(URLDecoder.decode(tv.getValue()));
             }
         }
 

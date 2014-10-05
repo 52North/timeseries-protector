@@ -85,6 +85,5 @@
 	</div>
 </div>
 
-<script type="text/javascript"
-	src="<c:url value="/static/js/permissionSetManagement.js" />">
+<script type="text/javascript" src="<c:url value="/static/js/permissionSetManagement.js" />" >
 </script>

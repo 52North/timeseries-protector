@@ -32,7 +32,6 @@ $(document).ready(function() {
 	$.each($("select[multiple]"),function(name,value){
 
 		$("#"+value.id+"Count").html($("#"+this.id+" option[selected]").length);
-		$(value).html(decodeURIComponent($(value).html()));
 	});
 
 	/*for setting the total no. of values for badges on load */

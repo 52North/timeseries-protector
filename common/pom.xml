@@ -4,7 +4,7 @@
     <parent>
         <groupId>org.n52.sensorweb.series</groupId>
         <artifactId>timeseries-protector</artifactId>
-        <version>0.0.1-SNAPSHOT</version>
+        <version>1.0.0-rc.1</version>
     </parent>
     <artifactId>protector-common</artifactId>
     <name>52°North TP - Common</name>
