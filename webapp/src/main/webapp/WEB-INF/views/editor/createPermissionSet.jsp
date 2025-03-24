@@ -141,6 +141,5 @@
 		</c:forEach>
 	</form>
 </div>
-<script type="text/javascript"
-	src="<c:url value="/static/js/permissionManagement.js" />">
+<script type="text/javascript" src="<c:url value="/static/js/permissionManagement.js" />">
 </script>
